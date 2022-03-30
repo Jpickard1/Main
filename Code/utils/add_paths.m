@@ -1,3 +1,5 @@
 function add_paths()
-    disp('Function Body');
+    addpath(genpath('C:\Users\picka\Documents\my_projects\DBTM\MissingData'));
+    disp('Paths added')
 end
+
