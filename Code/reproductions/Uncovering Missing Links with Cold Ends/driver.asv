@@ -1,6 +1,0 @@
-%% load matrix file
-load('C:\Users\picka\Documents\my_projects\DBTM\MissingData\Data\USAir\adjacency_matrix.mat');
-A = (A > 0.000);
-
-%% Split the data
-[training, testing] = partition_edges(A, 'rand', 0.8);

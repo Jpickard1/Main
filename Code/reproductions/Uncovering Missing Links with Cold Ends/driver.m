@@ -8,4 +8,6 @@ A = (A > 0.000);
 %% Compute similarity between each vertex
 similarity = local_similarity(training, 'AA');
 
-%% 
+%% Select the most likely edges
+L = 100;
+sum(sum(A))/2
