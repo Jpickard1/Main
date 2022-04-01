@@ -19,3 +19,6 @@ the above schemes and a network with all edges that are unknown.
 
 WARNING: The code in this directory is currently set for unweighted, undirected
 networks only.
+
+---
+CREATED: Joshua Pickard, 4/1/2022
