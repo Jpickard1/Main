@@ -1,5 +1,8 @@
 function add_paths()
-    addpath(genpath('C:\Users\picka\Documents\my_projects\DBTM\MissingData'));
-    disp('Paths added')
+    if ispc
+        addpath(genpath('..\..\..\MissingData'));
+        disp('Paths added')
+    else
+        disp('ERROR: Not running on PC. Fill in function')
+    end
 end
-

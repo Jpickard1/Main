@@ -1,4 +1,4 @@
-% Equation 19
+% See: Link Prediction in Complex Networks, Lu and Zhou, Equation 19
 function ACT = averageCommuteTime_index(adj, i, j)
     deg = adj2deg(adj);
     L = deg - adj;
