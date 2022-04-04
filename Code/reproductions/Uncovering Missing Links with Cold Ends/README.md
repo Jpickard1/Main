@@ -12,3 +12,8 @@ missing data is known as the cold end problem.
 The code for the popularity scores will be in this subdirectory. All code
 for the similarity different indices is locaded in:
 MissingData/Code/local_similarity
+
+---
+![Sample](https://github.com/Jpickard1/MissingData/blob/main/Code/reproductions/Uncovering%20Missing%20Links%20with%20Cold%20Ends/popularity%20based%20edge%20partitioning.png?raw=true)
+---
+Created: Joshua Pickard 4/3/2022
