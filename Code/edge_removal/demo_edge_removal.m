@@ -16,8 +16,8 @@ figure;
 subplot(2,2,1);
 gplot(network, cords', '-*'); %, 'black')
 title('Full Network')
-set(gca,'XTick',[])
-set(gca,'YTick',[])
+set(gca,'XTick',[]);
+set(gca,'YTick',[]);
 
 
 % Plot random removal
@@ -27,8 +27,8 @@ gplot(known, cords', '-*blue');
 hold on;
 gplot(unknown, cords', '-red');
 title('Random Removal');
-set(gca,'XTick',[])
-set(gca,'YTick',[])
+set(gca,'XTick',[]);
+set(gca,'YTick',[]);
 
 % Plot snow ball removal
 subplot(2,2,3);
@@ -37,8 +37,8 @@ gplot(known, cords', '-*blue');
 hold on;
 gplot(unknown, cords', '-red');
 title('Snow Ball Removal');
-set(gca,'XTick',[])
-set(gca,'YTick',[])
+set(gca,'XTick',[]);
+set(gca,'YTick',[]);
 
 % Plot random removal
 subplot(2,2,4);
@@ -47,8 +47,8 @@ gplot(known, cords', '-*blue');
 hold on;
 gplot(unknown, cords', '-red');
 title('Right Censoring Removal');
-set(gca,'XTick',[])
-set(gca,'YTick',[])
+set(gca,'XTick',[]);
+set(gca,'YTick',[]);
 
-saveas(gcf, 'edge removal methods.png');
+% saveas(gcf, 'edge removal methods.png');
 

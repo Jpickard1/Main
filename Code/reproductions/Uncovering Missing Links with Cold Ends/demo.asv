@@ -1,0 +1,9 @@
+%% Load in a network
+
+network = sample_network_generator(20);
+
+%% Compute popularity matrix
+
+popularity = edge_popularity_matrix(network);
+
+%% Partition 
