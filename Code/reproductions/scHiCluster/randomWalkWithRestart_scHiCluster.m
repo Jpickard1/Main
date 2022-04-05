@@ -4,8 +4,9 @@ function Q = randomWalkWithRestart_scHiCluster(matrix)
     tol = 1e-6;
 
     % Row normalize the matrix
-    matrix = matrix / sum(matrix,2);
-
+    % matrix = matrix / sum(matrix,2);
+    matrix = normr(matrix);
+    
     % Random Walk With Restart
     Q = eye(size(matrix));
     matrix_norm = tol + 1;

@@ -33,5 +33,3 @@ for group=1:D
 end
 
 saveas(gcf, 'popularity based edge partitioning.png');
-
-
