@@ -1,5 +1,11 @@
 # MissingData
 
+Auth: Joshua Pickard jpic@umich.edu
+
+Created: March 21, 2022
+
+---
+
 This repository contains code, data, and related research for the Missing
 Data project. The focus of this project is to understand and fill in
 areas of a data set that likely contain misisng information. This problem
