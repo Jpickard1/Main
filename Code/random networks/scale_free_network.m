@@ -15,6 +15,7 @@ function [network] = scale_free_network(V)
 %           the probability of an edge existing between the new node and
 %           a preexisting node i is calculated as
 %               P = degree of i / degree of all preexisting nodes
+%
 % Joshua Pickard jpic@umich.edu
 % April 6, 2022
 
