@@ -8,7 +8,7 @@ Created: April 7, 2022
 
 This directory contains code to run the Markov Affinitiy based Graph Imputation of Cells (MAGIC) algorithm. The alorithm was developed by Smita Krishnaswamy and her lab. The majority of this code was downloaded from the Matlab directory at this git repository: https://github.com/KrishnaswamyLab/MAGIC, but I have written some code in `demo_magic.m` and modified the function `compute_optimal_t.m`.
 
-## Selecting the Optimal t
+## Selecting the Optimal *t*
 
 The most interesting step of the MAGIC algorithm is multiplying the original data matrix *D* by the markov matrix *M* raised to some power *t*. We have been interested in determining the optimal value for *t,* and we think that it should be some function of the rank of the imputed data or the norm between the imputed data and the original data. That paper presents a different method for comparing the optimal value of *t* based on the following equation:
 
