@@ -12,3 +12,4 @@ Four random types of networks are generated
 
 Four different schemes of edge removal are applied
 
+I want to look at how the eigenspectrum changes for each type of graph under each type of edge removal.
