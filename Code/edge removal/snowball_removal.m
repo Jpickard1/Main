@@ -1,16 +1,17 @@
-function [known_network, unknown_network] = snowball_removal(network)
+function [known_network, unknown_network] = snowball_removal(network, percent_removed)
+%   NOTE: This is a deterministic function
     %% Set parameters
-    p_discover = 0.5;
-    n_discover = round(p_discover * length(network));
-    
+    known_edges = round(percent_removed * sum(sum(network)));
+
     %% Define the known edges
     known_network = zeros(size(network));
+    current_edges = 0;
     
     %% BFS to select the known edges
     %node = round(rand() * length(network));
     queue = [round(rand() * length(network))];
     known_nodes = [];
-    while length(known_nodes) < n_discover
+    while current_edges < known_edges
         % Set node and pop queue
         node = queue(1);
         queue = queue(2:end);
@@ -25,11 +26,11 @@ function [known_network, unknown_network] = snowball_removal(network)
         for n=new_nodes
             known_network(n, node) = true;
             known_network(node, n) = true;
+            current_edges = current_edges + 2;
         end
         % Update the queu and known nodes
         queue = [queue new_nodes];
         known_nodes = [known_nodes node];
-        disp(known_network);
     end 
     %% Define the unknown edges
     unknown_network = (network & ~known_network);

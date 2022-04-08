@@ -1,14 +1,14 @@
-function [known_network, unknown_network] = right_censoring_removal(network)
+function [known_network, unknown_network] = right_censoring_removal(network, percent_removed)
+%   NOTE: This is a deterministic function
     %% Set parameters
-    max_degree = max(sum(network));
-    p_degree = 0.8;
-    max_allowed_degree = round(max_degree * p_degree);
+    known_edges = round(percent_removed * sum(sum(network)));
+    current_edges = known_edges;
     
     %% Define the known edges
     known_network = network;
     
     %% Edge removal
-    while max(sum(known_network)) > max_allowed_degree
+    while current_edges >= known_edges
         % Select node with highest degree
         [~, highest_degree_node] = max(sum(known_network));
         % Select the neighbring node with the highest degree
@@ -19,6 +19,7 @@ function [known_network, unknown_network] = right_censoring_removal(network)
         % Remove edge
         known_network(highest_degree_node, neighbor) = false;
         known_network(neighbor, highest_degree_node) = false;
+        current_edges = current_edges - 2;
     end
     
     %% Define the unknown edges
