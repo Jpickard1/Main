@@ -1,0 +1,34 @@
+%% DEMO RANDOM NETWORKS
+%   This file generates random network by calling each function in the
+%   directory so you can see a sample of each.
+
+%% Erdos-Renyi
+V = 20;
+E = 40;
+network = erdos_renyi_network(V, E);
+plot(graph(network))
+title('Erdos Renyi Network');
+
+%% Erdos-Renyi-Gilbert
+V = 20;
+p = 0.5;
+network = erdos_renyi_gilbert_network(V, p);
+plot(graph(network))
+title('Erdos-Renyi-Gilbert Network');
+
+%% Small World Network
+V = 20;
+k = 4;
+beta = 0.2;
+[network, cords] = small_world_network(V, k, beta);
+gplot(network, cords', '.-');
+title('Small World Network (V=20, k=4, bet');
+set(gca,'XTick',[]);
+set(gca,'YTick',[]);
+
+%% Scale Free Network
+V = 100;
+m0 = 5;
+network = scale_free_network(V, m0);
+plot(graph(network))
+title('Scale Free Network');

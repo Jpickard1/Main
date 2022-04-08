@@ -15,7 +15,7 @@ D_known(~known) = 0;
 %sum(sum(isnan(D)))
 
 %[x,y] = find(isnan(D))
-
+data = ans;
 D = data{:,:}';
 D = D(1:200,1:500);
 run_magic(D);
