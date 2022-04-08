@@ -5,7 +5,9 @@ Date: April 6, 2022
 
 ---
 
-This directory contains code to generate different types of random networks. There are a variety 
+This directory contains code to generate different types of random networks. Currently we are able to generate 4 types of random networks. An example of each is seen below, and a more detailed explination of each type and the algorithms used to construct these networks is further down.
+
+![Demo 4 random networks](https://github.com/Jpickard1/MissingData/blob/main/Code/random%20networks/random%20network%20demo.png?raw=true)
 
 ## Erdos-Renyi Network
 
@@ -26,3 +28,11 @@ A scale free network is a network where the degree distribution follows the Powe
 
 ### BA Algorithm
 ## Small World Network
+
+
+### Goals
+The next steps for this directory include:
+1. identify and build further types of random networks
+2. fill in the details for each type in this README
+3. learn about Ramanujin graphs
+4. Write code to equate the size of each of these graphs by tuning their parameters so only the type, V, and maybe E need to be passed as parameters.
