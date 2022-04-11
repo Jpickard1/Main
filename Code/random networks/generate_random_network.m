@@ -9,7 +9,7 @@ function [network] = generate_random_network(type, V, arg1)
 %   - SW: Small World
 switch type
     case 'ER'
-        network = erdos_renyi_network(V, round(0.2 * V));
+        network = erdos_renyi_network(V, round(10 * V));
     case 'ERG'
         network = erdos_renyi_gilbert_network(V, 0.2);
     case 'LW'

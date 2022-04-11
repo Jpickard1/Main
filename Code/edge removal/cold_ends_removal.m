@@ -9,7 +9,7 @@ function [known_network, unknown_network] = cold_ends_removal(network, percent_r
 
     %% Set parameters
     known_edges = round(percent_removed * sum(sum(network)));
-    current_edges = known_edges;
+    current_edges = sum(sum(network));
     
     %% Define the known edges
     known_network = network;

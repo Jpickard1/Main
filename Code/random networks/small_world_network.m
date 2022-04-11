@@ -35,6 +35,7 @@ network = network + network';
 
 % Get cords to plot circular lattice
 G = graph(network);
+figure; 
 p = plot(G, 'layout', 'circle');
 x = p.XData;
 y = p.YData;

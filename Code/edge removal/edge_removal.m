@@ -9,7 +9,7 @@ function [known_network, unknown_network] = edge_removal(network, method, percen
         case 'SB'
             [known_network, unknown_network] = snowball_removal(network, percent_removed);
         case 'CE'
-            disp('Cold Ends method not yet impimented')
+            [known_network, unknown_network] = cold_ends_removal(network, percent_removed);
         case 'RC'
             [known_network, unknown_network] = right_censoring_removal(network, percent_removed);
     end

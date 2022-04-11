@@ -1,7 +1,7 @@
 function [known_network, unknown_network] = random_removal(network, percent_removed)
     %% Set parameters
     known_edges = round(percent_removed * sum(sum(network)));
-    current_edges = known_edges;
+    current_edges = sum(sum(network));
 
     %% Define the known edges
     known_network = network;
@@ -9,10 +9,10 @@ function [known_network, unknown_network] = random_removal(network, percent_remo
     while current_edges >= known_edges
         for i=1:m
             for j=i:m
-                if current_edges >= known_edges
+                if current_edges < known_edges
                     break
                 end
-                if network(i,j) && rand() > prob
+                if network(i,j) && rand() > percent_removed
                     known_network(i,j) = 0;
                     known_network(j,i) = 0;
                     current_edges = current_edges - 2;
