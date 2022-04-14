@@ -1,4 +1,4 @@
-function [network] = scale_free_network(V, m0)
+function [network] = scale_free_network(V, m0, gamma)
 %scale_free_network: This function generates a scale free network using the
 %   BA algorithm. A scale free network is a network where the degree
 %   distribution of the nodes approximately follows the power law. This means
@@ -26,10 +26,10 @@ network(1:m0,1:m0) = m0_network;
 
 % 2. Loop until network is large enough
 for v=m0+1:V
-    total_edges = sum(sum(network));
+    total_edges = sum(sum(network).^gamma);
     while sum(network(v,:)) == 0
         for i=1:v-1
-            if rand < sum(network(i, :)) / total_edges
+            if rand < sum(network(i, :).^gamma) / total_edges
                 network(i,v) = true;
                 network(v,i) = true;
             end

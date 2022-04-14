@@ -1,4 +1,4 @@
-function [network, cords] = quasi_ramanujan_network(V, k)
+function [network, cords] = quasi_ramanujan_network(V, k, beta)
 %QUASI_RAMANUJAN_NETWORK This function generates a random, quasi ramanujan
 %   network based on the paper "Algebraic Connectivity Rtio of Ramanujan 
 %   Graphs" by Reza Olifati-Saber. The paper proposes a method for

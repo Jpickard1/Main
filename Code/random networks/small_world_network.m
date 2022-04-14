@@ -22,16 +22,18 @@ function [network, cords] = small_world_network(V, k, beta)
 % Joshua Pickard jpic@umich.edu
 % April 7, 2022
 
-% 1. Construct a ring lattice
+%% 1. Construct a ring lattice
 network = zeros(V,V);
-for i=1:k % k is half of the average degree
+for i=1:round(k/2) % k is half of the average degree
     edges = ones(V, 1);
     inner = edges(1:length(edges)-i);       % Edges close to the diagonal
     outer = edges(length(edges)-i+1:end);   % Edges far from the diagonal
     network = network + diag(inner, i) + diag(outer, V-i); % Insert edges on off diagonals
+    % disp(network)
 end
+
 network = logical(network);
-network = network + network';
+network = network | network';
 
 % Get cords to plot circular lattice
 G = graph(network);
@@ -42,17 +44,34 @@ y = p.YData;
 cords = [x; y];
 close;
 
-% 2. Rewire all edges with probability beta
+%% Add or removed edges so that the number of edges is exact
+while sum(sum(network)) < k*V
+    [y, x] = find(network == 0);
+    idx = randi([1 length(y)]);
+    network(x(idx), y(idx)) = 1;
+    network(y(idx), x(idx)) = 1;
+end
+while sum(sum(network)) > k*V
+    [y, x] = find(network == 1);
+    idx = randi([1 length(y)]);
+    network(x(idx), y(idx)) = 0;
+    network(y(idx), x(idx)) = 0;
+end
+
+%% 2. Rewire all edges with probability beta
+%if beta == 0
+%    return
+%end
 for v=1:V
     % For node v, select half of its edges (the set that may be rewired)
     possible_reconnect = zeros(V,1);
-    if v+k <= V
-        possible_reconnect(v+1:v+k) = true;
+    if v+round(k/2) <= V
+        possible_reconnect(v+1:v+round(k/2)) = true;
     else
         % Back connectiuons
         possible_reconnect(v+1:end) = true;
         back_connections = sum(possible_reconnect);
-        front_connections = k-back_connections;
+        front_connections = round(k/2)-back_connections;
         possible_reconnect(1:front_connections) = true;
     end
     % Determine which of these need to be rewired
