@@ -1,9 +1,14 @@
-function gamma = clustering_coef_vx(A, vx)
+function gamma = clustering_coef_vx(A, vx, loops)
 % CLUSTERING COEF VX: This function returns the clustering coefficient for
 %   single vetrex (vx) in a graph. In Small Worlds (Watts 1998), the
 %   clustering coefficient is defined
 %
 %       gamme = (# of edges between neighbors) / (# possible edges)
+%
+%   NOTES
+%       - loops: if the graph is a simple graph, the loops should be set to
+%       false. This does not allow for self loops. Otherwise set loops to
+%       true.
 %
 % Auth: Joshua Pickard
 % Date: May 10, 2022
@@ -27,7 +32,9 @@ function gamma = clustering_coef_vx(A, vx)
         return;
     end
     possible_edges = nchoosek(length(neighbors), 2);
-
+    if loops
+        possible_edges = possible_edges + length(neighbors);
+    end
     % Compute clustering coefficient
     gamma = num_edges / possible_edges;
 end
