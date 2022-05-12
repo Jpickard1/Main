@@ -1,3 +1,0 @@
-A = uniform_spatial_graph(500, 10, 0.2, 2, 'euclidi')
-
-

@@ -1,4 +1,4 @@
-function [distances, lambda] = shortest_path_dist_vx(A, vx)
+function [distances] = shortest_path_dist_vx(A, vx, known)
 %SHORTEST_PATH_DIST_VX This function computes the minimal distance from a
 %   vx to all other vxs in a graph
 %
@@ -11,6 +11,9 @@ distances = zeros(length(A),1);
 % Record which nodes have been found
 found = false(length(A),1);
 found(vx) = true;
+if nargin == 3
+    found = found | known;
+end
 
 % Record frontier nodes
 frontier = zeros(length(A), 1);

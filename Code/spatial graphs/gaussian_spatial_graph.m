@@ -57,13 +57,13 @@ while edges < (k * n) / 2
     edges = edges + 1;
 
     if plot_on
-        center = cords(vx,:);
+        %center = cords(vx,:);
         highlight(p, vx)
-        th = 0:pi/50:2*pi;
-        xunit = l * cos(th) + center(1);
-        yunit = l * sin(th) + center(2);
-        plot(xunit, yunit);
-        pause(sleep_time);
+        %th = 0:pi/50:2*pi;
+        %xunit = l * cos(th) + center(1);
+        %yunit = l * sin(th) + center(2);
+        %plot(xunit, yunit);
+        %pause(sleep_time);
         highlight(p, possible_vxs)
         pause(sleep_time);
         hold off;
