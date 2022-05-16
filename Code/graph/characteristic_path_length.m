@@ -9,15 +9,21 @@ function CPL = characteristic_path_length(A)
 shortest_path = zeros(length(A));
 known = false(length(A), 1);
 
+%{
 for vx=1:length(A)
     disp(string(vx));
     shortest_path(vx,:) = shortest_path_dist_vx(A, vx, known);
     known(vx) = true;
 end
+%}
 
-shortest_path = shortest_path + shortest_path';
+shortest_path = graphallshortestpaths(A);
+shortest_path(isinf(shortest_path)) = 0;
+
+% shortest_path = shortest_path + shortest_path';
 
 % Compute characteristic path length
+
 avg_vx_dist = mean(shortest_path);
 CPL = median(avg_vx_dist);
 
