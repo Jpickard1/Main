@@ -21,7 +21,7 @@ WARNING: The code in this directory is currently set for unweighted, undirected
 networks only.
 
 ---
-![Edge remove example](https://github.com/Jpickard1/MissingData/blob/main/Code/edge_removal/edge%20removal%20methods.png?raw=true)
+![Edge remove example](https://github.com/Jpickard1/MissingData/blob/main/Code/edge%20removal/edge%20removal%20methods.png?raw=true)
 
 ---
 CREATED: Joshua Pickard, 4/1/2022
