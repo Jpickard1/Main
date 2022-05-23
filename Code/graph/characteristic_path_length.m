@@ -6,8 +6,8 @@ function CPL = characteristic_path_length(A)
 % Date: May 12, 2022
 
 %%
-shortest_path = zeros(length(A));
-known = false(length(A), 1);
+%shortest_path = zeros(length(A));
+%known = false(length(A), 1);
 
 %{
 for vx=1:length(A)
@@ -16,8 +16,8 @@ for vx=1:length(A)
     known(vx) = true;
 end
 %}
-
-shortest_path = graphallshortestpaths(A);
+A_temp = sparse(A);
+shortest_path = graphallshortestpaths(A_temp);
 shortest_path(isinf(shortest_path)) = 0;
 
 % shortest_path = shortest_path + shortest_path';
