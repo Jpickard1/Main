@@ -19,6 +19,10 @@ function [network] = scale_free_network(V, m0, gamma)
 % Joshua Pickard jpic@umich.edu
 % April 6, 2022
 
+if nargin == 2
+    gamma = 1;
+end
+
 % 1. Intialize the network randomly
 network = false(V,V);
 m0_network = erdos_renyi_network(m0, round(2*m0));

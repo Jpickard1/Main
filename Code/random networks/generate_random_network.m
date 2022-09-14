@@ -30,7 +30,7 @@ switch type
         % Calcualte the mean degree of the graph
         k = 2 * E / V;
     case 'SF'
-        network = scale_free_network(V, round(0.05 * V));
+        network = scale_free_network(V, 5);
     case 'SW'
         % Select the number of edges from a binomial distribution
         E = binornd(nchoosek(V, 2), p);
@@ -49,7 +49,7 @@ switch type
     case 'QR'
         network = quasi_ramanujan_network(V, k, params('Beta'));
     case 'SF'
-        network = scale_free_network(V, round(0.05 * V));
+        network = scale_free_network(V, 5);
     case 'SW'
         network = small_world_network(V, k, params('Beta'));
 end
