@@ -1,0 +1,29 @@
+function [outputArg1,outputArg2] = shotgun(A)
+%SHOTGUN Call this function first for any data matrix. It produces a few
+%   plots that are helpful for immediatly understanding data.
+%
+%   PLOTS
+%   1. scree plot
+%   2. degree distribution
+%   3.
+%
+% Auth: Joshua Pickard jpic@umich.edu
+% Date: May 23, 2022
+
+figure;
+
+% scree plot
+subplot(2,2,1); scree(A);
+
+% degree distribution
+subplot(2,2,2); plot(sort(sum(A), 'descend'));
+
+% plot graph with Halls plotting algorithm
+[v,e] = eigs(A, 2, 'smallestabs');
+subplot(2,2,3); plot(v(:,1))
+
+end
+v = real(v)
+
+gplot(A, v)
+

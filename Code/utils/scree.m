@@ -13,4 +13,5 @@ function scree(matrix)
     plot(eigenvalues, '-o');
     ylabel('Eigenvalue');
     xlabel('Component');
+    title('Scree Plot');
 end
