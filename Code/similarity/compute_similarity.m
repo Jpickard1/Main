@@ -1,3 +1,4 @@
+function similarity=compute_similarity(adj, index)
 % Description: This function computes a similarity matrix between each
 % vertex in a network. It accepts and adjacency matrix as well as a
 % parameter for which similarity index should be used.
@@ -23,7 +24,6 @@
 %    https://drive.google.com/file/d/1TsXGWMqqt5euCtxnEQBodo3FM74gyvzO/view
 % Global indices: "Link prediction in complex networks: A survey"
 %    https://drive.google.com/file/d/1ORRPl2rUiboOJ5FdYnaIvl3uk4lAT2Ff/view
-function similarity=compute_similarity(adj, index)
     similarity = zeros(size(adj));
     for i=1:height(adj)
         for j=i+1:height(adj)
