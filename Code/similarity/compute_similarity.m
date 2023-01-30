@@ -25,8 +25,16 @@ function similarity=compute_similarity(adj, index)
 % Global indices: "Link prediction in complex networks: A survey"
 %    https://drive.google.com/file/d/1ORRPl2rUiboOJ5FdYnaIvl3uk4lAT2Ff/view
     similarity = zeros(size(adj));
-    for i=1:height(adj)
-        for j=i+1:height(adj)
+    if strcmp(similarity, 'K')
+        similarity = katz_index(adj);
+    end
+    jIDXS = 1:height(adj);
+    parfor i=1:height(adj)
+        i_j_similarity = -1;
+        for j=jIDXS
+            if j < i+1
+                continue
+            end
             % i_j_similarity = 0;
             switch index
                 % Local similarity
@@ -55,12 +63,15 @@ function similarity=compute_similarity(adj, index)
                     i_j_similarity = averageCommuteTime_index(adj, i, j);
                 case 'RWR'
                     i_j_similarity = randomWalkWithRestart_index(adj, i, j);
-                case 'K'
-                    similarity = katz_index(adj);
-                    return
+                % case 'K'
+                    % similarity = katz_index(adj);
+                    % i = 2 * height(adj);
+                    % j = i;
+                    % return
             end
-            similarity(i, j) = i_j_similarity;
+            % similarity(i, j) = i_j_similarity;
             similarity(j, i) = i_j_similarity;
         end
     end
+    similarity = similarity + similarity';
 end
