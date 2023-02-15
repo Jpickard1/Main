@@ -24,6 +24,11 @@ function similarity=compute_similarity(adj, index)
 %    https://drive.google.com/file/d/1TsXGWMqqt5euCtxnEQBodo3FM74gyvzO/view
 % Global indices: "Link prediction in complex networks: A survey"
 %    https://drive.google.com/file/d/1ORRPl2rUiboOJ5FdYnaIvl3uk4lAT2Ff/view
+%
+% Auth: Joshua Pickard
+%       jpic@umich.edu
+% Date: February 13, 2023
+
     similarity = zeros(size(adj));
     if strcmp(similarity, 'K')
         similarity = katz_index(adj);
