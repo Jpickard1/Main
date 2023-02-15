@@ -6,7 +6,7 @@ Created: March 21, 2022
 
 ---
 
-This repository is refactored to serve as a general purpose workspace for smaller projects that
+This repository is refactored to a general purpose workspace for smaller projects that
 do not yet require their own repository.
 
 This repository contains code, data, and related research for the Missing
