@@ -1,0 +1,73 @@
+Alexander Wood for BCIL 2019.
+
+My suggestions for how to document your code. Directly after the function 
+name, put description of the code in comments. This way, when you type in
+
+    doc functionName
+
+in the command window, all the documentation you wrote there will show up 
+in the help window. This will be very helpful for others in the lab using
+the code. 
+
+Start by writing out a short description of the function. Then describe
+syntax, a longer description, input, output, and optional parameters. 
+Finish with some examples of how to call the code. 
+
+Look at my functions in the image processing folder for some more 
+concrete examples. 
+
+*************************************************************************
+
+function [out1, out2] = functionName(arg1, arg2, option1, option2)
+% Short description of function.
+% Your Name for BCIL, Month 20XX.
+%
+% SYNTAX
+% function [out1, out2] = functionName(arg1, arg2)
+% function [out1, out2] = functionName(arg1, arg2, option1)
+% function [out1, out2] = functionName(arg1, arg2, option1, option2)
+%
+% DESCRIPTION
+% Long, informative function description. On this site, a powerful engine
+% will be built. An engine that will someday help us to travel a hundred 
+% times faster than we can today. Imagine it – thousands of inhabited 
+% planets at our fingertips... and we'll be able to explore those strange 
+% new worlds, and seek out new life and new civilizations. This engine 
+% will let us go boldly where no one has gone before.
+%
+% INPUT
+% arg1 ................... [NUMERIC] Description goes here description 
+%                          goes here description goes here etc.
+% arg2 ................... [CHAR] More description goes here.
+%
+% OUTPUT
+% out1 ................... [DOUBLE] Description
+% out2 ................... [INT] Description
+%
+% OPTIONAL PARAMETERS
+% option1 ................ [CLASS] Description description description
+%                          description description
+%                          DEFAULT: 3.14
+% option2 ................ [CLASS] Descriptoin
+%                          DEFAULT: 'bcil'
+%
+% EXAMPLES
+% [a, b] = functionName(x, y);
+% a = functionName(x, y, 'option1', 17);
+%%
+
+% Write code here. 
+
+% Initialize.
+if ~exist('option1', 'var')
+    option1 = 3.14;
+end
+if ~exist('option2', 'var') 
+    option2 = 'bcil';
+end
+
+% Do whatever.
+out1 = 0;
+out2 = '0';
+
+end 
