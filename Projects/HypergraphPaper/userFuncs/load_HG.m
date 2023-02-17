@@ -7,15 +7,18 @@ function HG = load_HG(ds)
 % Date: February 13, 2023
 
 % DS = {"DBLP", "Cora Reference", "Cora Citation", "Citeseer Reference", "Citeseer Citation"}
-DS = {'DBLP', 'Cora Reference', 'Cora Citation', 'Citeseer Reference', 'Citeseer Citation', 'ArnetMiner Citation', 'Oddysey'};
+DS = {'DBLP', 'Cora Reference', 'Cora Citation', 'Citeseer Reference', 'Citeseer Citation', 'ArnetMiner Citation', 'Oddysey', 'UER'};
 
 if ~any(strcmp(DS,ds))
     error('INVALID DATA SET: ' + ds)
 end
 
-S = HAT.load(ds);
-IM = full(S);
-HG = Hypergraph('IM', IM);
-
+if strcmp(ds,'UER')
+    HG = HAT.uniformErdosRenyi(50,600,3);
+else
+    S = HAT.load(ds);
+    IM = full(S);
+    HG = Hypergraph('IM', IM);
+end
 end
 

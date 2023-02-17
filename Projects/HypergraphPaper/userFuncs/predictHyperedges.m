@@ -12,8 +12,8 @@ HGobserved = O1{6};
 
 %% TODO: set this section to run as a function
 %% Params
-nPredictors = 7;    % Number of predicotrs to use
-predictors = ["CN", "LHN", "SA", "SO", "HP", "HD", "JA"];   % List of predictors
+nPredictors = 7;    % Number of predicotrs to use (the last 3 are not used currently)
+predictors = ["CN", "LHN", "SA", "SO", "HP", "HD", "JA", "RS", "JC", "PA"];   % List of predictors
 
 % Extract incidence matrices of true and observed hypergraphs
 IMt = full(HGtrue.IM);
@@ -88,6 +88,8 @@ for i=1:nPredictors
             end
         end
         similarity{i} = CN ./ TN;
+    % elseif strcmp(predictors(i), "RA")
+    %    similarity{i} = compute_similarity(C, "RA");
     end
     similarity{i}(isnan(similarity{i})) = 0;
     similarity{i}(isinf(similarity{i})) = 0;

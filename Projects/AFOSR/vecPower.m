@@ -1,5 +1,5 @@
 function xk = vecPower(x, k)
-%VECPOWER Summary of this function goes here
+%VECPOWER  
 %
 % Auth: Joshua Pickard
 %       jpic@umich.edu

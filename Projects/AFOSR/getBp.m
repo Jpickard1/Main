@@ -1,5 +1,5 @@
 function B = getBp(Amat, p, k)
-%GETBP Summary of this function goes here
+%GETBP
 %
 %   INPUTS:
 %       Amat: unfolded adjacency tensor
