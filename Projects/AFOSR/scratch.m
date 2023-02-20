@@ -6,6 +6,20 @@
 %       jpic@umich.edu
 % Date: February 12, 2023
 
+%% 2/17-19/2023
+D = csvread('Copy_of_mouse 44_fed_fasted_refed traces.csv');
+[M, idxs] = HAT.multicorrelations(D, 3, 'Wang');
+figure; histogram(M)
+
+t = 0.83; % Disconnected at 85
+hyperedges = idxs(find(M>t),:);
+IM = HAT.hyperedge2IM(hyperedges);
+HG = Hypergraph('IM', IM);
+figure; plot(graph(HG.cliqueGraph)) % To check the graph is fully connected
+
+max(M)
+sum(M>0.85)
+
 %% Hypergraph constructor
 %{
 IM = [1 1 1;                % Hyperstar incidence matrix

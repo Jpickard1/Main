@@ -18,7 +18,11 @@ if nargin == 2
 end
 
 % Load data as hypergraph
-HGt = load_HG(ds);
+if strcmp(class(ds), 'Hypergraph')
+    HGt = ds;
+else
+    HGt = load_HG(ds);
+end
 
 % Make false hyperedges
 F = falseHyperedges(HGt, size(HGt.IM,2));

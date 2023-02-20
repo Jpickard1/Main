@@ -3,10 +3,11 @@
 % Date: February 15, 2023
 
 % TODO: Set parameters for experiment
-numGroups = 15;
-ds = 'Oddysey';
-trials = 15;
-predict = false;
+numGroups = 10;
+% ds = 'Oddysey';
+ds = HG;
+trials = 1;
+predict = true;
 
 O = cell(trials,1); predictions = cell(trials,1); labels=cell(trials,1)
 for i=1:trials
