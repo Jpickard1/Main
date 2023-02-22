@@ -14,24 +14,10 @@
 %% Hypergraph constructor
 clear; close; clc;
 % TODO: Set form of k-uniform incidence matrix
-
-k = 3;
-%{
-IM = [1 1;
-      1 0;
-      1 0;
-      0 1;
-      0 1];
-%}
-IM = [1 1 1;
-      1 1 0;
-      1 0 1;
-      0 1 1];
-
+n = 5; k = 4;
+HG = hyperring(n, k);
 
 % Construct hypergraph
-[n,e] = size(IM);
-HG = Hypergraph('IM', IM);  % Hypergraph object (must have HAT installed)
 A = HG.adjTensor;           % Adjacency tensor as multi-way array (i.e. not tensor toolbox)
 A = tensor(A);              % A tensor as tensor object
 
@@ -39,6 +25,36 @@ A = tensor(A);              % A tensor as tensor object
 Amat = tenmat(A,1);         % Unfold A
 Amat = Amat(:,:);           % tensor -> matrix
 
+%% Calculate Oi
+% Here I attempt to numerically compute the derivatives of each term near
+% to origin
+
+% Compute observability matrices for all vertices
+O = cell(n,1);                  % Cell to hold observability matrices for all vertices
+epsilon = 1;
+for vx=1:n
+    x = zeros(n,1);     % Set state at origin
+    x(vx) = epsilon;    % Set small perturbation of vx away from origin
+
+    % Compute J vectors
+    J = cell(n,1);
+    J{1} = x;                       % J0 in latex
+    J{2} = Amat * vecPower(x,k-1);  % J1 in latex
+    P = sparse(Amat);               % Tracks terms AB1B2B... in equation 6
+    for i=2:n
+        % getBp is equation 7 in overleaf document 
+        if i~=0
+            P = P * getBp(sparse(Amat), i, k);
+        else
+            P = sparse(Amat);               % Tracks terms AB1B2B... in equation 6
+        end
+        J{i} = P * vecPower(x, i*k-(2*i-1));  % Equation 6
+        % disp(i);                  % Outputs current progress of code
+    end
+
+end
+
+%% Old code
 % Symbolic vars
 x = sym('x_%d',[n 1]);      % Set symbolic state vector
 symVars = symvar(x);        % Get symbolic variables 
@@ -47,12 +63,15 @@ symVars = symvar(x);        % Get symbolic variables
 % This is the time computationally expensive part of the program
 J = cell(n,1);
 J{1} = x;                       % J0 in latex
-J{2} = Amat * vecPower(x,1);    % J1 in latex
-P = sparse(Amat);               % Tracks terms AB1B2B... in equation 6
+J{2} = Amat * vecPower(x,k-1);  % J1 in latex
 for i=2:n
     % getBp is equation 7 in overleaf document 
-    P = P * getBp(sparse(Amat), i, k);
-    J{i} = P * vecPower(x, i);  % Equation 6
+    if i~=1
+        P = P * getBp(sparse(Amat), i, k);
+    else
+        P = sparse(Amat);               % Tracks terms AB1B2B... in equation 6
+    end
+    J{i} = P * vecPower(x, i*k-(2*i-1));  % Equation 6
     % disp(i);                  % Outputs current progress of code
 end
 
@@ -92,4 +111,17 @@ end
 
 disp(OD);   % Display observability matrix
 disp(D);    % Display selected nodes
+
+%% 
+%{
+IM = [1 1;
+      1 0;
+      1 0;
+      0 1;
+      0 1];
+IM = [1 1 1;
+      1 1 0;
+      1 0 1;
+      0 1 1];
+%}
 

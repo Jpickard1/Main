@@ -5,7 +5,7 @@ function xk = vecPower(x, k)
 %       jpic@umich.edu
 % Date: February 14, 2023
     xk = x;
-    for i=1:k
+    for i=1:k-1
         xk = kron(xk, x);
     end
 end
