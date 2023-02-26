@@ -14,7 +14,7 @@
 %% Hypergraph constructor
 clear; close; clc;
 % TODO: Set form of k-uniform incidence matrix
-n = 5; k = 4;
+n = 4; k = 3;
 HG = hyperring(n, k);
 
 % Construct hypergraph
@@ -34,13 +34,14 @@ symVars = symvar(x);        % Get symbolic variables
 J = cell(n,1);
 J{1} = x;                       % J0 in latex
 J{2} = Amat * vecPower(x,k-1);  % J1 in latex
+P = sparse(Amat);               % Tracks terms AB1B2B... in equation 6
 for i=2:n
     % getBp is equation 7 in overleaf document 
-    if i~=1
+    % if i~=1
         P = P * getBp(sparse(Amat), i, k);
-    else
-        P = sparse(Amat);               % Tracks terms AB1B2B... in equation 6
-    end
+    % else
+    %     P = sparse(Amat);               % Tracks terms AB1B2B... in equation 6
+    % end
     J{i} = P * vecPower(x, i*k-(2*i-1));  % Equation 6
     % disp(i);                  % Outputs current progress of code
 end

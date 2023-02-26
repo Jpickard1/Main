@@ -1,4 +1,4 @@
-function P = ttvk(T,v)
+function pp = ttvk(T,v)
 %TTVK Summary of this function goes here
 %
 % Auth: Joshua Pickard
@@ -8,5 +8,7 @@ function P = ttvk(T,v)
     while ndims(P) > 1
         P = ttv(P,v,1);
     end
+    P = tenmat(P, 1);
+    pp = P(:);
 end
 

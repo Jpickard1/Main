@@ -17,7 +17,6 @@ for e=V-k+2:V
     IM([f b] ,e) = 1;
 end
 HG = Hypergraph('IM', sparse(IM));
-disp(IM)
 
 end
 
