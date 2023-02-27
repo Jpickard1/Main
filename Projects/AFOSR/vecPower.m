@@ -1,5 +1,9 @@
 function xk = vecPower(x, k)
-%VECPOWER  
+%VECPOWER This function performs kronecker exponentiaion on a vector.
+%
+%PARAMETERS
+%   x: vector
+%   k: power
 %
 % Auth: Joshua Pickard
 %       jpic@umich.edu

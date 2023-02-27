@@ -11,12 +11,42 @@
 %       jpic@umich.edu
 % Date: February 22, 2023
 
-maxN = 5;
-K = 3; %:5;
+clc; clear; close all;
+maxN = 4;
+K = 3:5;
+
+for n=4:maxN
+    % Set symbolic variables for HG with n vxc
+    x = sym('x_%d',[n 1]);      % Set symbolic state vector
+    symVec = sym('x_%d',[n 1]);      % Set symbolic state vector
+    % symVars = symvar(x);        % Get symbolic variables 
+    % for ki=1:length(K)
+    %     k = K(ki);
+    %     if k > n
+    %         continue;
+    %     end
+        i = 0;
+        while length(symVec) < 10000
+        % for i=0:n
+            if i~= 0
+                disp(i);
+                symVec = kronSymVec(symVec, x, i-1);
+            end
+            disp(length(symVec));
+            fileName = "symVecs/" + string(n) + "_" + string(length(symVec)) + ".mat";
+            cmd = "save " + fileName + " " + "symVec";
+            eval(cmd);
+            disp(i); i = i + 1;
+        end 
+    % end 
+end
+
+
+%% Pre 02/26/2023
 % symVectors = cell(maxN, 1);
 symVectors = containers.Map;
 
-for n=3:maxN
+for n=4:maxN
     % Set symbolic variables for HG with n vxc
     x = sym('x_%d',[n 1]);      % Set symbolic state vector
     symVars = symvar(x);        % Get symbolic variables 
@@ -37,7 +67,7 @@ for n=3:maxN
         disp(length(symVec));
         for i=3:n
             symVec = kronSymVec(symVec, x, k-1);
-            symVectorsN{i-1} = symVec;
+            % symVectorsN{i-1} = symVec;
             disp(length(symVec));
         end 
         
@@ -45,6 +75,8 @@ for n=3:maxN
     end 
     symVectors(string(n)) = symVectorsN;
 end 
+
+%% kronSymVec
 
 function symVec = kronSymVec(symVec, x, pow)
     n = length(x);
