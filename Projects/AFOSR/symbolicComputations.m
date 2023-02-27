@@ -14,8 +14,9 @@
 clc; clear; close all;
 maxN = 7;
 K = 3:5;
+maxSize = 1e5;
 
-for n=3:3
+for n=3:maxN
     % Set symbolic variables for HG with n vxc
     x = sym('x_%d',[n 1]);      % Set symbolic state vector
     symVec = sym('x_%d',[n 1]);      % Set symbolic state vector
@@ -26,7 +27,7 @@ for n=3:3
     %         continue;
     %     end
         i = 0;
-        while length(symVec) < 1000
+        while length(symVec) < maxSize
         % for i=0:n
             if i~= 0
                 disp(i);
