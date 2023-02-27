@@ -12,10 +12,10 @@
 % Date: February 22, 2023
 
 clc; clear; close all;
-maxN = 4;
+maxN = 7;
 K = 3:5;
 
-for n=4:maxN
+for n=3:3
     % Set symbolic variables for HG with n vxc
     x = sym('x_%d',[n 1]);      % Set symbolic state vector
     symVec = sym('x_%d',[n 1]);      % Set symbolic state vector
@@ -26,7 +26,7 @@ for n=4:maxN
     %         continue;
     %     end
         i = 0;
-        while length(symVec) < 10000
+        while length(symVec) < 1000
         % for i=0:n
             if i~= 0
                 disp(i);
