@@ -10,8 +10,9 @@
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: February 22, 2023
-function K = symbolicCalculations(n)
-    clc; clear; close all;
+function K = symbolicComputations(n)
+    disp(n)
+    % clc; clear; close all;
     % maxN = 7;
     K = 3:5;
     maxSize = 1e7;
@@ -24,26 +25,30 @@ function K = symbolicCalculations(n)
 
         % Get largest symbolic vector for n that has been precomputed
         i = 0;
-        maxSize = 0;
+        maxSizeP = 0;
         maxFile = "";
         for j=1:length(f)
             fName = f(j).name;
             % Check if this has been computed yet
             if startsWith(fName, string(n) + "_")
                 symSize = str2num(fName(3:end-4));
-                if symSize > maxSize
-                    i = 1;
-                    maxSize = symSize;
+                if symSize > maxSizeP
+                    i = log(symSize) / log(n);
+                    maxSizeP = symSize;
                     maxFile = fName;
                 end
             end
         end
         if i ~= 0
-            load(maxFile);
+	    disp("symVecs/" + string(maxFile));
+            load("symVecs/" + string(maxFile));
         else
             symVec = sym('x_%d',[n 1]);      % Set symbolic state vector
         end
-        while length(symVec) < maxSize
+        disp(length(symVec));
+	disp(maxSizeP);
+	disp(maxSize);
+	while length(symVec) < maxSize
             if i~= 0
                 disp(i);
                 symVec = kronSymVec(symVec, x, i-1);
