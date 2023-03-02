@@ -1,0 +1,16 @@
+\begin{tabular}{|c|c|c|}
+\hline 
+Drezner & Wang & Taylor\\ 
+\hline 
+\hline 
+11 & 11 & 1 \\ 
+\hline 
+8 & 1 & 14 \\ 
+\hline 
+1 & 18 & 18 \\ 
+\hline 
+7 & 8 & 11 \\ 
+\hline 
+6 & 10 & 15 \\ 
+\hline 
+\end{tabular}
