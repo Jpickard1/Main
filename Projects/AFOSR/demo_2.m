@@ -17,11 +17,11 @@
 
 %% Hypergraph constructor
 clear; close; clc;
-% TODO: Set form of k-uniform incidence matrix
+% TODO: Set parameters of k-uniform incidence matrix
 n = 4; k = 3;
-HG = hyperring(n, k);
 
 % Construct hypergraph
+HG = hyperring(n, k);
 A = HG.adjTensor;           % Adjacency tensor as multi-way array (i.e. not tensor toolbox)
 A = tensor(A);              % A tensor as tensor object
 
@@ -30,13 +30,13 @@ Amat = tenmat(A,1);         % Unfold A
 Amat = Amat(:,:);           % tensor -> matrix
 
 % Symbolic vars
-x = sym('x_%d',[n 1]);      % Set symbolic state vector
-symVars = symvar(x);        % Get symbolic variables 
+%x = sym('x_%d',[1000000 1]);      % Set symbolic state vector
+%symVars = symvar(x);        % Get symbolic variables 
 
 % Compute J vectors (equations 5 and 6 in overleaf document)
 % This is the time computationally expensive part of the program
 J = cell(n,1);
-J{1} = x;                       % J0 in latex
+J{1} = sym('x_%d',[n 1]);       % J0 in latex
 sVec = loadSymVecs(n, size(Amat,2));
 J{2} = Amat * sVec;             % J1 in latex
 P = sparse(Amat);               % Tracks terms AB1B2B... in equation 6
@@ -49,6 +49,7 @@ end
 
 % Compute observability matrices for all vertices
 O = cell(n,1);                  % Cell to hold observability matrices for all vertices
+symVars = symvar(sym('x_%d',[n 1]));  % Get symbolic variables 
 for vx=1:n
     Ci = zeros(1,n); Ci(vx) = 1;% Equation 9
     Oi = cell(n,1);             % Compute first equality in equation 10

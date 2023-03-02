@@ -1,12 +1,16 @@
+%% Cold Ends Recreation Driver
+%
+%   This experiment attempts to recreate the results 
+%
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: February 15, 2023
 
 % TODO: Set parameters for experiment
-numGroups = 10;
+numGroups = 5;
 % ds = 'Oddysey';
-ds = HG;
-trials = 1;
+ds = 'UER'; %HG;
+trials = 10;
 predict = true;
 
 O = cell(trials,1); predictions = cell(trials,1); labels=cell(trials,1)
@@ -21,7 +25,7 @@ if predict
     disp(AUC);
 end
 
-% Hypergraph Similarity
+%% Hypergraph Similarity
 S = cell(trials,1);
 for k=1:trials
     Ok = O{k};
