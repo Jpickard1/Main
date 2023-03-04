@@ -20,24 +20,21 @@ data = removevars(data,{'external_gene_name'});
 D = data{ia,:}';
 
 D(isnan(D)) = 0;
-
 [M, idxs] = HAT.multicorrelations(D, 3, 'Drezner');
 
-figure; histogram(M); xlabel('Multi-correlation'); ylabel('Number of Hyperedges');
+figure; histogram(M); xlabel('Multi-correlation'); ylabel('Number of Hyperedges'); title('KEGG Cell Cycle Multi-Correlations')
 
 %%
 
-thresh = 0.9;
-m = find(M >= thresh);       % Find idxs in M with value > thresh
+thresh = 0.998;
+m = find(M > thresh);       % Find idxs in M with value > thresh
 hyperedges = idxs(m, :);     % Sets of vertices with measures > thresh are extracted
 IM = HAT.hyperedges2IM(hyperedges);
 HG = Hypergraph('IM', IM);
 
-C = graph(full(HG.cliqueGraph()));
+C = graph(full(HG.cliqueGraph));
 disp(length(unique(conncomp(C))));
-figure; gplot(full(HG.cliqueGraph))
 
-C = full(HG.cliqueGraph());
-
-mm = find(M>=0);
+figure; plot(C, 'Layout', 'circle'); title('Clique Expanded Cell Cycle Graph');
+figure; HG.plot(); title('KEGG Cell Cycle Hypergraph'); xlabel('Hyperedges'); ylabel('Vertices');
 
