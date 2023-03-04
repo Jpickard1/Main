@@ -6,6 +6,114 @@
 %       jpic@umich.edu
 % Date: February 12, 2023
 
+%% 03/04/2023
+clear; close all; clc
+
+V = 5; k=3;
+HG = hyperring(V, k);
+A = HG.adjTensor;
+A = tensor(A);              % A tensor as tensor object
+
+% Unfold A
+Amat = tenmat(A,1);         % Unfold A
+Amat = Amat(:,:);           % tensor -> matrix
+
+p=4;
+
+% START: getp.m function
+n = size(Amat, 1);
+B = sparse(n^(p+1), size(Amat, 2) * n^(p+1));    % Set sparse matrix to return
+bound = (p-1)*k-(2*p-3);        % Compute upper bounds of loop
+for i=1:bound
+    if i==1
+        P = sparse(Amat);
+    else
+        P = sparse(eye(n,n));
+    end
+    for j=2:bound
+        if j ~= i
+            P = kron(P, eye(n,n));
+        else
+            P = kron(P, Amat);
+        end
+    end
+    if i~=1
+        B = B + P;
+    else
+        B = P;
+    end
+    disp("=====");
+    disp(rank(full(P)));
+    disp(rank(full(B)));
+end
+% END: getp.m function
+
+%% Kronecker sum for rank
+
+A = rand(V,V);
+B = rand(V,V);
+I = eye(V,V);
+
+kronSum = kron(A,I) + kron(I,B);
+rank(kronSum)
+
+
+%% 03/02/2023 - night
+clear; close all; clc
+
+n1 = 2;
+n2 = 3;
+p = 1;
+q = 2;
+
+A1 = sym('a_%d%d', [n1, n1]);
+A2 = sym('a_%d%d', [n2, n2]);
+C1 = sym('c_%d%d', [p, n1]);
+C2 = sym('c_%d%d', [q, n2]);
+Ak = kron(A1, A2);
+Ck = kron(C1, C2);
+
+O1 = obsvSym(A1, C1);
+O2 = obsvSym(A2, C2);
+Ok = obsvSym(Ak, Ck)
+
+
+%% 03/02/2023
+clear; close all; clc
+
+n1 = 5;
+n2 = 6;
+
+A1 = eye(n1);
+A2 = eye(n2);
+C1 = rand(2,n1);
+C2 = rand(2,n2);
+Ak = kron(A1, A2);
+Ck = kron(C1, C2);
+
+O1 = obsv(A1, C1);
+O2 = obsv(A2, C2);
+Ok = obsv(Ak,Ck);
+
+O12 = kron(O1,O2);
+
+CC = (Ok == O12);
+
+% Compare O12 and Ok
+for i=1:size(Ok,1)
+    rowi = Ok(i,:);
+    for j=1:size(O12,1)
+        rowj = O12(j,:);
+        if sum(rowi == rowj) == size(Ok,2)
+            disp(i)
+        end
+    end
+end
+
+
+
+
+
 %% 2/17-19/2023
 D = csvread('Copy_of_mouse 44_fed_fasted_refed traces.csv');
 [M, idxs] = HAT.multicorrelations(D, 3, 'Wang');
