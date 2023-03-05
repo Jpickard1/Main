@@ -6,10 +6,53 @@
 %       jpic@umich.edu
 % Date: February 12, 2023
 
+%% 03/05/2023 - Random calculations at Elises
+i = 0;
+F = [];
+while isempty(F)
+    n1 = randi([1,10],1);
+    n2 = randi([1,10],1);
+    A = rand(n1,n1,n1);
+    B = rand(n2,n2,n2);
+    C = rand(n1,1);
+    D = rand(n2,1);
+    
+    AC = tenmat(ttv(tensor(A),C,1),1); AC = AC(:,:);
+    BD = tenmat(ttv(tensor(B),D,1),1); BD = BD(:,:);
+    ACBD = kron(AC,BD);
+    
+    AB = superkron(A,B);
+    CD = kron(C,D);
+    ABCD = tenmat(ttv(tensor(AB), CD, 1), 1); ABCD= ABCD(:,:);
+    
+    % Check number of different values
+    F = find(((ABCD - ACBD) < 1e-10) == 0);
+    i = i + 1; disp(i);
+end
+
+
+%% 03/05/2023 - Symbolic calculations at Elises
+clear; close all; clc
+
+A = sym('a', [2,2,2]);
+B = sym('b', [2,2,2]);
+x = sym('x', [2, 1]);
+y = sym('y', [2, 1]);
+
+Ax = ttv(tensor(A),x,1);
+By = ttv(tensor(B),y,1);
+
+Axm = sym('x', size(Ax)); s1 = size(Ax); n1=s1(1); m1=s1(2);
+for i=1:n1; for j=1:m1; Axm(i,j) = Ax(i,j); end; end
+Bym = sym('x', size(By)); s2 = size(By); n2=s2(1); m2=s2(2);
+for i=1:n2; for j=1:m2; Bym(i,j) = By(i,j); end; end
+
+Om = kron(Axm,Bym)
+
 %% 03/04/2023
 clear; close all; clc
 
-V = 5; k=3;
+V = 10; k=3;
 HG = hyperring(V, k);
 A = HG.adjTensor;
 A = tensor(A);              % A tensor as tensor object
@@ -50,12 +93,31 @@ end
 
 %% Kronecker sum for rank
 
-A = rand(V,V);
-B = rand(V,V);
-I = eye(V,V);
+clear;
 
-kronSum = kron(A,I) + kron(I,B);
-rank(kronSum)
+V = 6;
+A = rand(V,2 * V);
+A(V,:) = A(1,:);
+
+Ak = kronSum(A,A);
+disp(rank(A));
+disp(rank(Ak));
+
+Iv = eye(V);
+S1 = kron(kron(kron(Iv,A), Iv), Iv); % rank = rA * n^3 = 625
+S2 = kron(kron(kron(Iv,Iv), A), Iv); % rank = rA * n^3 = 625
+S = S1 + S2;
+
+B = S1/S2;
+
+rank(S1)
+rank(S2)
+rank(S)
+
+% B = rand(V,V);
+% I = eye(V,V);
+% kronSum = kron(A,I) + kron(I,B);
+% rank(kronSum)
 
 
 %% 03/02/2023 - night
