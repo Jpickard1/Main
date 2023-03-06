@@ -6,6 +6,15 @@
 %       jpic@umich.edu
 % Date: February 12, 2023
 
+%% 03/06/2023 - Are LTI Systems observable up to a scaler output?
+
+clear
+
+A = rand(2,2);
+C = [1 0];
+
+lqe(A,zeros(size(A)),C,zeros(size(A)),ones([1 1]),zeros([2 1]))
+
 %% 03/05/2023 - Random calculations at Elises
 i = 0;
 F = [];
