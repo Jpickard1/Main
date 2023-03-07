@@ -11,10 +11,10 @@
 #SBATCH --account=indikar0
 #SBATCH --partition=standard
 #SBATCH --output=/nfs/turbo/umms-indikar/Joshua/%x-%j.log
-# SBATCH --array=3-7
+# SBATCH --array=3-12
 
 module load matlab
 
-matlab -nodisplay -r "symbolicComputations(7)"
+matlab -nodisplay -r "symbolicComputations($SLURM_ARRAY_TASK_ID)"
 
 
