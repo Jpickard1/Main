@@ -87,7 +87,7 @@ end
 clear; clc; close all;
 
 % TODO: Set params
-x = 1
+x = 1;
 while x<100
 x = x + 1;
 n1 = 4; % Size of A1
@@ -205,14 +205,29 @@ for t=2:T
 end
 systemOutput = C * X';
 
-% 3. FACTOR SYSTEM OUTPUT TO CONSTRUCT OUTPUTS FOR A1 AND A2
+%% 3. FACTOR SYSTEM OUTPUT TO CONSTRUCT OUTPUTS FOR A1 AND A2
 systemOutputReshaped = reshape(systemOutput, 2,2, T);
-pseudoA1output = zeros(n1, T);
-pseudoA2output = zeros(n2, T);
+pseudoA1output = zeros(p1, T);
+pseudoA2output = zeros(p2, T);
 for t=1:T
     sot = systemOutputReshaped(:,:,t);
-    
+    [U,S,V] = svd(sot);
+    pseudoA1output(:,t) = U(:,1);
+    pseudoA2output(:,t) = V(:,1);
+    % U(:,1) * (S(1,1)) * V(:,1)'; % + U(:,2) * (S(2,2)) * V(:,2)'
 end
+
+% Full state estimators for A1 and A2
+
+
+X1hat = fse(A1, C1, pseudoA1output, RNG);
+X2hat = fse(A2, C2, pseudoA2output, RNG);
+
+
+
+
+
+
 
 %%
 c = kroneckerObservable(A1,A2,C1,C2)
