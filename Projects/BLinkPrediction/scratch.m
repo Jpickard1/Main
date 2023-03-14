@@ -4,8 +4,35 @@
 %       jpic@umich.edu
 % Date: March 9, 2023
 
-%% Marck 10, 2023
+%% March 13, 2023
+%   Here I repeat the demo experiment from March 10, 2023 for multiple
+%   iterations to generate standard deviations for the performance of each
+%   method.
+clear; close all; clc
+pKnown = 0.7;
+itrs = 10;
+T = cell(itrs,1);
+for i=1:itrs
+    T{i} = scratchDemoExperiment(pKnown);
+end
 
+%% Code to add up standard deviations and means
+[nF, nB] = size(T{1});
+R = table();
+
+for f=1:nF
+    for b=1:nB
+        r = zeros(itrs,1);
+        for i=1:itrs
+            r(i) = T{i}{f,b};
+        end
+        R{f, 2 * b - 1} = mean(r);
+        R{f, 2 * b} = std(r);
+    end
+end
+    
+
+%% Marck 10, 2023
 
 %% Demo Experiment
 %   Here I partition the edge set into observed and (n) unobserved edges. I
@@ -38,7 +65,7 @@ F = {@adamicAdar_index, @commonNeighbors_index, @hubDepressed_index, @hubPromote
 
 % Load data
 load('C:\Users\picka\Documents\my_projects\DBTM\Main\Data\USAir\adjacency_matrix.mat')
-A = (A>0); A = real(A); n = size(A,1);
+A = A + A'; A = (A>0); A = real(A); n = size(A,1);
 A = A - tril(A);
 [vi, vj] = find(A == 1);
 E = [vi vj];                    % Get edge set
@@ -76,15 +103,81 @@ for bi=1:length(B)
 end
 disp(T)
 
-%% Chicago (118) and DTW (112) neighborhoods
-clear
-load('C:\Users\picka\Documents\my_projects\DBTM\Main\Data\USAir\adjacency_matrix.mat')
-A = (A>0); A = real(A); n = size(A,1);
-nc = find(A(118,:) == 1);
-nd = find(A(112,:) == 1);
+%% Airport Specific - OHare (118), DTW (112), Midway 123
 
-Ad = A(nd, nd);
-figure; plot(graph(Ad))
+clear; clc; close all;
+
+% TODO: Set parameters
+pKnown = 0.7;   % number of edges to observe
+prt = 126;
+
+load('C:\Users\picka\Documents\my_projects\DBTM\Main\Data\USAir\adjacency_matrix.mat')
+load('C:\Users\picka\Documents\my_projects\DBTM\Main\Data\USAir\nodeNames.mat')
+A = (A>0); A = real(A); n = size(A,1);
+A = A - tril(A);
+[vi, vj] = find(A == 1);  A = A + triu(A)';
+E = [vi vj];                    % Get edge set
+
+% 2. Remove edges
+E = E(randperm(size(E, 1)), :); % Randomly permute edge set
+Ek = E(1:round(size(E,1) * pKnown), :);
+Eu = E(round(size(E,1) * pKnown) + 1:end, :);
+
+% Get edges to predict
+Ec = nchoosek(1:n, 2);         % list all possible edges
+Ec = setdiff(Ec, E, 'rows');   % remove edges that already exist
+Ec = Ec(randperm(size(Ec, 1)), :);
+Ep = [Ec(1:size(Eu), :); Eu];
+
+% Set batch sizes
+B = [400 size(Eu, 1)];
+f = @commonNeighbors_index;
+Aout = cell(3,1); Aout{1} = A;
+for bi=1:length(B)
+    b = B(bi); disp(b);
+    % Impute edges
+    Ei = bpredict(n, Ek, size(Eu, 1), b, f, Ep);
+
+    % Construct network
+    E = [Ek; Ei];
+    % Atemp = real(E2A(n, E)); Atemp = real(logical(Atemp + Atemp'));
+    Aout{bi+1} = real(E2A(n, E));
+end
+
+nprt = find(A(prt,:) == 1);
+L = adj2deg(A) - A; [V, ~] = eig(L); cords = V(:,2:3);
+
+%% Vary airports
+close all;
+
+prts = 115:130;
+for pi=1:length(prts)
+    prt = prts(pi); nprt = find(A(prt,:) == 1); nprt = [nprt prt];
+
+    figure; subplot(2,2,1); title(airports{prt}); hold on;
+    G = graph(A(nprt, nprt)); h = plot(G);
+    h.NodeLabel = airports(nprt);
+    h.XData = cords(nprt,1); h.YData = cords(nprt,2);
+    
+    subplot(2,2,2); title('Unbserved'); hold on;
+    Ao = E2A(n,Ek); G = graph(Ao(nprt, nprt) - A(nprt, nprt)); h = plot(G);
+    h.NodeLabel = airports(nprt);
+    h.XData = cords(nprt,1); h.YData = cords(nprt,2);
+    
+    subplot(2,2,3); title('Imputed (b=400)'); hold on;
+    Ai = Aout{2} - Ao; G = graph(Ai(nprt, nprt)); h = plot(G);
+    h.NodeLabel = airports(nprt);
+    h.XData = cords(nprt,1); h.YData = cords(nprt,2);
+    
+    subplot(2,2,4); title('Imputed (b=638)'); hold on;
+    Ai = Aout{3} - Ao; G = graph(Ai(nprt, nprt)); h = plot(G);
+    h.NodeLabel = airports(nprt);
+    h.XData = cords(nprt,1); h.YData = cords(nprt,2);
+end
+
+
+% figure; plot(G); hold on; plot(G)
+
 
 
 %% March 9, 2023
