@@ -4,6 +4,48 @@
 %       jpic@umich.edu
 % Date: March 9, 2023
 
+
+
+%% March 14, 2023
+HAT.
+
+
+%% nat
+T = table();
+NatNat = cell(length(F), length(B));
+for bi=1:length(B)
+    b = B(bi);
+    disp(b);
+    bT = cell(length(F), 1);
+    for fi=1:length(F)
+        f = F{fi};
+        disp(f);
+        [Ei, EiNat] = bpredictNat(n, Ek, size(Eu, 1), b, f, Ep);
+        acc = (size(Eu, 1) - size(setdiff(Eu, Ei, 'rows'), 1)) / size(Eu, 1); % / size(Eu, 1);
+        T{fi, bi} = acc;
+        nat = [];
+        for i=1:length(EiNat)
+            rNat = (size(Eu, 1) - size(setdiff(Eu, EiNat{i}, 'rows'), 1)) / size(EiNat{i}, 1);
+            nat = [nat rNat];
+        end
+        NatNat{fi, bi} = nat;
+    end
+end
+disp(T)
+
+%%
+figure; title('ULTRA NAT'); hold on;
+% for fi=1:length(F)
+fi = 1;
+    for bi=1:length(B)
+        b = B(bi);
+        bb = b:b:size(Eu,1);
+        bb(end+1) = size(Eu,1);
+        nat = NatNat{fi, bi};
+        plot(bb, nat);
+    end
+% end
+
 %% March 13, 2023
 %   Here I repeat the demo experiment from March 10, 2023 for multiple
 %   iterations to generate standard deviations for the performance of each
@@ -103,6 +145,13 @@ for bi=1:length(B)
 end
 disp(T)
 
+%% Plot for Nat
+DD = T{:,:};
+figure; title('Nats Plot'); hold on;
+for i=1:8
+    r = DD(i,:);
+    plot(B, r);
+end
 %% Airport Specific - OHare (118), DTW (112), Midway 123
 
 clear; clc; close all;

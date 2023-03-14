@@ -1,4 +1,4 @@
-function [Ei] = bpredictNat(V, E, n, b, f, Ec)
+function [Ei, EiNat] = bpredict(V, E, n, b, f, Ec)
 %BPREDICT Batched link prediction
 %
 %   This function performs batched link prediction according to the
@@ -14,7 +14,7 @@ function [Ei] = bpredictNat(V, E, n, b, f, Ec)
 %
 % Auth: Joshua Pickard
 %       jpic@umich.edu
-% Date: March 14, 2023
+% Date: March 9, 2023
 
 if nargin == 5
     % Set possible edges to predict
@@ -26,7 +26,9 @@ Ek = E;
 
 [~, R] = rankCandidateLinks(V,E,f,Ec);
 i = 0;
+EiNat = cell(round(n/b),1);
 while i < n
+    EiNat{i/b+1} = Ec(R(1:b), :);
     % Update predicted edge set
     E = [E; Ec(R(1:b), :)];
     Ec(R(1:b), :) = [];
