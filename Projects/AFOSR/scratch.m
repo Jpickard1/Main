@@ -6,6 +6,33 @@
 %       jpic@umich.edu
 % Date: February 12, 2023
 
+%% 03/17/2023 - Tensor Eigenvectors
+clear
+
+T(:,:,1) = [1 2; 2 3]; T(:,:,2)= [2 3; 3 6];
+T = tensor(T)
+issymmetric(T)
+
+IM = [1 1 1;
+      1 1 0;
+      1 0 1;
+      0 1 1];
+k = 3;
+[n,e] = size(IM);
+HG = Hypergraph('IM', IM);  % Hypergraph object
+A = HG.adjTensor;           % Adjacency tensor as multi-way array (i.e. not tensor toolbox)
+A = tensor(A);   
+
+[l, v] = heig(A)
+
+A = tensor(A);   
+A11 = ttv(A, v(:,1), 1)
+A12 = ttv(A11, v(:,1), 1)
+
+A21 = ttv(A, v(:,2), 1)
+A22 = ttv(A21, v(:,2), 1)
+
+
 %% 03/06/2023 - Are LTI Systems observable up to a scaler output?
 
 clear
