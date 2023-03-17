@@ -16,7 +16,9 @@ Amat = tenmat(A,1);         % Unfold A
 Amat = Amat(:,:);           % tensor -> matrix
 
 % Compute J vectors (equations 5 and 6 in overleaf document)
-% This is the time computationally expensive part of the program
+%   To improve the time efficiency of this, the large symbolic calculations
+%   have been precomputed and saved to files in the symVecs folder. These 
+%   are loaded with the loadSymVecs function.
 J = cell(n,1);
 J{1} = sym('x_%d',[n 1]);       % J0 in latex
 sVec = loadSymVecs(n, size(Amat,2));

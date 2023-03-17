@@ -7,6 +7,12 @@ function [HG] = hyperring(V, k)
 %       jpic@umich.edu
 % Date: February 20, 2023
 
+if V == k
+    IM = ones(V,1);
+    HG = Hypergraph('IM', sparse(IM));
+    return
+end
+
 IM = zeros(V, V);
 for e=1:V-k+1
     IM(e:e+k-1, e) = 1;
