@@ -15,7 +15,7 @@ C = [1 0];
 
 lqe(A,zeros(size(A)),C,zeros(size(A)),ones([1 1]),zeros([2 1]))
 
-%% 03/05/2023 - Random calculations at Elises
+%% 03/05/2023 - Random calculations to verify kron ttv kron == ttv kron ttv
 i = 0;
 F = [];
 while isempty(F)
@@ -39,6 +39,9 @@ while isempty(F)
     i = i + 1; disp(i);
 end
 
+% Final Output
+%
+% >> 3286156
 
 %% 03/05/2023 - Symbolic calculations at Elises
 clear; close all; clc

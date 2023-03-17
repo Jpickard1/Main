@@ -53,7 +53,7 @@ systemOutput = lambda * C * X';
 
 % FULL STATE OBSERVER
 % Kf = lqe(A,zeros(size(A)),C,zeros(size(A)),ones([1 1]),zeros([2 1]));
-Kf = (lqr(A',C',eye(size(A)),eye([1 1])))'
+Kf = (lqr(A',C',eye(size(A)),eye([1 1])))';
 Xhat = zeros(T,2);
 Xhat(1,:) = RNG * rand(2,1);
 systemOutputHat = zeros(size(systemOutput));
@@ -87,7 +87,7 @@ end
 clear; clc; close all;
 
 % TODO: Set params
-x = 1
+x = 1;
 while x<100
 x = x + 1;
 n1 = 4; % Size of A1
@@ -161,7 +161,7 @@ C = kron(C1, C2);
 c = rank(ctrb(A,B))
 o = rank(obsv(A,C))
 
-%% Full State Estimator for Kronecker Observed Hypergraphs
+%% Full State Estimator for Kronecker Observed Hypergraphs Try - 1
 %
 %   Here I try and design a Leunberg observer for observable Kronecker
 %   graphs
@@ -197,22 +197,48 @@ while O > 0
     end
 end
 
-% 2. SYSTEM MODEL
+%% 2. SYSTEM MODEL
 X = zeros(T,n1*n2);
-X(1,:) = RNG * rand(n1*n2,1);
+X0a1 = RNG * rand(n1,1);
+X0a2 = RNG * rand(n2,1);
+X(1,:) = kron(X0a1, X0a2);
+% X(1,:) = RNG * rand(n1*n2,1);
 for t=2:T
     X(t,:) = X(t-1,:)' + A * X(t-1,:)';
 end
 systemOutput = C * X';
 
-% 3. FACTOR SYSTEM OUTPUT TO CONSTRUCT OUTPUTS FOR A1 AND A2
+%% 3. FACTOR SYSTEM OUTPUT TO CONSTRUCT OUTPUTS FOR A1 AND A2
 systemOutputReshaped = reshape(systemOutput, 2,2, T);
-pseudoA1output = zeros(n1, T);
-pseudoA2output = zeros(n2, T);
+pseudoA1output1 = zeros(p1, T); % Each subsystem gets multiple outputs because SVD has multiple singular vectors
+pseudoA2output1 = zeros(p2, T);
+pseudoA1output2 = zeros(p1, T);
+pseudoA2output2 = zeros(p2, T);
 for t=1:T
     sot = systemOutputReshaped(:,:,t);
-    
+    [U,S,V] = svd(sot);
+    pseudoA1output1(:,t) = U(:,1);
+    pseudoA2output1(:,t) = V(:,1);
+    pseudoA1output2(:,t) = U(:,2);
+    pseudoA2output2(:,t) = V(:,2);
+    % U(:,1) * (S(1,1)) * V(:,1)'; % + U(:,2) * (S(2,2)) * V(:,2)'
 end
+
+% Full state estimators for A1 and A2
+X1hat1 = fse(A1, C1, pseudoA1output1, RNG);
+X2hat1 = fse(A2, C2, pseudoA2output1, RNG);
+X1hat2 = fse(A1, C1, pseudoA1output2, RNG);
+X2hat2 = fse(A2, C2, pseudoA2output2, RNG);
+
+Xhat = 
+
+%% 4. Plot all 16 trajectories
+
+
+
+
+
+
 
 %%
 c = kroneckerObservable(A1,A2,C1,C2)
