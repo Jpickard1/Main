@@ -7,6 +7,37 @@
 % Date: February 12, 2023
 
 %% 03/17/2023 - Tensor Eigenvectors
+%   Compute gradients numerically
+n = 7;
+k = 3;
+HG = hyperstar(n,k);
+x = rand(n,1); % x(n) = 0;
+% x = zeros(n,1); x(1) = 1;
+O = getObservabilityMatricesNumeric(HG,x)
+
+for i=1:n
+    disp(rank(O{i}));
+end
+
+HG.plot()
+
+%% How long would it take to make a 500 million vector from kron product of
+% size [5, 1] vector? About 1 minute
+clear;
+s = 5000000000;
+tic;
+x0 = rand(5,1);
+x = x0;
+while numel(x) < s
+    x = kron(x,x0);
+    disp(numel(x));
+end
+time = toc;
+disp(time);
+
+%% 
+HAT.ctrbk
+
 clear
 
 T(:,:,1) = [1 2; 2 3]; T(:,:,2)= [2 3; 3 6];
