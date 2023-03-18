@@ -17,6 +17,9 @@
 
 function toy_hypergraphs(tiArr)
 
+addpath(genpath('/nfs/turbo/umms-indikar/Joshua/tensor_toolbox/'))
+addpath(genpath('/nfs/turbo/umms-indikar/Joshua/Hypergraph-Analysis-Toolbox/'))
+
 % Set of possible parameters
 N=3:6;
 K=3:5;

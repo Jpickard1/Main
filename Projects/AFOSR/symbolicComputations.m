@@ -12,7 +12,7 @@
 % Date: February 22, 2023
 function symbolicComputations(n)
     disp(n)
-    maxSize = 1e10;
+    maxSize = 1e15;
     
     f = dir(fullfile('symVecs', '*.mat'));
 
