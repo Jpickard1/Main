@@ -44,7 +44,7 @@ for ki=1:length(K)
 
             % Experiment
             HG = getToyHG(n,k,t);               % Get hypergraph
-            O = getObservabilityMatrices(HG);   % Compute individual observability matrices
+            O = getObservabilityMatricesNumeric(HG, rand(n,1));   % Compute individual observability matrices
             [D, ~] = greedyMON(O, n);             % Greedy Node Selection
 
             T = r(t);
