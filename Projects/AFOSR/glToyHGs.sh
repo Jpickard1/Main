@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=toyHGs
+#SBATCH --job-name=lmToyHGs
 #SBATCH --mail-user=jpic@umich.edu
 #SBATCH --mail-type=BEGIN,END
 #SBATCH --cpus-per-task=1
@@ -9,7 +9,7 @@
 #SBATCH --mem=50GB 
 #SBATCH --time=96:00:00
 #SBATCH --account=indikar0
-#SBATCH --partition=standard
+#SBATCH --partition=largemem
 #SBATCH --output=/nfs/turbo/umms-indikar/Joshua/%x-%j.log
 #SBATCH --array=1-3
 
