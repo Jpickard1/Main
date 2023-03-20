@@ -19,7 +19,7 @@
 %                       numerically, up to 100 iterations. I made a new
 %                       file, toy_hypergraphs_sym.m that performs the
 %                       symbolic calculations.
-function toy_hypergraphs(tiArr)
+function toy_hypergraphs_sym(tiArr)
 % %% Debug
 % tiArr = 3;
 maxItr = 100;
@@ -56,19 +56,9 @@ for ki=1:length(K)
 
             % Experiment
             HG = getToyHG(n,k,t)               % Get hypergraph
-            for itr=1:maxItr
-                x = rand(n,1);
-                O = HGObsvNum(HG, x);
-                [d, ~] = greedyMON(O, n);
-                dStr = strjoin(string(d), ' ');
-                if itr==1; D = dStr;
-                elseif ~contains(D, dStr)
-                    D = D + "/" + dStr;
-                end
-            end
-            % O = HGObsvNum(HG, rand(n,1));
+            O = HGObsvSym(HG);
             % O = getObservabilityMatricesNumeric(HG, rand(n,1));   % Compute individual observability matrices
-            % [D, ~] = greedyMON(O, n);             % Greedy Node Selection
+            [D, ~] = greedyMON(O, n);             % Greedy Node Selection
 
             T = r(t);
             T{ki, ni} = {D};

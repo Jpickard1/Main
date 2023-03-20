@@ -9,10 +9,10 @@ function [O] = HGObsvSym(HG)
 n = size(HG.IM,1);
 
 % Compute Jp vectors
-Jp = cell(n,1);
+J = cell(n,1);
 for i=n:-1:1
     disp(i)
-    Jp{i} = JpSym(HG, i); %, rand(n,1))
+    J{i} = Jp(HG, i);
 end
 
 % Compute observability matrices for all vertices
@@ -22,7 +22,7 @@ for vx=1:n
     Ci = zeros(1,n); Ci(vx) = 1;% Equation 9
     Oi = cell(n,1);             % Compute first equality in equation 10
     for i=1:n
-        Oi{i} = Ci * Jp{i};      % Compute first equality in equation 10
+        Oi{i} = Ci * J{i};      % Compute first equality in equation 10
     end
     Oimat = sym([n,n]);         
     for i=1:n                   % Set symbolic matrix to save equation 10 for vertex vx
