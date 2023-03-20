@@ -32,7 +32,7 @@ rngs = [1 1508;
 
 Ot = cell(size(D,1),1);
 Dt = cell(size(D,1),1);
-for t=rngs(tiArr, 1):rng(tiArr,2)
+for t=rngs(tiArr, 1):rngs(tiArr,2)
     O = HGObsvNum(HG, D(t,:)');
     [d, ~] = greedyMON(O, n);
     Ot{t} = O;
