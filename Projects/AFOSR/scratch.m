@@ -8,8 +8,8 @@
 
 %% 03/19/2023 - Recursive strategy to computing derivatives of hypergraph dynamics
 clear
-n = 10;
-k = 5;
+n = 5;
+k = 3;
 HG = hyperring(n,k); disp(full(HG.IM))
 x = rand(n,1);
 
