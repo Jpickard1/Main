@@ -20,12 +20,12 @@
 %                       file, toy_hypergraphs_sym.m that performs the
 %                       symbolic calculations.
 function toy_hypergraphs(tiArr)
-% %% Debug
-% tiArr = 3;
-maxItr = 100;
-
 addpath(genpath('/nfs/turbo/umms-indikar/Joshua/tensor_toolbox/'))
 addpath(genpath('/nfs/turbo/umms-indikar/Joshua/Hypergraph-Analysis-Toolbox/'))
+
+%% Debug
+tiArr = 1;
+maxItr = 1; %00;
 
 % Set of possible parameters
 N=3:8; colNames = cell(length(N), 1); for i=1:length(N); colNames{i} = char(string(N(i))); end
@@ -57,7 +57,7 @@ for ki=1:length(K)
             % Experiment
             HG = getToyHG(n,k,t)               % Get hypergraph
             for itr=1:maxItr
-                x = rand(n,1);
+                x = zeros(n,1);
                 O = HGObsvNum(HG, x);
                 [d, ~] = greedyMON(O, n);
                 dStr = strjoin(string(d), ' ');
@@ -79,13 +79,17 @@ for ki=1:length(K)
 
             fileName = "toyHG/" + string(t) + ".mat";
             cmd = "save " + fileName + " " + "r -v7.3";
-            eval(cmd);
+            % eval(cmd);
             disp(cmd);
 
         % end
     end
 end
 disp(toc);
+
+disp(r(t))
+
+%%
 
 end
 
