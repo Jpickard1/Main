@@ -2,6 +2,13 @@ function [D, OD] = greedyMON(O, n)
 %GREEDYMON This function performs greedy node selection to get a set of
 %   minimal observable nodes.
 %
+%   PARAMETERS:
+%       - O: Observability matrices of individual vertices
+%       - n: number of vertices
+%   RETURNS:
+%       - D: set of oberverd vertices
+%       - OD: observability matrix
+%
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: March 3, 2023

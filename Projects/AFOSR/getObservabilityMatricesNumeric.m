@@ -21,9 +21,10 @@ M{1} = eye(n);
 M{2} = Amat;
 for i=3:n
     M{i} = M{i-1} * getBp(sparse(Amat), i-1, k);
+    getSize(M{i});
 end
 
-% Calculate numerical tradient
+% Calculate numerical gradient
 % Comment out: x = rand(n,1)
 Mx = cell(n,1);
 for i=1:n
