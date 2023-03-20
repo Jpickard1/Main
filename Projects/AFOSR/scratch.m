@@ -6,6 +6,59 @@
 %       jpic@umich.edu
 % Date: February 12, 2023
 
+%% 03/19/2023 - Recursive strategy to computing derivatives of hypergraph dynamics
+clear
+n = 10;
+k = 5;
+HG = hyperring(n,k); disp(full(HG.IM))
+x = rand(n,1);
+
+A = HG.adjTensor;           % Adjacency tensor as multi-way array (i.e. not tensor toolbox)
+A = tensor(A);              % A tensor as tensor object
+Amat = tenmat(A,1);         % Unfold A
+Amat = Amat(:,:);           % tensor -> matrix
+
+maxP = n;
+p = maxP;
+b = (p-1)*k-(2*p-1);
+S = cell(b, 1);
+x = sym('x_%d',[n 1]);         % Symbolic state vector
+for i=1:b
+    ss = zeros(n, b);
+    S{i} = repmat(x, 1, b);
+end
+
+for p=maxP-1:-1:2   % Loop over Bp Bp-1 ... B3 B2 A
+    b = (p-1)*k-(2*p-1);
+    Snew = cell(b,1);
+    for i=1:b   % Loop over Si
+        ss = sym('x', [n, b]);
+        offset = 0;
+        for j=1:b
+            if j ~= i
+                ss(:,j) = S{i}(:,j+offset);
+            else
+                xx = S{i}(:,j);
+                offset = k-2;
+                for l=1:k-2
+                    xx = kron(xx, S{i}(:,j+l));
+                end
+                ss(:,j) = Amat * xx;
+            end
+            disp("        " + string(j));
+        end
+        Snew{i} = ss;
+        disp("    " + string(i));
+    end
+    S = Snew;
+    disp(p);
+end
+
+
+
+
+%% 03/18/2023 - Numerically computing derivatives with small memory
+
 %% 03/17/2023 - Tensor Eigenvectors
 %   Compute gradients numerically
 n = 7;

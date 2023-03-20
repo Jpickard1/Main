@@ -21,6 +21,7 @@ M{1} = eye(n);
 M{2} = Amat;
 for i=3:n
     M{i} = M{i-1} * getBp(sparse(Amat), i-1, k);
+    getSize(M{i});
 end
 
 % Calculate numerical tradient
