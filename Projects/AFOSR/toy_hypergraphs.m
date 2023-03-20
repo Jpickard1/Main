@@ -18,7 +18,7 @@
 function toy_hypergraphs(tiArr)
 % %% Debug
 % tiArr = 3;
-maxItr = 25;
+maxItr = 100;
 
 addpath(genpath('/nfs/turbo/umms-indikar/Joshua/tensor_toolbox/'))
 addpath(genpath('/nfs/turbo/umms-indikar/Joshua/Hypergraph-Analysis-Toolbox/'))

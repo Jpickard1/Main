@@ -15,6 +15,6 @@
 
 module load matlab
 
-matlab -nodisplay -r "mouseHG($SLURM_ARRAY_TASK_ID)"
+matlab -nodisplay -r "mouseHGparfor($SLURM_ARRAY_TASK_ID)"
 
 
