@@ -66,7 +66,8 @@ k = 3;
 HG = hyperstar(n,k);
 x = rand(n,1); % x(n) = 0;
 % x = zeros(n,1); x(1) = 1;
-O = getObservabilityMatricesNumeric(HG,x)
+% O = getObservabilityMatricesNumeric(HG,x)
+O = getObservabilityMatrices(HG)
 
 for i=1:n
     disp(rank(O{i}));
