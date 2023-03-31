@@ -28,13 +28,8 @@ symVars = symvar(sym('x',[n 1]));  % Get symbolic variables
 for vx=1:n
     disp(vx);
     Ci = zeros(1,n); Ci(vx) = 1;% Equation 9
-<<<<<<< HEAD
-    Oi = cell(n,1);             % Compute first equality in equation 10
-    for i=1:7
-=======
     Oi = cell(n+1,1);             % Compute first equality in equation 10
     for i=1:n+1
->>>>>>> 375fc33b585ad5ffa722a885beecbcca759621b2
         Oi{i} = Ci * J{i};      % Compute first equality in equation 10
     end
     Oimat = sym([n+1,n]);         % + 1 added since we need 0,...,n
