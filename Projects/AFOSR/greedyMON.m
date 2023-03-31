@@ -18,11 +18,11 @@ S = 1:n;                                    % Unobserved vertices
 D = [];                                     % Observed vertices
 OD = [];                                    % Observability Matrix
 while rank(OD) < n
-    deltaS = zeros(length(S),1);              % Vector to store all changes in rank
+    deltaS = zeros(length(S),1);            % Vector to store all changes in rank
     for i=1:length(S)                       % Try all vertices in S
         vx = S(i);                          % Get vertex
         ODS = [OD; O{vx}];                  % Set possible new observabliity matrix
-        deltaS(i) = rank(ODS) - rank(OD);      % Compute improved rank for vx
+        deltaS(i) = rank(ODS) - rank(OD);   % Compute improved rank for vx
     end
     [~, vx] = max(deltaS);                  % Greedy selection of vertex
     D = [D S(vx)];                          % Add new vertex to observe
