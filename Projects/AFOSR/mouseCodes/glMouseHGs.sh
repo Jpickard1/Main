@@ -15,6 +15,6 @@
 
 module load matlab
 
-matlab -nodisplay -r "mouseCodes/scratch2($SLURM_ARRAY_TASK_ID)"
+matlab -nodisplay -r "scratch2($SLURM_ARRAY_TASK_ID)"
 
 
