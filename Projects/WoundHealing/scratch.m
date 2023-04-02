@@ -5,6 +5,33 @@
 % Date: March 28, 2023
 
 
+%% Satureday 04/01/2023
+clear; close all; clc;
+v = VideoReader('2023-03-24-triangle-stitched.avi');
+f = read(v,1);
+img = f;
+
+v.NumFrames
+
+% F = kron(f, ones(e,e));
+e=4;
+D = rgb2gray(f); D = double(D); D = kron(D, ones(e,e));
+figure; imagesc(D); hold on;
+
+BW = edge(D)
+
+Dt = (D > 0.3 * mean(mean(f)));
+
+figure; imagesc(f); hold on;
+[x, y] = find(Dt == 0);
+sc = scatter(y, x, '.');
+
+figure; imagesc(f)
+
+
+
+
+%% Tuesday 
 % vidObj = VideoReader('youtubeWoundClip.mp4', 'CurrentTime',1.2);
 
 imdata = imread('Screenshot 2023-03-28 164047.jpeg');
