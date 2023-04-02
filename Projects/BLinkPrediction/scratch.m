@@ -6,9 +6,40 @@
 
 
 
-%% March 14, 2023
-HAT.
+%% March 26, 2023
+%   Here I repeat the demo experiment from March 10, 2023 for multiple
+%   iterations to generate standard deviations for the performance of each
+%   method.
+clear; close all; clc
+pKnown = 0.7;
+itrs = 10;
+T = cell(itrs,1);
+for i=1:itrs
+    T{i} = scratchPrelimExperiment2(pKnown);
+end
 
+% consolidate to a single table
+M = table()
+S = table()
+for r=1:4
+    for c=1:3
+        V = [];
+        for itr=1:itrs
+            t = T{itr};
+            V = [V t{r, c}];
+        end
+        M{r,c} = mean(V);
+        S{r,c} = std(V);
+    end
+end
+disp('DONE');
+disp(M)
+disp(S)
+
+%%
+T.Properties.RowNames = ["Adamic Adar", "Common Neighbors", "Jaccard Index", "Leicht-Holme-Newman"];
+T.Properties.VariableNames = ["Most Exploration", "Best Preformance", "No Exploration"];
+disp(T)
 
 %% nat
 T = table();
