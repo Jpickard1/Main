@@ -1,0 +1,4 @@
+#run on local machine, connect to VPN and mount drive...
+rsync -P -e ssh /volumes/internal_4DN/users/walter/2020/MR31-IR-M-FUCCI-Quiescence/2020-07-MR31-14to15to16to17-IR-M-FUCCI-2ndQUIESCENCE/2020-07-15/extract-Scene-2-MR31-07-15to16-jpegxr.czi spmoran@greatlakes.arc-ts.umich.edu:/home/spmoran/indikar/temp-sean/
+
+
