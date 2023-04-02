@@ -2,5 +2,6 @@
 *.asv
 *.tex
 *.mat
+*.avi
 Data/Hafiz_ICASSP_HiC_RNAseq_data.zip
 Data/Hafiz_ICASSP_HiC_RNAseq_data/*
