@@ -1,0 +1,25 @@
+
+
+##########################################################################
+##
+##  Polymer Simulations of Heteromorphic Chromatin Predict the 3-D 
+##  Folding of Complex Genomic Loci
+##
+##  Adam Buckle, Chris A Brackley, Shelagh Boyle, Davide Marenduzzo,
+##  and Nick Gilbert
+##
+##########################################################################
+
+
+### HiP-HoP simulations of Pax6 : full set of conformations ###############
+
+A set of 200 simulated conformations is given for each of the three cell 
+types Pax6-OFF, Pax6-ON and Pax6-HIGH as detailed in the paper.
+
+Conformations are given in the LAMMPS dump file format 
+(see https://lammps.sandia.gov/), which can, for example, be imported 
+directly by the molecular graphics software VMD 
+(https://www.ks.uiuc.edu/Research/vmd/).
+
+Atom IDs 1-5000 are chromatin beads. Other atoms are TFs.
+

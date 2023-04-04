@@ -1,0 +1,91 @@
+
+
+##########################################################################
+##
+##  Polymer Simulations of Heteromorphic Chromatin Predict the 3-D 
+##  Folding of Complex Genomic Loci
+##
+##  Adam Buckle, Chris A Brackley, Shelagh Boyle, Davide Marenduzzo,
+##  and Nick Gilbert
+##
+##########################################################################
+
+This directory contains an example set of input files and program scripts
+to run a HiP-HoP simulation.
+
+The simulations are performed using the LAMMPS software is available at:
+https://lammps.sandia.gov/
+and have been tested using the latest version of LAMMPS at time of publication 
+which is 22Aug18.
+
+In addition to standard LAMMPS features, a custom bond interaction potential 
+is used for loop extrusion springs, as detailed in the Methods section of the
+paper. Source code for this is provided here in 'bond_harmlj.cpp' and 
+'bond_harmlj.h', and this should be copied into the LAMMP src/ directory prior 
+to compilation. 
+
+LAMMPS is run as a library which is called from a python 2.7 script 
+'run_simulation.py'. LAMMPS should therefore be compiled as a library, the 
+library files should be on the system path (or copied into the working 
+directory), as should the 'lammps.py' file provided as part of LAMMPS (in the 
+python/ directory).
+
+The script is run with the following command
+
+    python run_simulation.py -n 1
+
+where the number indicates which set of initial conditions are used. For 
+Fig. 4 each set of data is from 10 independent simulations, each of which use
+a different initial condition.
+
+The other files and directories are as follows :
+
+run_random_extruders.py			  Main python script to run simulations
+
+lammps.py				  Python code file for the lammps 
+					  library.
+
+in.initial				  Lammps input script.
+
+inputs					  Directory contain a set of 10 lammps
+					  input data files. Each contains an 
+					  equilibrated initial condition with 
+					  bead types chosen to fit the input 
+					  data (in this example this is for 
+					  Pax6-HIGH cells).
+
+bead_list.dat				  File listing chromatin beads, which 
+					  region of the genome the correspond 
+					  to, and whether they overlap a 
+					  ATAC-seq peak or H3K27ac marked 
+					  region.
+
+bead_types.dat				  File listing the bead types used in 
+					  the simulation.
+
+list_of_extra_springs.dat		  File listing the addition springs 
+					  used to generate the heteromorphic 
+					  polymer. Extra spring bonds are added
+					  between any i,i+2 bead where none of 
+					  i,i+1 and i+2 over lap a H3K27ac mark.
+
+list_of_CTCF_beads.dat			  Plain text list of CTCF positions 
+					  (bead numbers) and their motif 
+					  orientation (can be +, - or +-, where
+					  the latter means a bead contains a 
+					  CTCF motif on both strands)
+
+setCTCFscores.py			  Input file for CTCF site positions, 
+					  motif orientations, and a "score" 
+					  obtained from the peak height in the 
+					  CTCF ChIP data used as input. The 
+					  score has been converted to a 
+					  probability that a CTCF site is set 
+					  to be present in a given simulation.
+
+seed.1					  File containing a seed for the random
+					  number generators. One file is given 
+					  here. A different seed should be used 
+					  for each independent simulation, and 
+					  different seeds for the lammps 
+					  integrator and the extruders.
