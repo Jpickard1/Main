@@ -24,20 +24,6 @@ if p == k - 2
     end
     Jp = Amat * xx;
     return
-    %{
-    for i=1:length(S)
-        si = S{i};
-        r = si{1};
-        for j=2:length(si)
-            r = kron(r, si{j});
-        end
-        if i ~= 1
-            Jp = Jp + Amat * r;
-        else
-            Jp = Amat * r;
-        end
-    end
-    %}
 end
 
 % Recursive case
@@ -46,8 +32,8 @@ end
 b = (p-1)*k-(2*p-3);
 disp(b);
 Snew = cell(b, 1);
-for j=1:length(Snew)    
-    ss = sym('x', [n, b]);
+for j=1:length(Snew)
+    ss = sym('x_%d', [n, b]);
     offset = 0;
     for i=1:b
         if i ~= j

@@ -4,7 +4,35 @@
 %       jpic@umich.edu
 % Date: March 31, 2023
 
+%% Hamming Hypergraph Similarity Measure
+clear; clc;
+a = rand(3,3,3);
+b = rand(3,3,3);
+c = rand(3,3,3);
+d = rand(3,3,3);
+
+sum(sum(sum(a)))*sum(sum(sum(b)))
+sum(sum(sum(superkron(a,b))))
+
+
+sum(sum(sum(a)));
+sum(sum(sum(d)));
+sum(sum(sum(d)));
+
+%% Reshaping sum of 2 tensors vs sum of 2 reshaped tensors
+X = rand(3,3,3);
+D = rand(3,3,3);
+XD = X + D;
+
+xdk = reshape(XD, 3, 9)
+x = reshape(X, 3, 9); d = reshape(D, 3, 9);
+xd = x + d;
+
+xdk == xd
+
 %% Entropy of kronecker graph
+% It seems that the entropy of a hypergraph is not bound by either the sum
+% or the product of the entropy of its kronecker factors
 clear; clc;
 itrs = 10000;
 for i=1:itrs
