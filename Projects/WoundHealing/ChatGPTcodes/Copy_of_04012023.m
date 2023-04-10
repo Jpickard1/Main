@@ -21,7 +21,7 @@ for fi=1:length(E)
     s.SizeData = 100;
     hold off;
     % pause(0.05)
-
+    
     F{fi} = getframe(gcf);
     % writeVideo(v2, gcf);
 end
