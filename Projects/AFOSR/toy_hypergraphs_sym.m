@@ -19,6 +19,11 @@
 %                       numerically, up to 100 iterations. I made a new
 %                       file, toy_hypergraphs_sym.m that performs the
 %                       symbolic calculations.
+% MOD: March 22, 2023 - The symbolic computations for n=8 are going too
+%                       slow to have nice results by Friday, so I reduced
+%                       the bounds to n=6, changed the output file name,
+%                       and I am rerunning this job
+
 function toy_hypergraphs_sym(tiArr)
 % %% Debug
 % tiArr = 3;
@@ -28,8 +33,8 @@ addpath(genpath('/nfs/turbo/umms-indikar/Joshua/tensor_toolbox/'))
 addpath(genpath('/nfs/turbo/umms-indikar/Joshua/Hypergraph-Analysis-Toolbox/'))
 
 % Set of possible parameters
-N=3:8; colNames = cell(length(N), 1); for i=1:length(N); colNames{i} = char(string(N(i))); end
-K=2:7;
+N=3:6; colNames = cell(length(N), 1); for i=1:length(N); colNames{i} = char(string(N(i))); end
+K=5:7;
 type = ["hyperring", "hyperchain", "hyperstar"];
 
 r = containers.Map;
@@ -67,7 +72,7 @@ for ki=1:length(K)
             % Save result
             disp(D);
 
-            fileName = "toyHG/" + string(t) + ".mat";
+            fileName = "toyHG/" + string(t) + "_sym_2.mat";
             cmd = "save " + fileName + " " + "r -v7.3";
             eval(cmd);
             disp(cmd);

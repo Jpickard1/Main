@@ -10,11 +10,11 @@
 #SBATCH --time=96:00:00
 #SBATCH --account=indikar0
 #SBATCH --partition=standard
-#SBATCH --output=/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/mouseHG/%x-%j.log
+#SBATCH --output=/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/mouseCodes/%x-%j.log
 #SBATCH --array=1-3
 
 module load matlab
 
-matlab -nodisplay -r "mouseHGparfor($SLURM_ARRAY_TASK_ID)"
+matlab -nodisplay -r "mouseCodes/scratch2($SLURM_ARRAY_TASK_ID)"
 
 

@@ -6,6 +6,15 @@
 %       jpic@umich.edu
 % Date: February 12, 2023
 
+%% 03/22/2023 - Verify toy hypergraphs are constructed correctly
+
+for n=3:7
+    for k=2:n
+        HG = hyperstar(n, k);
+        figure; HG.plot(); title("Hyperstar, n=" + string(n) + ",k=" + string(k));
+    end
+end
+
 %% 03/19/2023 - Recursive strategy to computing derivatives of hypergraph dynamics
 clear
 n = 5;

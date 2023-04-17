@@ -29,14 +29,20 @@ for i=1:itrs
     f = maxX / max(x); x = x .* f; y = y .* f;
     shift = (1.2 * maxX * (i - 1)); disp(shift);
     x = x + shift;
-    scatter(x, y, '.b'); set ( gca, 'xdir', 'reverse' ); % xlim([0 maxX]); ylim([0 maxY]);
+    if i==1
+        scatter(x, y, 400, '.b'); set ( gca, 'xdir', 'reverse' ); % xlim([0 maxX]); ylim([0 maxY]);
+    elseif i==2
+        scatter(x, y, 200, '.b'); set ( gca, 'xdir', 'reverse' ); % xlim([0 maxX]); ylim([0 maxY]);
+    else
+        scatter(x, y, '.b'); set ( gca, 'xdir', 'reverse' ); % xlim([0 maxX]); ylim([0 maxY]);
+    end
     % If i ~= 1 draw small box
     if i ~= 1
-        rectangle('Position',[shift, 0, 28, 28])
+        rectangle('Position',[shift, 0, 28, 28],'LineWidth',2)
     end
     % If i ~= 3 draw big box
     if i ~= 3
-        rectangle('Position',[shift, 0, maxX+3, maxX+3]);
+        rectangle('Position',[shift, 0, maxX+3, maxX+3],'LineWidth',2);
     end
 end
 % Draw lines connecting boxes
@@ -49,11 +55,11 @@ Y1 = [28, maxX+3]
 Y2 = [0 0]
 inbetween = [Y1, fliplr(Y2)]
 x2 = [X, fliplr(X)]
-fill(x2, inbetween, [.7 .7 .7]);
+fill(x2, inbetween, [.7 .7 .7],'LineWidth',2);
 
 X = [shift3 shift2+maxX+3]
 x2 = [X, fliplr(X)]
-fill(x2, inbetween, [.7 .7 .7]);
+fill(x2, inbetween, [.7 .7 .7],'LineWidth',2);
 
 ylim([-2 maxY+4]);
 xlim([-2 280]);

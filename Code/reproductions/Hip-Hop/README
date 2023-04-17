@@ -1,0 +1,32 @@
+
+
+##########################################################################
+##
+##  Polymer Simulations of Heteromorphic Chromatin Predict the 3-D 
+##  Folding of Complex Genomic Loci
+##
+##  Adam Buckle, Chris A Brackley, Shelagh Boyle, Davide Marenduzzo,
+##  and Nick Gilbert
+##
+##########################################################################
+
+
+### Figure Data ###############
+
+There is a directory for each figure and supplementary figure containing 
+all processed data used to generate the figures.
+
+### Additional Data and Scripts ###############
+
+Further data, software input files, and analysis scripts are provided
+in the following directories.
+
+
+HiP-HoP_Pax6_FullConformations		Contains the full set of simulated
+					Pax6 locus conformations as used in 
+					Fig. 5 and Videos 3-5.
+
+ExampleSimulationInputScripts		Contains a set of input data and all
+					input files and scripts used to run a 
+					HiP-HoP simulation.
+

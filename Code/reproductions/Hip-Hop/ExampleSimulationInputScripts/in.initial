@@ -1,0 +1,126 @@
+###
+# Box and units  (use LJ units and periodic boundaries)
+###
+
+units lj
+
+atom_style angle 
+
+boundary p p p
+
+###
+# Pair interactions require lists of neighbours to be calculated
+###
+neighbor 1.25 bin
+neigh_modify every 1 delay 1 check yes 
+
+### READ "start" data file ###
+read_data inputs/lammps_input.${runnumber} extra/atom/types 1 extra/special/per/atom 2
+
+######################
+
+######################
+### reset timestep ###
+reset_timestep 0 
+######################
+
+###
+# Define groups (atom type 1 is group 'all')
+###
+group all type 1 2 3 4 5 6
+group dna type 1 2 3 4
+group prots type 5 6
+
+mass 6 1.0
+
+# start with 5000 polymer beads, 5000 proteins
+# delete all but 4000 proteins
+group todel id <> 9001 10000
+delete_atoms group todel
+
+# switch half of proteins off so start with 50/50 on and off
+group switch id <> 7001 9000
+set group switch type 6
+group switch delete
+
+###################################################################
+# Stiffness term
+#
+# E = K * (1+cos(theta)), K>0
+#
+angle_style   cosine 
+angle_coeff   1 4.0
+
+###################################################################
+
+###################################################################
+# Pair interaction between non-bonded atoms
+
+# initially set all interactions as steric only
+pair_style      lj/cut 1.12246152962189
+pair_modify     shift yes
+pair_coeff      * * 1.0 1.0 1.12246152962189
+
+
+###################################################################
+# Pair interaction between bonded atoms
+
+bond_style hybrid fene harmonic harmlj
+special_bonds fene #<=== I M P O R T A N T (new command)
+bond_coeff   1 fene  30.0   1.6   1.0   1.0
+bond_coeff   2 harmonic 200.0 1.1
+bond_coeff   3 harmlj 40.0 1.5 1.0
+
+
+###################################################
+###
+# Set up fixes
+###
+include seed.${runnumber} # Load a seed for the Langevin integrator from external file
+
+fix 1 all nve   ###NVE ensemble
+fix 2 all langevin   1.0 1.0 0.5  ${seed}
+
+###################################################
+
+
+###
+# Output
+###
+
+variable numbonds equal bonds # variable to monitor number of bonds needed by driver script
+
+##### Output thermodynamic info  (temperature, energy, pressure, etc.) #####
+thermo 200000
+thermo_style   custom   step  temp  epair  emol  vol bonds v_numbonds
+############################################################################
+
+
+###
+# set timestep of integrator
+###
+timestep 0.01
+
+# IC had all crumpling springs on -- run a short equilib with some removed
+bond_coeff   2 harmonic 200.0 1.1
+run 100000
+
+# Bead types are as follows
+# type 1 : !ATAC !K27ac 
+# type 2 : !ATAC K27ac 
+# type 3 : ATAC K27ac 
+# type 4 : ATAC !K27ac 
+
+# crumpling springs can stretch, so need to increase range for neigbour lists
+neighbor 5 bin
+
+# set up output of conformations
+dump dmp all custom 200000 dump.${runnumber}.DNA id type xs ys zs ix iy iz 
+
+## type 5 are ATAC binders -- have a weak NS interaction everywhere
+pair_coeff 1*4 5  2.0 1.0 1.8
+
+## type 5 are ATAC binders -- bind strongly to type 3 and 4
+pair_coeff 3*4 5  8.0 1.0 1.8
+
+## type 6 are off ATAC spheres -- dont bind polymer
