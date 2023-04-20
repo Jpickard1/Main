@@ -24,10 +24,10 @@ April 10, 2023
 ## Meeting Notes
 
 ### April 20, 2023
-- **Indika:** 
-- **Cooper:** Stardist does a great job at cell segmentation (Cell segmentation)
-- **Jillian:** Data generation (going to do new experiments)
-- **Joshua:** Cell tracking (from Cooper: tensors that are time x image height x image width with *i,j,k* coordinate indicating if a cell is present)
+- **Indika:** He thinks we don't need Hooks
+- **Cooper:** Stardist does a great job at cell segmentation (Cell segmentation), he thinks we need Hooks to identify the nuclei, count the effectivness of the PIP-FUCCI assay, etc.
+- **Jillian:** (data generation) New set of experiments, imaging and stitching on Zeiss, put on turbo
+- **Joshua:** Cell tracking (from Cooper on turbo: tensors that are time x image height x image width with *i,j,k* coordinate indicating if a cell is present)
 
 ### April 17, 2023
 Progress:
