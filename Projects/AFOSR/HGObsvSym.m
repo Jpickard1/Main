@@ -10,12 +10,13 @@ function [O, J] = HGObsvSym(HG)
 %                        file HGObsvSym0 which used the original Jp.
 
 n = size(HG.IM,1);
+k = length(size(HG.adjTensor));
 
 % Compute Jp vectors
 J = cell(n+1,1);
 J{1} = sym('x_%d', [n, 1]);
 for i=n:-1:1
-    disp(i); p = i; k = 3;
+    disp(i); p = i;
     rpts = p*k-(2*p-1);
     xx = sym('x_%d', [n, 1]);
     S = repmat(xx, 1, rpts);

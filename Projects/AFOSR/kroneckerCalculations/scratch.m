@@ -4,6 +4,149 @@
 %       jpic@umich.edu
 % Date: March 31, 2023
 
+%% April 22, 2023 Laplacians
+
+clear all; clc; close all;
+n = 4; k = 3;
+HG1 = getToyHG(n, k, 'complete'); L1 = HG1.laplacianTensor; A1 = HG1.adjTensor;
+HG2 = getToyHG(n, k, 'complete'); L2 = HG2.laplacianTensor; A2 = HG2.adjTensor;
+A = superkron(A1, A2); IM = HAT.A32IM(A); HG = Hypergraph('IM',IM);
+L = HG.laplacianTensor;
+L12 = superkron(L1, L2);
+
+%%
+clear; clc; close all;
+r = 3; n = 2;
+Ac = cell(r,1);
+Ac{1} = rand(n,r);
+Ac{2} = rand(n,r);
+Ac{3} = rand(n,r);
+Bc = cell(r,1);
+Bc{1} = rand(n,r);
+Bc{2} = rand(n,r);
+Bc{3} = rand(n,r);
+
+A = zeros(n,n,n); B = zeros(n,n,n);
+for i=1:r
+    R = outerProduct(reshape(outerProduct(Ac{1}(:,i),Ac{2}(:,i)), [n,n]),Ac{3}(:,i));
+    A = A + R;
+end
+for i=1:r
+    R = outerProduct(reshape(outerProduct(Bc{1}(:,i),Bc{2}(:,i)), [n,n]),Bc{3}(:,i));
+    B = B + R;
+end
+
+AB = superkron(A,B);
+Cc = cell(r,1);
+for i=1:r
+    Cc{i} = kron(Ac{i}, Bc{i});
+end
+C = zeros(size(AB));
+for i=1:r^2
+    R = outerProduct(reshape(outerProduct(Cc{1}(:,i),Cc{2}(:,i)), [n^2,n^2]),Cc{3}(:,i));
+    C = C + R;
+end
+
+E = (C - AB);
+sum(E(:))
+
+
+
+
+
+
+%%
+clear
+
+U1 = [1 3; 2 4];
+U2 = [5 7; 6 8];
+U3 = [9 11; 10 12];
+
+O1 = outerProduct(outerProduct(U1, U2), U3);
+O2 = outerProduct(outerProduct(U1(:,1), U2(:,1)), U3(:,1)) + outerProduct(outerProduct(U1(:,2), U2(:,2)), U3(:,2));
+
+M = max(O2);
+while numel(M) ~= 1
+    M = max(M);
+end
+disp(M)
+
+max(O2)
+
+% ttv(tensor(U1(:,1)), U2(:,1), 2)
+
+%% April 11, 2023 Kronecker producting fun hypergraphs
+
+n = 7; k = 4;
+HG1 = getToyHG(n, k, 'complete');
+HG2 = getToyHG(n, k, 'complete');
+
+A = superkron(HG1.adjTensor, HG2.adjTensor);
+HG = Hypergraph('IM', HAT.A42IM(A));
+figure; HG.plot();
+
+size(HG.IM)
+
+%% April 11, 2023 Calculating Kronecker Factorization of Toy Hypergraphs
+
+clear; clc; close all;
+
+n = 49;
+k=3;
+
+figure;
+HG = hyperchain(n,k);
+A = HG.adjTensor; % A = tensor(A);
+[B, C] = NTKP(A) ; %, [10 10 10], [10 10 10]);
+HG1 = Hypergraph('IM', HAT.A32IM(B));
+HG2 = Hypergraph('IM', HAT.A32IM(C));
+        subplot(3,3,1); HG.plot(); title('Hyperchain');
+        subplot(3,3,2); HG1.plot(); title('Factor 1');
+        subplot(3,3,3); HG2.plot(); title('Factor 2');
+HG = hyperring(n,k);
+A = HG.adjTensor; % A = tensor(A);
+[B, C] = NTKP(A) ; %, [10 10 10], [10 10 10]);
+HG1 = Hypergraph('IM', HAT.A32IM(B));
+HG2 = Hypergraph('IM', HAT.A32IM(C));
+        subplot(3,3,4); HG.plot(); title('Hyperring');
+        subplot(3,3,5); HG1.plot(); title('Factor 1');
+        subplot(3,3,6); HG2.plot(); title('Factor 2');
+HG = hyperstar(n,k);
+A = HG.adjTensor; % A = tensor(A);
+[B, C] = NTKP(A) ; %, [10 10 10], [10 10 10]);
+HG1 = Hypergraph('IM', HAT.A32IM(B));
+HG2 = Hypergraph('IM', HAT.A32IM(C));
+        subplot(3,3,7); HG.plot(); title('Hyperstar');
+        subplot(3,3,8); HG1.plot(); title('Factor 1');
+        subplot(3,3,9); HG2.plot(); title('Factor 2');
+
+saveas(gcf, "Kronecker Factors of Toy Hypergraphs.png");
+
+%% Adjacency tensor to IM
+
+idxs = find(B ~= 0);
+[x,y,z] = ind2sub([10, 10, 10],idxs);
+E = [x y z]
+IM = HAT.hyperedges2IM(E);
+HG = Hypergraph('IM', IM);
+HG.plot()
+
+
+HG = Hypergraph('IM', IM);
+HG.plot()
+
+%% April 11, 2023 Calculating the degree sequence of Kronecker Graphs
+
+HG = hyperchain(100,3);
+A = HG.adjTensor; A = tensor(A);
+v = ones(100,1);
+a1 = ttv(A,v, 1);
+a2 = ttv(a1,v, 1);
+% HG.plot()
+s1 = sum(full(HG.IM), 2);
+m1 = double(a2)
+sum(s1 ~= m1)
+
 %% Hamming Hypergraph Similarity Measure
 clear; clc;
 a = rand(3,3,3);

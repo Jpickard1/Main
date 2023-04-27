@@ -11,6 +11,8 @@ function [HG] = getToyHG(n, k, t)
             HG = hyperchain(n, k);
         case "hyperstar"
             HG = hyperstar(n, k);
+        case "complete"
+            HG = completeHG(n, k);
     end
 end
 

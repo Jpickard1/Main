@@ -22,6 +22,7 @@ A1 = HG1.adjTensor; A = superkron(A1, A1);
 A1 = tensor(A1); A = tensor(A);
 
 X1 = zeros(T, n1);  X1(1,:) = rand(n1,1) - 0.5;
+X1(1,:) = [   -0.4846   -0.4570   -0.3310    0.1491];
 for t=2:T
     X1(t,:) = 0.04 * ttvk(A1, X1(t-1,:)') + X1(t-1,:)';
 end
