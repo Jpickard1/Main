@@ -36,15 +36,15 @@ CV = Atab{:,1};                 % Save vertex set of hypergraph
 IMw = Btab{:,2:end};            % Extract numerical data
 [~, ES] = maxk(IMw, 3, 1);      % Find 3 most predicted genes at each spot
 IM = HAT.hyperedges2IM(ES');    % Convert edge set to incidence matrix
-IM = unique(IM', 'rows')';       % Remove duplicate hyperedges
+IM = unique(IM', 'rows')';      % Remove duplicate hyperedges
 
-vxDegree = sum(IM,1);           % Get degree of vertices
-[~, vxKeep] = find(vxDegree~=0);% Get vertices with nonzero degree
-IM = IM(vxKeep, :);           % Reduce the vertex set
+vxDegree = sum(IM,2);           % Get degree of vertices
+[vxKeep] = find(vxDegree~=0);   % Get vertices with nonzero degree
+IM = IM(vxKeep, :);             % Reduce the vertex set
 
 % Set Hypergraph 
 G = Hypergraph('IM', IM);       % Create hypergraph object
 GV = Btab{vxKeep,1};            % Save vertex set of hypergraph
 
 %% Save hypergraphs
-save('/nfs/turbo/umms-indikar/Joshua/Main/Projects/WoundHealing/Sparial04272023_Spatial_HGs_1.mat', 'G','C','GV','CV');
+save('/nfs/turbo/umms-indikar/Joshua/Main/Projects/WoundHealing/SpatialData/04272023_Spatial_HGs_1.mat', 'G','C','GV','CV');
