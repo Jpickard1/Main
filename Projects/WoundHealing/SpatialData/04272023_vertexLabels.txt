@@ -1,0 +1,286 @@
+B cells - ACADM
+B cells - ACTB
+B cells - ATP13A3
+B cells - AY036118
+B cells - BC1
+B cells - CAR3
+B cells - CD36
+B cells - CFL1
+B cells - ETV3
+B cells - FABP4
+B cells - FTL1
+B cells - GM42418
+B cells - HP
+B cells - INSIG1
+B cells - LARS2
+B cells - LGALS3
+B cells - MT-ATP6
+B cells - MT-CO1
+B cells - MT-ND4
+B cells - PKM
+B cells - RPL34
+B cells - RPL4
+B cells - RPS15
+B cells - SCD1
+B cells - SPARC
+B cells - TPM3
+Dendritic cells - ACADM
+Dendritic cells - ACTB
+Dendritic cells - ATP13A3
+Dendritic cells - AY036118
+Dendritic cells - BC1
+Dendritic cells - CAR3
+Dendritic cells - CD36
+Dendritic cells - CFL1
+Dendritic cells - ETV3
+Dendritic cells - FABP4
+Dendritic cells - FTL1
+Dendritic cells - GM42418
+Dendritic cells - HP
+Dendritic cells - INSIG1
+Dendritic cells - LARS2
+Dendritic cells - LGALS3
+Dendritic cells - MT-ATP6
+Dendritic cells - MT-CO1
+Dendritic cells - MT-ND4
+Dendritic cells - PKM
+Dendritic cells - RPL34
+Dendritic cells - RPL4
+Dendritic cells - RPS15
+Dendritic cells - SCD1
+Dendritic cells - SPARC
+Dendritic cells - TPM3
+Mac1 - ACADM
+Mac1 - ACTB
+Mac1 - ATP13A3
+Mac1 - AY036118
+Mac1 - BC1
+Mac1 - CAR3
+Mac1 - CD36
+Mac1 - CFL1
+Mac1 - ETV3
+Mac1 - FABP4
+Mac1 - FTL1
+Mac1 - GM42418
+Mac1 - HP
+Mac1 - INSIG1
+Mac1 - LARS2
+Mac1 - LGALS3
+Mac1 - MT-ATP6
+Mac1 - MT-CO1
+Mac1 - MT-ND4
+Mac1 - PKM
+Mac1 - RPL34
+Mac1 - RPL4
+Mac1 - RPS15
+Mac1 - SCD1
+Mac1 - SPARC
+Mac1 - TPM3
+Mac2 - ACADM
+Mac2 - ACTB
+Mac2 - ATP13A3
+Mac2 - AY036118
+Mac2 - BC1
+Mac2 - CAR3
+Mac2 - CD36
+Mac2 - CFL1
+Mac2 - ETV3
+Mac2 - FABP4
+Mac2 - FTL1
+Mac2 - GM42418
+Mac2 - HP
+Mac2 - INSIG1
+Mac2 - LARS2
+Mac2 - LGALS3
+Mac2 - MT-ATP6
+Mac2 - MT-CO1
+Mac2 - MT-ND4
+Mac2 - PKM
+Mac2 - RPL34
+Mac2 - RPL4
+Mac2 - RPS15
+Mac2 - SCD1
+Mac2 - SPARC
+Mac2 - TPM3
+Mac3 - ACADM
+Mac3 - ACTB
+Mac3 - ATP13A3
+Mac3 - AY036118
+Mac3 - BC1
+Mac3 - CAR3
+Mac3 - CD36
+Mac3 - CFL1
+Mac3 - ETV3
+Mac3 - FABP4
+Mac3 - FTL1
+Mac3 - GM42418
+Mac3 - HP
+Mac3 - INSIG1
+Mac3 - LARS2
+Mac3 - LGALS3
+Mac3 - MT-ATP6
+Mac3 - MT-CO1
+Mac3 - MT-ND4
+Mac3 - PKM
+Mac3 - RPL34
+Mac3 - RPL4
+Mac3 - RPS15
+Mac3 - SCD1
+Mac3 - SPARC
+Mac3 - TPM3
+Mac4 - ACADM
+Mac4 - ACTB
+Mac4 - ATP13A3
+Mac4 - AY036118
+Mac4 - BC1
+Mac4 - CAR3
+Mac4 - CD36
+Mac4 - CFL1
+Mac4 - ETV3
+Mac4 - FABP4
+Mac4 - FTL1
+Mac4 - GM42418
+Mac4 - HP
+Mac4 - INSIG1
+Mac4 - LARS2
+Mac4 - LGALS3
+Mac4 - MT-ATP6
+Mac4 - MT-CO1
+Mac4 - MT-ND4
+Mac4 - PKM
+Mac4 - RPL34
+Mac4 - RPL4
+Mac4 - RPS15
+Mac4 - SCD1
+Mac4 - SPARC
+Mac4 - TPM3
+Mac5 - ACADM
+Mac5 - ACTB
+Mac5 - ATP13A3
+Mac5 - AY036118
+Mac5 - BC1
+Mac5 - CAR3
+Mac5 - CD36
+Mac5 - CFL1
+Mac5 - ETV3
+Mac5 - FABP4
+Mac5 - FTL1
+Mac5 - GM42418
+Mac5 - HP
+Mac5 - INSIG1
+Mac5 - LARS2
+Mac5 - LGALS3
+Mac5 - MT-ATP6
+Mac5 - MT-CO1
+Mac5 - MT-ND4
+Mac5 - PKM
+Mac5 - RPL34
+Mac5 - RPL4
+Mac5 - RPS15
+Mac5 - SCD1
+Mac5 - SPARC
+Mac5 - TPM3
+Monocytes - ACADM
+Monocytes - ACTB
+Monocytes - ATP13A3
+Monocytes - AY036118
+Monocytes - BC1
+Monocytes - CAR3
+Monocytes - CD36
+Monocytes - CFL1
+Monocytes - ETV3
+Monocytes - FABP4
+Monocytes - FTL1
+Monocytes - GM42418
+Monocytes - HP
+Monocytes - INSIG1
+Monocytes - LARS2
+Monocytes - LGALS3
+Monocytes - MT-ATP6
+Monocytes - MT-CO1
+Monocytes - MT-ND4
+Monocytes - PKM
+Monocytes - RPL34
+Monocytes - RPL4
+Monocytes - RPS15
+Monocytes - SCD1
+Monocytes - SPARC
+Monocytes - TPM3
+NK cells - ACADM
+NK cells - ACTB
+NK cells - ATP13A3
+NK cells - AY036118
+NK cells - BC1
+NK cells - CAR3
+NK cells - CD36
+NK cells - CFL1
+NK cells - ETV3
+NK cells - FABP4
+NK cells - FTL1
+NK cells - GM42418
+NK cells - HP
+NK cells - INSIG1
+NK cells - LARS2
+NK cells - LGALS3
+NK cells - MT-ATP6
+NK cells - MT-CO1
+NK cells - MT-ND4
+NK cells - PKM
+NK cells - RPL34
+NK cells - RPL4
+NK cells - RPS15
+NK cells - SCD1
+NK cells - SPARC
+NK cells - TPM3
+Stromal cells - ACADM
+Stromal cells - ACTB
+Stromal cells - ATP13A3
+Stromal cells - AY036118
+Stromal cells - BC1
+Stromal cells - CAR3
+Stromal cells - CD36
+Stromal cells - CFL1
+Stromal cells - ETV3
+Stromal cells - FABP4
+Stromal cells - FTL1
+Stromal cells - GM42418
+Stromal cells - HP
+Stromal cells - INSIG1
+Stromal cells - LARS2
+Stromal cells - LGALS3
+Stromal cells - MT-ATP6
+Stromal cells - MT-CO1
+Stromal cells - MT-ND4
+Stromal cells - PKM
+Stromal cells - RPL34
+Stromal cells - RPL4
+Stromal cells - RPS15
+Stromal cells - SCD1
+Stromal cells - SPARC
+Stromal cells - TPM3
+T cells - ACADM
+T cells - ACTB
+T cells - ATP13A3
+T cells - AY036118
+T cells - BC1
+T cells - CAR3
+T cells - CD36
+T cells - CFL1
+T cells - ETV3
+T cells - FABP4
+T cells - FTL1
+T cells - GM42418
+T cells - HP
+T cells - INSIG1
+T cells - LARS2
+T cells - LGALS3
+T cells - MT-ATP6
+T cells - MT-CO1
+T cells - MT-ND4
+T cells - PKM
+T cells - RPL34
+T cells - RPL4
+T cells - RPS15
+T cells - SCD1
+T cells - SPARC
+T cells - TPM3
