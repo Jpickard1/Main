@@ -1,5 +1,32 @@
 % Auth: Joshua Pickard
 %       jpic@umich.edu
+% Date: April 2023
+
+%% Date: April 17, 2023
+close all; clear; clc;
+HG1 = getToyHG(3, 3, 'hyperchain'); A1 = HG1.adjTensor; L1 = HG1.laplacianTensor;
+HG2 = getToyHG(3, 3, 'hyperchain'); A2 = HG2.adjTensor; L2 = HG2.laplacianTensor;
+
+A = superkron(A1, A2);
+
+idxs = find(A > 0);
+[i1 i2 i3] = ind2sub(size(A), idxs);
+E = [i1 i2 i3]; E = sortrows(E);
+E = unique(E,'rows');
+IM = HAT.hyperedge2IM(E);
+HG = Hypergraph('IM', IM);
+
+L = HG.laplacianTensor;
+
+L12 = superkron(L1, L2);
+L
+
+%%
+figure; HG.plot()
+figure; HG1.plot()
+figure; HG2.plot()
+
+
 
 %% What is bigger: log(x) + log(y) or log(x)log(y) for x, y < 0
 
