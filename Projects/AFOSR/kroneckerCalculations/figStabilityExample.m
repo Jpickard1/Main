@@ -19,6 +19,10 @@ A(:,:,1,2) = A12;
 A(:,:,2,1) = A21;
 A(:,:,2,2) = A22;
 
+clearvars -except A
+
+%% Plot one trajectory
+
 T = 100; n1=2;
 X1 = zeros(T, n1);  X1(1,:) = rand(n1,1) - 0.5;
 for t=2:T
@@ -26,7 +30,7 @@ for t=2:T
 end
 figure; plot(X1)
 
-%% Quiver of A
+%% Continuous
 llim = -10;
 ulim = 10;
 spacing = 2;
@@ -68,7 +72,49 @@ end
 subplot(1,2,2);
 quiver3(X,Y,Z,DX,DY,DZ); hold on; title('Vector Field of A\otimesA when x_4=0');
 xlabel('x_1'); ylabel('x_2'); zlabel('x_3');
-saveas(gcf, 'stableUnstableExample.png')
+% saveas(gcf, 'stableUnstableExample.png')
+
+%% Discrete
+llim = -10;
+ulim = 10;
+spacing = 2;
+[X,Y] = meshgrid(llim:spacing:ulim);
+DX = zeros(size(X)); DY = zeros(size(Y));
+for i=1:length(X)
+    for j=1:length(X)
+        cord = [X(i,j) Y(i,j)]';
+        v = 2 * ttvk(tensor(A), cord);
+        DX(i,j) = cord(1) - v(1);
+        DY(i,j) = cord(2) - v(2);
+    end
+end
+
+figure('Renderer', 'painters', 'Position', [0 0 900 400]);
+subplot(1,2,1);
+quiver(X,Y,DX,DY); hold on; title('Vector Field of A');
+xlabel('x_1'); ylabel('x_2');
+
+% Quiver of B
+B = superkron(A,A);
+spacing = 4;
+[X,Y,Z] = meshgrid(llim:spacing:ulim);
+DX = zeros(size(X)); DY = zeros(size(Y)); DZ = zeros(size(Z));
+for i=1:length(X)
+    for j=1:length(X)
+        for k=1:length(X)
+            cord = [X(i,j,k) Y(i,j,k) Z(i,j,k) 0]';
+            v = 2 * ttvk(tensor(B), [X(i,j,k) Y(i,j,k) Z(i,j,k) 0]');
+            DX(i,j,k) = cord(1) - v(1);
+            DY(i,j,k) = cord(2) - v(2);
+            DZ(i,j,k) = cord(3) - v(3);
+        end
+    end
+end
+subplot(1,2,2);
+quiver3(X,Y,Z,DX,DY,DZ); hold on; title('Vector Field of B=A\otimesA when x_4=0');
+xlabel('x_1'); ylabel('x_2'); zlabel('x_3');
+
+% saveas(gcf, 'stableUnstableExample.png')
 
 %% Simpler matrix
 
