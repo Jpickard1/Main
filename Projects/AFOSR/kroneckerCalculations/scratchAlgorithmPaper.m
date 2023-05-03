@@ -18,7 +18,8 @@ disp(sum(sum(sum(abs(A - A12)))) / sum(sum(sum(abs(A)))))
 
 
 
-%%
+%% Experiment
+
 itrs = 5;
 maxN = 20;
 E1 = zeros(maxN, itrs);
@@ -26,7 +27,6 @@ T1 = zeros(maxN, itrs);
 E2 = zeros(maxN, itrs);
 T2 = zeros(maxN, itrs);
 
-iters = 1;
 for n=2:maxN
     for i=1:itrs
         A = rand(n^2,n^2,n^2);
@@ -43,7 +43,53 @@ for n=2:maxN
     disp(n)
 end
 
-%%
+%% Plotting
+
+N = (1:maxN) .^ 2;
+
+figure;
+subplot(1,2,1);
+title('Error Comparison'); hold on;
+xlabel('N'); ylabel('Error');
+Y = mean(E2, 2);
+STD = std(E2, 0, 2);
+c1 = Y + STD;
+c2 = Y - STD;
+N2 = [N, fliplr(N)];
+inBetween = [c1; fliplr(c2)];
+fill(N2, inBetween, 'g');
+plot(N, Y);
+Y = mean(E1, 2);
+STD = std(E1, 0, 2);
+c1 = Y + STD;
+c2 = Y - STD;
+N2 = [N, fliplr(N)];
+inBetween = [c1; fliplr(c2)];
+fill(N2, inBetween, 'g');
+plot(N, Y);
+legend(["NTKP", "TKPSVD"]);
+subplot(1,2,2,'YScale', 'log');
+title('Time Comparison'); hold on;
+xlabel('N'); ylabel('Time');
+Y = mean(T2, 2);
+STD = std(T2, 0, 2);
+c1 = Y + STD;
+c2 = Y - STD;
+N2 = [N, fliplr(N)];
+inBetween = [c1; fliplr(c2)];
+fill(N2, inBetween, 'g');
+plot(N, Y);
+Y = mean(T1, 2);
+STD = std(T1, 0, 2);
+c1 = Y + STD;
+c2 = Y - STD;
+N2 = [N, fliplr(N)];
+inBetween = [c1; fliplr(c2)];
+fill(N2, inBetween, 'g');
+plot(N, Y);
+legend(["NTKP", "TKPSVD"]);
+
+%% Old Plotting
 
 figure; title('Error Comparison'); hold on;
 xlabel('N'); ylabel('Error');
