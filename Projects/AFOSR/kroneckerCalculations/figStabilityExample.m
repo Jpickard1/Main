@@ -46,8 +46,9 @@ end
 
 figure('Renderer', 'painters', 'Position', [0 0 900 400]);
 subplot(1,2,1);
-quiver(X,Y,DX,DY); hold on; title('Vector Field of A');
-xlabel('x_1'); ylabel('x_2');
+quiver(X,Y,DX,DY,'k','LineWidth',1.25); hold on; title('Vector Field of $\textsf{A}$','interpreter','latex');
+xlabel('$x_1$','interpreter','latex'); ylabel('$x_2$','interpreter','latex');
+axis square
 % contour(X,Y,Z)
 % axis equal
 % hold off
@@ -70,9 +71,10 @@ for i=1:length(X)
     end
 end
 subplot(1,2,2);
-quiver3(X,Y,Z,DX,DY,DZ); hold on; title('Vector Field of A\otimesA when x_4=0');
-xlabel('x_1'); ylabel('x_2'); zlabel('x_3');
-% saveas(gcf, 'stableUnstableExample.png')
+quiver3(X,Y,Z,DX,DY,DZ,'k','LineWidth',1.25); hold on; title('Vector Field of $\textsf{A}\otimes\textsf{A}$ when $x_4=0$','interpreter','latex');
+xlabel('$x_1$','interpreter','latex'); ylabel('$x_2$','interpreter','latex'); zlabel('$x_3$','interpreter','latex');
+set(gca,'TickLabelInterpreter','latex')
+saveas(gcf, 'stableUnstableExample_05042023.png')
 
 %% Discrete
 llim = -10;
