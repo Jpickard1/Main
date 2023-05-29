@@ -31,7 +31,7 @@ xlabel("x_1"); ylabel("x_2"); zlabel("x_3"); title('Color is x_4')
 
 %% Possibl matrices
 
-pts = 100000;
+pts = 10000;
 data = rand(pts, 4);
 figure;
 labels = ["x_1","x_2","x_3","x_4"];
