@@ -119,6 +119,7 @@ figure; hold on;
 plot(sol.x, sol.y(1,:))
 plot(sol.x, sol.y(2,:))
 
+%{
 function dxdt = mmodel(t,x)
     a = 0.5;
     b = 0.3;
@@ -127,3 +128,51 @@ function dxdt = mmodel(t,x)
     dxdt(1) =   a * x(1)^2 + b * x(1) * x(2) + c * x(2)^2;
     dxdt(2) = - a * x(1)^2 - b * x(1) * x(2) - c * x(2)^2;
 end
+%}
+
+%% oscilating hypergraph dynamics
+
+clear; clc; close all;
+
+n = 5;
+k = 4;
+HG = HAT.uniformErdosRenyi(n, round(nchoosek(n,k) / 2), k);
+A = HG.adjTensor;
+
+T = 400;
+X = zeros(T,n);
+X(1,:) = rand(n,1);
+X(1,:) = X(1,:) / sum(X(1,:));
+for t=2:T
+    x = X(t-1,:);
+    X(t,:) = X(t-1,:)' + 0.01 * reshape(A, [n, n^(k-1)]) * kron(x,x);
+end
+
+figure;
+plot(X)
+
+%% Laplacian heig vectors
+
+A = rand(3,3,3);
+[b,c] = heig(A)
+
+%%
+
+sum(sum(sum(sum(A))))
+
+for i=1:size(A,1)
+    for j=1:size(A,1)
+        for k=1:size(A,1)
+            for l=1:size(A,1)
+                if k < i || l < j
+                    A(i,j,k,l) = -A(i,j,k,l);
+                end
+            end
+        end
+    end
+end
+sum(sum(sum(sum(A))))
+
+
+
+
