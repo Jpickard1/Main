@@ -8,19 +8,21 @@ function [p]=samplePermutation(A,theta)
 n = size(A,1);
 
 p = 1:n;
-i = 1;
-while i < 10
+c = 0;
+i = 0;
+while c < 100 && i < 10000
     j = randi([1 n]);
     k = randi([1 n]);
 
     u = rand();
-    p2 = p; p2([j k]) = p2([k j]);
-    v = permutationProbabilityRatio(p, p2, theta, A);
+    v = permutationProbabilityRatio(p, theta, A, j, k);
 
     if u < v
         p([j k]) = p([k j]); % Swap elements j and k in the permutation
+        i = i + c;
+        c = 0;
     end
-    i = i + 1;
+    c = c + 1;
 end
 
 end

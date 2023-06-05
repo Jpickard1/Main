@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <annotation>
+    <SimBiology xmlns="http://www.mathworks.com">
+      <Version Major="6" Minor="4" Point="1"/>
+    </SimBiology>
+  </annotation>
+  <model id="mwe2a2b64e_db0c_4d02_ba4d_e3ae56cac7a4" name="Learning SimBiology 1">
+    <listOfCompartments>
+      <compartment id="mw8f25858e_8834_44d1_bff1_bb5b72095fa8" name="unnamed" size="1" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="mw00d9bfbe_b512_4012_97ac_87b883f57240" name="Predator" compartment="mw8f25858e_8834_44d1_bff1_bb5b72095fa8" initialConcentration="10" boundaryCondition="false" constant="false"/>
+      <species id="mwb68381d7_d2da_4e28_b387_7a46274d9a0c" name="Prey" compartment="mw8f25858e_8834_44d1_bff1_bb5b72095fa8" initialConcentration="15" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="mwa150560c_a270_405d_a582_39945eb63b6c" name="kf" value="1" constant="true"/>
+      <parameter id="mw51b70072_3e17_49c1_8655_baf2130c3fff" name="kf_1" value="1" constant="true"/>
+      <parameter id="mw27e63dd4_bda1_4b4f_b022_016e43a1fade" name="Vm" value="1" constant="true"/>
+      <parameter id="mwf5098cc5_ceb4_49af_a1b9_096f2edb8c42" name="n" value="1" constant="true"/>
+      <parameter id="mwcd0a3c41_a523_4af2_9cd8_6333f99a2891" name="Kp" value="1" constant="true"/>
+      <parameter id="mw49787161_4c4b_434f_9648_8169abd41a0a" name="Vm_1" value="1" constant="true"/>
+      <parameter id="mwbee4b75d_8712_4e86_924b_15e5e66cfe47" name="n_1" value="1" constant="true"/>
+      <parameter id="mw9f91ade6_ea5e_4184_a900_6cc9e3132a16" name="Kp_1" value="1" constant="true"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="mw57e04aaf_c9e5_4d4f_943d_af1ca07358b6" name="Kill Prey" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mwb68381d7_d2da_4e28_b387_7a46274d9a0c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mw00d9bfbe_b512_4012_97ac_87b883f57240" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw/>
+      </reaction>
+      <reaction id="mwaa529686_f2c9_4205_ae7c_9a4d6f3978b6" name="Reaction_2" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mw00d9bfbe_b512_4012_97ac_87b883f57240" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mwb68381d7_d2da_4e28_b387_7a46274d9a0c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw/>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

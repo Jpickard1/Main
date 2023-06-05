@@ -3,7 +3,11 @@
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 1, 2023
-function [likelihood, gradient]=evaluateGradient(A, theta)
+function [likelihood, gradient]=evaluateGradient(A, theta, debug)
+
+if nargin == 2
+    debug = false;
+end
 
 % TODO: rest
 itrs = 10;
@@ -35,6 +39,7 @@ gradient    = zeros(size(theta));
 for t=1:itrs
     % Generate sample permutation
     p = samplePermutation(A, theta);
+    if debug; disp(p); end
 
     % Calculate log likelihood
     likelihood = le;
@@ -50,7 +55,7 @@ for t=1:itrs
         eGrad = edgeGradient(n, theta, p(E(e,1)), p(E(e,2)));
         gradUpdate = gradUpdate - log(1 - eGrad) + log(eGrad);
     end
-    gradient = gradient + gradUpdate;
+    gradient = gradient + real(gradUpdate);
 end
 
 likelihood = mean(likelihoods);

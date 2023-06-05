@@ -5,8 +5,7 @@ function [p] = edgeProbability(n, theta, u, v)
 %       jpic@umich.edu
 % Date: June 5, 2023
 
-n0 = 2;
-
+n0 = size(theta,1);
 k = log(n) / log(n0);
 
 p = 1;

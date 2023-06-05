@@ -27,7 +27,8 @@ for i=1:size(theta,1)
         c = count(i,j);
 
         % Set gradient for that single term
-        gradient(i,j) = (c / theta(i,j)) - ((k - c) / (1 - theta(i,j)));
+        gradient(i,j) = 
+        % gradient(i,j) = (c / theta(i,j)) - ((k - c) / (1 - theta(i,j)));
     end
 end
 
