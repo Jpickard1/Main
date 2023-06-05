@@ -21,14 +21,48 @@ A(:,:,2,2) = A22;
 
 clearvars -except A
 
-%% Plot one trajectory
+%% continuous trajectories
+T = 100; n1=2;
+s = 2;
+s1 = 0.05;
+s2 = 0.01;
+X1 = zeros(T, n1);  X1(1,:) = s * rand(n1,1) - (s/2);
+for t=2:T
+    X1(t,:) = X1(t-1,:)' + s1 * ttvk(tensor(A), X1(t-1,:)');
+end
+X2 = zeros(T, n1^2);  X2(1,:) = kron(X1(1,:),X1(1,:)); %s * rand(n1^2,1) - (s/2);
+for t=2:T
+    X2(t,:) = X2(t-1,:)' + s2 * ttvk(tensor(B), X2(t-1,:)');
+end
+
+t1 = [0:(T-1)] * s1;
+t2 = [0:(T-1)] * s2;
+
+figure;
+subplot(1,2,1); plot(t1, X1); ylabel('State'); xlabel('Time'); title('')
+subplot(1,2,2); plot(t2, X2); ylabel('State'); xlabel('Time'); title('Kronecker System')
+
+%% Discrete trajectories
 
 T = 100; n1=2;
-X1 = zeros(T, n1);  X1(1,:) = rand(n1,1) - 0.5;
+s = 1;
+s1 = 0.05;
+s2 = 0.01;
+X1 = zeros(T, n1);  X1(1,:) = s * rand(n1,1) - (s/2);
 for t=2:T
-    X1(t,:) = 0.1 * ttvk(tensor(A), X1(t-1,:)') + X1(t-1,:)';
+    X1(t,:) = ttvk(tensor(A), X1(t-1,:)');
 end
-figure; plot(X1)
+X2 = zeros(T, n1^2);  X2(1,:) = kron(X1(1,:),X1(1,:)); %s * rand(n1^2,1) - (s/2);
+for t=2:T
+    X2(t,:) = ttvk(tensor(B), X2(t-1,:)');
+end
+
+t1 = [0:(T-1)] * s1;
+t2 = [0:(T-1)] * s2;
+
+figure;
+subplot(1,2,1); plot(t1, X1); ylabel('State'); xlabel('Time'); title('')
+subplot(1,2,2); plot(t2, X2); ylabel('State'); xlabel('Time'); title('Kronecker System')
 
 %% Continuous
 llim = -10;
@@ -74,7 +108,7 @@ subplot(1,2,2);
 quiver3(X,Y,Z,DX,DY,DZ,'k','LineWidth',1.25); hold on; title('Vector Field of $\textsf{A}\otimes\textsf{A}$ when $x_4=0$','interpreter','latex');
 xlabel('$x_1$','interpreter','latex'); ylabel('$x_2$','interpreter','latex'); zlabel('$x_3$','interpreter','latex');
 set(gca,'TickLabelInterpreter','latex')
-saveas(gcf, 'stableUnstableExample_05042023.png')
+% saveas(gcf, 'stableUnstableExample_05042023.png')
 
 %% Discrete
 llim = -10;
