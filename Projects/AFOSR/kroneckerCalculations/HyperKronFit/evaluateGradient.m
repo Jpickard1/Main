@@ -53,7 +53,8 @@ for t=1:itrs
     gradUpdate = ge;
     for e=1:size(E,1)
         eGrad = edgeGradient(n, theta, p(E(e,1)), p(E(e,2)));
-        gradUpdate = gradUpdate - log(1 - eGrad) + log(eGrad);
+        gradUpdate = gradUpdate + eGrad;
+        % gradUpdate = gradUpdate - log(1 - eGrad) + log(eGrad);
     end
     gradient = gradient + real(gradUpdate);
 end

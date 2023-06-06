@@ -26,8 +26,13 @@ for i=1:size(theta,1)
         % Count the number of times (i,j) was used
         c = count(i,j);
 
-        % Set gradient for that single term
-        gradient(i,j) = 
+        % Set gradient if edge is present
+        posGrad = (c * theta(i,j)^(c - 1));
+        
+        % Set gradient if edge is not present
+        posGrad = (c * theta(i,j)^(c - 1));
+
+        gradient(i,j) = gradient(i,j) + posGrad - negGrad;
         % gradient(i,j) = (c / theta(i,j)) - ((k - c) / (1 - theta(i,j)));
     end
 end
