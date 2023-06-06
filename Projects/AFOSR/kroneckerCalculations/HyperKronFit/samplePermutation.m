@@ -3,14 +3,17 @@
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 1, 2023
-function [p]=samplePermutation(A,theta)
+function [p]=samplePermutation(A,theta,p)
 
 n = size(A,1);
 
-p = 1:n;
+if nargin == 2
+    p = 1:n;
+end
+
 c = 0;
 i = 0;
-while c < 100 && i < 10000
+while c < 10 && i < 100
     j = randi([1 n]);
     k = randi([1 n]);
 

@@ -18,9 +18,20 @@ p2 = p; p2([u v]) = p2([v u]);  % permutation 2
 
 r = 1;
 for i=1:n
-    if i == v; continue; end
+    % if i == v; continue; end
     e1 = edgeProbability(n, theta, p1(u), p1(i));
     e2 = edgeProbability(n, theta, p2(u), p2(i));
+    if A(u,i) == 1
+        rij = e1 / e2;
+    else
+        rij = (1 - e1) / (1 - e2);
+    end
+    r = r * (rij);
+end
+for i=1:n
+    % if i == v; continue; end
+    e1 = edgeProbability(n, theta, p1(v), p1(i));
+    e2 = edgeProbability(n, theta, p2(v), p2(i));
     if A(u,i) == 1
         rij = e1 / e2;
     else

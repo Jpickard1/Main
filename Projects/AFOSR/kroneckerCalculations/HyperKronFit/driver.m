@@ -65,7 +65,17 @@ p = samplePermutation(C, A)
 
 %% Unit test naive kron fit
 A = erdos_renyi_network(64,nchoosek(64,2) * 0.5);
-[theta] = NaiveKronFit(A, false);
+[theta, likelihoods] = NaiveKronFit(A, true, true);
+figure; plot(real(likelihoods));
+
+%% Read in snap file
+E = readAdjList(filePath, 4);
+
+A = sparse(E(:,1), E(:,2), 1);
+
+[theta, likelihoods] = NaiveKronFit(A, true, true);
+
+
 
 %%
 k = 5;
