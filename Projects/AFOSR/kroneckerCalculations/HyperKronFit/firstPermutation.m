@@ -14,9 +14,10 @@ if nargin == 2
 end
 
 n = size(A,1);
-p=1:n;
+p = randperm(n);
 
 i = 0;
+swap = 1;
 while i < maxItrs
     j = randi([1 n]);
     k = randi([1 n]);
@@ -24,9 +25,12 @@ while i < maxItrs
     u = rand();
     v = PPRtest(p, theta, A, j, k);
     if u > v
+        disp(swap); swap = swap + 1;
+        disp(p);
         p([j k]) = p([k j]); % Swap elements j and k in the permutation
     end
     i = i + 1;
 end
+disp(p);
 
 end

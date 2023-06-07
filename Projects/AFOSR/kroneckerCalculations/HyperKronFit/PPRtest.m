@@ -28,7 +28,7 @@ for i=1:n
 
     e1 = edgeProbability(n, theta, p1(i), p1(u));
     e2 = edgeProbability(n, theta, p2(i), p2(u));
-    if A(u,i) == 1
+    if A(i,u) == 1
         rij = e1 / e2;
     else
         rij = (1 - e1) / (1 - e2);
@@ -37,7 +37,7 @@ for i=1:n
 
     e1 = edgeProbability(n, theta, p1(v), p1(i));
     e2 = edgeProbability(n, theta, p2(v), p2(i));
-    if A(u,i) == 1
+    if A(v,i) == 1
         rij = e1 / e2;
     else
         rij = (1 - e1) / (1 - e2);
@@ -46,7 +46,7 @@ for i=1:n
 
     e1 = edgeProbability(n, theta, p1(i), p1(v));
     e2 = edgeProbability(n, theta, p2(i), p2(v));
-    if A(u,i) == 1
+    if A(i,v) == 1
         rij = e1 / e2;
     else
         rij = (1 - e1) / (1 - e2);
