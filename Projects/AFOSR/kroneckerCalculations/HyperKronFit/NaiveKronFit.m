@@ -18,29 +18,48 @@ lr = 1e-5;
 n = size(A,1);
 k = length(size(A));
 
-theta = rand(2 * ones(1, k));
+% theta = rand(2 * ones(1, k));
+theta = [0.9 0.6;
+         0.6 0.1];
 
-maxItrs = 50;
+maxItrs = 25;
 likelihoods = zeros(maxItrs, 1);
 for itr=1:maxItrs
+    if v
+        fprintf("Itr: %d ]\n", itr);
+    end
+    
     % Evaluate likelihood and gradient
-    [l, gradients] = evaluateGradient(A, theta, debug);
+    % [l, gradients] = evaluateGradient(A, theta, debug);
+    [l, gradients] = sampleGradient(A, theta, debug);
     % Update model parameters
+    thetaOld = theta;
     theta = theta + lr * gradients;
 
     lr = 0.95 * lr;
+    for i=1:2
+        for j=1:2
+            if theta(i,j) > 0.9999; theta(i,j) = 0.9999; end
+            if theta(i,j) < 0.0; theta(i,j) = 0.0; end
+        end
+    end
+
+    if v
+        fprintf("CurrentLL: %d\n", l);
+        fprintf("Gradient Updates:\n");
+        for i=1:4
+            fprintf("    %d]  %f = %f + %f\n", i, theta(i), thetaOld(i), lr * gradients(i));
+        end
+        fprintf(' \n');
+    end
 
     % Outputs
     if mod(itr, 5) == 0
         disp(itr);
         figure; plot(real(likelihoods));
+        pause(1);
     end
     likelihoods(itr) = l;
-    if v 
-        disp(l);
-        disp(theta);
-        disp(gradients * lr)
-    end
 end
 
 end
