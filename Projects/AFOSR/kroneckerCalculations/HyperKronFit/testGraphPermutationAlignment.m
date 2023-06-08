@@ -43,7 +43,7 @@ for i=1:kronExp
     P = kron(theta,P);
 end
 A = (P > 0.25);
-p = firstPermutation(A, theta, 100000);
+[p, pp] = firstPermutation(A, theta, 50000);
 
 figure; 
 subplot(1,3,1); imagesc(A); title('Kronecker Graph');
@@ -58,4 +58,22 @@ for i=1:n
     end
 end
 subplot(1,3,3); imagesc(Ap); title('Aligned Graph');
+
+%% Show graph alignment as a movie
+h = figure;
+h.Visible = 'off';
+M(size(pp,1)) = struct('cdata',[],'colormap',[]);
+for t = 1:size(pp,1)
+    Ap = zeros(n,n);
+    for i=1:n
+        for j=1:n
+            Ap(i,j) = A(pp(t,i), pp(t,j));
+        end
+    end
+    imagesc(Ap);
+    drawnow
+    M(t) = getframe;
+end
+% h.Visible = 'on';
+figure; movie(M);
 

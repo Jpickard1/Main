@@ -1,4 +1,4 @@
-function [theta, likelihoods] = NaiveKronFit(A, v, debug)
+function [theta, likelihoods] = NaiveKronFit(A, v, debug, n0)
 %NAIVEKRONFIT This function is slow but does a brute force evaluation of
 % the kron fit problem according to equation 5.5 in Jure Leskovec's thesis.
 %
@@ -22,6 +22,11 @@ k = length(size(A));
 theta = [0.9 0.6;
          0.6 0.1];
 
+if nargin == 4
+    theta = rand(n0, n0);
+end
+n0 = size(theta,1);
+
 maxItrs = 25;
 likelihoods = zeros(maxItrs, 1);
 for itr=1:maxItrs
@@ -37,8 +42,8 @@ for itr=1:maxItrs
     theta = theta + lr * gradients;
 
     lr = 0.95 * lr;
-    for i=1:2
-        for j=1:2
+    for i=1:n0
+        for j=1:n0
             if theta(i,j) > 0.9999; theta(i,j) = 0.9999; end
             if theta(i,j) < 0.0; theta(i,j) = 0.0; end
         end
@@ -47,7 +52,7 @@ for itr=1:maxItrs
     if v
         fprintf("CurrentLL: %d\n", l);
         fprintf("Gradient Updates:\n");
-        for i=1:4
+        for i=1:numel(theta)
             fprintf("    %d]  %f = %f + %f\n", i, theta(i), thetaOld(i), lr * gradients(i));
         end
         fprintf(' \n');

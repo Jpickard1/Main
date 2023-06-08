@@ -85,6 +85,33 @@ E = readAdjList(filePath, 4);
 A = sparse(E(:,1), E(:,2), 1);
 [theta, likelihoods] = NaiveKronFit(A, true, true);
 
+%% kronecker expansion
+
+kronExp = 4;
+eps = 0.1;
+theta = [1 1;
+         0 1];
+theta = rand(3,3);
+% theta = theta - eps; theta(theta < 0) = eps;
+
+P = theta;
+for i=1:kronExp
+    P = kron(theta,P);
+end
+A = (P > 0.03);
+% [p, pp] = firstPermutation(A, theta, 50000);
+
+[theta, likelihoods] = NaiveKronFit(A, true, true, 3);
+
+LP = theta;
+for i=1:kronExp
+    LP = kron(theta,LP);
+end
+
+figure; 
+subplot(1,3,1); imagesc(A); title('Kronecker Graph');
+subplot(1,3,2); imagesc(P); title('Kronecker Expansion');
+subplot(1,3,3); imagesc(LP); title('Learned Kronecker Expansion');
 
 
 %%
