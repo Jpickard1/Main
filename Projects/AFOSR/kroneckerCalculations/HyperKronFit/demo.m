@@ -63,7 +63,7 @@ theta = [1 1 1
 eps = 0.1;
 theta = theta - eps; theta(theta < 0) = eps;
 n0 = size(theta, 1);
-kronExp = 6;
+kronExp = 4;
 numE = 50 * n0^kronExp;
 
 theta = theta / sum(sum(theta));
@@ -83,7 +83,7 @@ theta = rand(3,3);
 eps = 0.05;
 theta = theta - eps; theta(theta < 0) = eps;
 n0 = size(theta, 1);
-kronExp = 5;
+kronExp = 4;
 numE = 50 * n0^kronExp;
 
 theta = theta / sum(sum(theta));
@@ -96,5 +96,16 @@ end
 A = full(A);
 figure; imagesc(A)
 
-[theta, likelihoods] = NaiveKronFit(A, true, true, 3);
+%% Using A from above
+[thetaLearned, likelihoods] = NaiveKronFit(A, true, true, 3);
+[thetaLearned2, likelihoods2] = NaiveKronFit(A, true, true, 3, thetaLearned);
+[thetaLearned3, likelihoods3] = NaiveKronFit(A, true, true, 3, thetaLearned2);
+
+ll = [likelihoods; likelihoods2; likelihoods3];
+figure; plot(ll);
+%%
+theta = [0.1385    0.1385    0.1385
+         0.1385    0.1385    0.0154
+         0.1385    0.0154    0.1385]
+
 

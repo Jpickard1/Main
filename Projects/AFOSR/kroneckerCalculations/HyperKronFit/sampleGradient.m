@@ -6,7 +6,7 @@ function [likelihood, gradient]=sampleGradient(A, theta, debug)
 % Date: June 7, 2023
  
 % TODO: rest
-itrs = 1000;
+itrs = 50000;
 
 n0 = size(theta,1);
 n = size(A,1);

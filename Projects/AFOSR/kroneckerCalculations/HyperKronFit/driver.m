@@ -142,3 +142,25 @@ p = samplePermutation(A,B)
 %%
 [theta, l] = NaiveKronFit(real(A), true)
 figure; plot(real(l))
+
+%% Code to fix kronGen
+
+clear; clc; close all;
+theta = rand(2,2);
+n0 = size(theta,1);
+theta = theta / sum(sum(theta));
+kronExp = 10000;
+disp(reshape(theta, [1, numel(theta)]))
+
+falls = randsrc(1,kronExp,[1:numel(theta); reshape(theta, [1, numel(theta)])]);
+fallIJ = zeros(numel(falls), 2);
+for f=1:numel(falls)
+    [fallIJ(f,1), fallIJ(f,2)] = ind2sub(size(theta), falls(f));
+end
+
+C = zeros(size(theta));
+for f=1:numel(falls)
+    C(fallIJ(f,1), fallIJ(f,2)) = C(fallIJ(f,1), fallIJ(f,2)) + 1;
+end
+disp(C / kronExp);
+disp(theta)
