@@ -7,10 +7,13 @@
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 7, 2023
-function [p]=firstPermutation(A, theta, maxItrs)
+function [p]=firstPermutation(A, theta, maxItrs, verbose)
 
-if nargin == 2
+if nargin < 3
     maxItrs = 10000;
+end
+if nargin < 4
+    verbose = false;
 end
 
 n = size(A,1);
@@ -25,12 +28,16 @@ while i < maxItrs
     u = rand();
     v = PPRtest(p, theta, A, j, k);
     if u > v
-        disp(swap); swap = swap + 1;
-        disp(p);
+        if verbose
+            disp(swap); swap = swap + 1;
+            disp(p);
+        end
         p([j k]) = p([k j]); % Swap elements j and k in the permutation
     end
     i = i + 1;
 end
-disp(p);
+if verbose
+    disp(p);
+end
 
 end

@@ -64,9 +64,20 @@ C = kron(A, kron(A,A))
 p = samplePermutation(C, A)
 
 %% Unit test naive kron fit
-A = erdos_renyi_network(64,nchoosek(64,2) * 0.5);
+A = erdos_renyi_network(64,round(nchoosek(64,2) * 0.1));
 [theta, likelihoods] = NaiveKronFit(A, true, true);
+figure; imagesc(A)
 figure; plot(real(likelihoods));
+
+%% Unit test naive kron fit on a kronecker hypergraph
+kronExp = 4;
+theta = [0.9 0.7
+         0.6 0.8];
+E = kronGen(theta, kronExp, 4 * size(theta,1)^kronExp);
+A = sparse(size(theta,1)^(kronExp+1), size(theta,1)^(kronExp+1));
+A(E(:,1), E(:,2)) = 1;
+figure; imagesc(A)
+
 
 %% Read in snap file
 filePath = "C:\Joshua/Software/snap/examples/as20graph.txt"
