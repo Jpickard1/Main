@@ -10,7 +10,7 @@
 function [p, P]=firstPermutation(A, theta, maxItrs, verbose)
 
 if nargin < 3
-    maxItrs = 2000;
+    maxItrs = 5000;
 end
 if nargin < 4
     verbose = false;

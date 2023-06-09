@@ -60,7 +60,7 @@ end
 theta = [1 1 1
          1 1 0
          1 0 1];
-eps = 0.1;
+eps = 0.01;
 theta = theta - eps; theta(theta < 0) = eps;
 n0 = size(theta, 1);
 kronExp = 4;
@@ -83,8 +83,8 @@ theta = rand(3,3);
 eps = 0.05;
 theta = theta - eps; theta(theta < 0) = eps;
 n0 = size(theta, 1);
-kronExp = 4;
-numE = 50 * n0^kronExp;
+kronExp = 5;
+numE = 200 * n0^kronExp;
 
 theta = theta / sum(sum(theta));
 E = kronGen(theta, kronExp, numE);
@@ -103,6 +103,17 @@ figure; imagesc(A)
 
 ll = [likelihoods; likelihoods2; likelihoods3];
 figure; plot(ll);
+
+thetaLearned3 = thetaLearned3 / sum(sum(thetaLearned3));
+E = kronGen(thetaLearned3, kronExp, numE);
+n = n0^kronExp;
+A = sparse(n, n);
+for i=1:size(E,1)
+    A(E(i,1), E(i,2)) = 1;
+end
+A = full(A);
+figure; imagesc(A)
+
 %%
 theta = [0.1385    0.1385    0.1385
          0.1385    0.1385    0.0154

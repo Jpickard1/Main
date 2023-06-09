@@ -6,7 +6,7 @@ function [likelihood, gradient]=sampleGradient(A, theta, debug)
 % Date: June 7, 2023
  
 % TODO: rest
-itrs = 50000;
+itrs = 5000;
 
 n0 = size(theta,1);
 n = size(A,1);
@@ -31,7 +31,7 @@ for e=1:size(E,1)
     likelihood = likelihood - log(1 - exp(eLL)) + eLL;
 end
 % Calculate gradient
-gradUpdate = ge;
+gradUpdate = ge; % p = 1:n;
 for e=1:size(E,1)
     eGrad = edgeGradient(n, theta, p(E(e,1)), p(E(e,2)));
     gradUpdate = gradUpdate + eGrad;

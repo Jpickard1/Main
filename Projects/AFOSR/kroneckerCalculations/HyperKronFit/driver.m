@@ -164,3 +164,101 @@ for f=1:numel(falls)
 end
 disp(C / kronExp);
 disp(theta)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% Debugging KronFit
+% 
+%   Known Problems:
+%       1. log likelihood evaluates as a positive quantity
+%       2. algorithm converges to the wrong values
+%
+% Auth: Joshua Pickard
+% Date: June 9, 2023
+
+%% 1. log likelihood evaluates as a positive quantity
+%
+%   Possible causes - I don't enforce the values of theta to be a
+%   probability distribution i.e. sum(sum(theta)) ~= 0 necessarily.
+%       Potential fix - I normalize theta prior to evaluating the log
+%       likelihood and gradients.
+%           This does fix the `symptom` but it is possible that there is 
+%           a deeper cause of the issue.
+
+
+[thetaLearned3, likelihoods3] = NaiveKronFit(A, true, true, 3, thetaLearned2);
+
+%% 2. algorithm converges to the wrong values
+%
+%   Possible causes: it doesn't evaluate the likelihood or gradient
+%   correctly.
+%       Potential fix - I am going to normalize theta before computing 
+%       the gradient of the log likelihood
+%
+%   Strategies and thorughts for checking issues in the convergence:
+%       - It does appear the algorithm converges, just to the wrong 
+%         value of theta
+%       - I can try inputting the generator theta and checking how far
+%         the code modifies it
+%       - I can try putting in theta far from the generator and checking
+%         for how it causes the algorithm to converge
+%       - I can try rotations/flips of theta
+%       - I can try theta near the generating theta
+%       - I can try theta0 = ones or theta0 = zeros
+%       
+
+clear; clc;
+% Make a graph
+theta = [1 1 1;         1 1 0;         1 0 1];
+% theta = [1 1 0; 1 1 0; 0 0 0];
+eps = 1e-3; theta = theta - eps; theta(theta < 0) = eps;
+n0 = size(theta, 1); kronExp = 5; numE = 50 * n0^kronExp;
+theta = theta / sum(sum(theta));
+E = kronGen(theta, kronExp, numE); n = n0^kronExp;
+A = sparse(n, n);
+for i=1:size(E,1); A(E(i,1), E(i,2)) = 1; end
+A = full(A);
+figure; imagesc(A)
+
+% theta0 = ones(3,3);
+theta0 = rand(3,3);
+[thetaLearned, likelihoods, thetas] = NaiveKronFit(A, true, true, 3, theta0, 100);
+
+
+thetaLearned / sum(sum(thetaLearned))
+theta
+
+
+
+
+
+
+
+
+
+
+
+
+
+

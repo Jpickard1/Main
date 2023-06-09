@@ -5,6 +5,8 @@ function [gradient] = edgeGradient(n, theta, u, v)
 %       jpic@umich.edu
 % Date: June 5, 2023
 
+theta = theta / sum(sum(theta));
+
 n0 = size(theta,1);
 kronExp = log(n) / log(n0);
 
@@ -32,7 +34,8 @@ for i=1:size(theta,1)
 
         % Set gradient if edge is not present
         % negGrad = c * (edgeP / theta(i,j)) / (1 - edgeP);
-        negGrad = -c * exp(theta(i,j)) / (1 - exp(eLL));
+        % negGrad = -c * exp(theta(i,j)) / (1 - exp(eLL));
+        negGrad = getNoEdgeDLL(i,j,theta,u,v,kronExp);
 
         gradient(i,j) = posGrad - negGrad;
         % gradient(i,j) = (c / theta(i,j)) - ((k - c) / (1 - theta(i,j)));
