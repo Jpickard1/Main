@@ -1,0 +1,48 @@
+Moment based estimation of stochastic Kronecker graph parameters
+================================================================
+
+These experiments relate to a paper by Art Owen on 
+how to estimate the parameters of a stochastic Kronecker
+graph by fitting graph moment functions.
+
+I originally worked on these experiments in 2009 (02-03, to be
+precise).  I'm now working a bit on extending them for
+Art's paper.  I guess this would be sent to WAW2011 at 
+Emory. (Ideally)
+
+So I'm starting with the old codes from 2009-02-03.  
+Summary of codes:
+
+:`rmat.m`: rmat code from John Gilbert, modified by me for
+  the difference in the types of parameters
+:`rmat.m`: rmat code from John Gilbert, which uses noise
+  in the parameters at each level.  (However, there is only
+  one set of noise used for the parameters, not continuous
+  noise as in Tammy's case.)
+    
+
+Summary of todos:
+
+1) Stochastic Kronecker generation:
+-- "ball-dropping" aka Gilbert 
+-- "ball-dropping with noise" aka Kolda
+-- "exact coin-flipping"
+
+2) Find a set of graphs to fit:
+
+-- wb-cs.stanford
+-- itdk0304
+-- hep-th (Leskovec)
+-- as20 (Leskovec)
+-- Gnutella (Leskovec)
+-- traces-networkA
+-- wikipedia
+-- uk-union
+-- twitter
+
+3) Fitting procedures
+
+grid-search
+fmincon
+scipy optimize
+

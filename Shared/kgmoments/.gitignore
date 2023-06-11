@@ -1,0 +1,6 @@
+*~
+build
+*.mex*
+*.png
+*.smat
+*.eps

@@ -1,0 +1,160 @@
+Legend:
+
+src: the result in the original graph
+fit: the result of a Kronecker graph with the fitted a,b,c
+est: the expected results from r; a,b,c
+
+Results trying to match triangles
+=================================
+
+graph               = ca-HepTh
+src vertices        =                 8638
+objective value     =              1.15304
+fitted params a,b,c = [1.0000 , 0.4063 , 0.3523]
+
+                  edges          hairpins           tripins         triangles
+  src             24806            297397           2096821             27869
+  fit             24421            242286           2000872               232
+  est             24806            248682           2096844               300
+
+graph               = cit-HepTh
+src vertices        =                27400
+objective value     =              1.20633
+fitted params a,b,c = [1.0000 , 0.6733 , 0.1072]
+
+                  edges          hairpins           tripins         triangles
+  src            352021          37101390      8.168497e+09           1478698
+  fit            347208          46290608      7.220909e+09            142928
+  est            352020          48812843      8.168599e+09            161695
+
+graph               = itdk0304
+src vertices        =               190914
+objective value     =              1.15719
+fitted params a,b,c = [1.0000 , 0.4859 , 0.2062]
+
+                  edges          hairpins           tripins         triangles
+  src            607610          22455979        1820409887            454804
+  fit            605969          26380010        1788740083             11446
+  est            607605          26581389        1820223666             12110
+
+graph               = p2p-Gnutella31
+src vertices        =                62561
+objective value     =             0.849043
+fitted params a,b,c = [1.0000 , 0.3226 , 0.5715]
+
+                  edges          hairpins           tripins         triangles
+  src            147878           1568170           8171988              2024
+  fit            167767           1546743           7943262               628
+  est            169235           1568152           8173145               598
+
+graph               = usroads-cc
+src vertices        =               126146
+objective value     =              1.29516
+fitted params a,b,c = [0.9800 , 0.0800 , 0.9800]
+
+                  edges          hairpins           tripins         triangles
+  src            161950            292425            115885              4113
+  fit             73011            119146             58932               108
+  est            129987            253882            121050               323
+
+graph               = wb-cs.stanford
+src vertices        =                 8929
+objective value     =             0.928984
+fitted params a,b,c = [1.0000 , 0.5585 , 0.0569]
+
+                  edges          hairpins           tripins         triangles
+  src             26320            934258          47529131             30608
+  fit             25954            886294          41971605              2160
+  est             26320            944330          47529038              2504
+
+graph               = wikipedia-20051105
+src vertices        =          1.59697e+06
+objective value     =              2.29197
+fitted params a,b,c = [1.0000 , 0.6800 , 0.0000]
+
+                  edges          hairpins           tripins         triangles
+  src          18539720      3.720084e+10      3.716973e+14          44667088
+  fit          33663093      3.417820e+10      9.499174e+13          13133170
+  est          33893940      3.512781e+10      1.004389e+14          14370420
+
+
+
+
+Results without including the triangle term
+===========================================
+
+These results drop the attempt to match the number of triangles.
+i.e. they just minimize over "edges, wedges, and tripins"
+
+graph               = ca-HepTh
+src vertices        =                 8638
+objective value     =             0.163847
+fitted params a,b,c = [1.0000 , 0.4063 , 0.3523]
+
+                  edges          hairpins           tripins         triangles
+  src             24806            297397           2096821             27869
+  fit             24315            239897           2029062               299
+  est             24808            248702           2096853               300
+
+graph               = cit-HepTh
+src vertices        =                27400
+objective value     =             0.309988
+fitted params a,b,c = [0.9814 , 0.7064 , 0.0001]
+
+                  edges          hairpins           tripins         triangles
+  src            352021          37101390      8.168497e+09           1478698
+  fit            236926          34056419      6.786484e+09             75267
+  est            243531          37167958      8.168484e+09             92024
+
+graph               = itdk0304
+src vertices        =               190914
+objective value     =             0.183618
+fitted params a,b,c = [0.9080 , 0.5778 , 0.1143]
+
+                  edges          hairpins           tripins         triangles
+  src            607610          22455979        1820409887            454804
+  fit            607059          26381480        1797029397              4812
+  est            607607          26578217        1820331588              5041
+
+graph               = p2p-Gnutella31
+src vertices        =                62561
+objective value     =             0.117483
+fitted params a,b,c = [0.6666 , 0.6693 , 0.1926]
+
+                  edges          hairpins           tripins         triangles
+  src            147878           1568170           8171988              2024
+  fit            148088           1387648           8126641                70
+  est            148227           1387635           8171989                70
+
+graph               = usroads-cc
+src vertices        =               126146
+objective value     =             0.344858
+fitted params a,b,c = [0.0732 , 1.0000 , 0.0178]
+
+                  edges          hairpins           tripins         triangles
+  src            161950            292425            115885              4113
+  fit             97661            162232             78359                 0
+  est            139562            232005            115885                 0
+
+graph               = wb-cs.stanford
+src vertices        =                 8929
+objective value     =            0.0103053
+fitted params a,b,c = [0.9429 , 0.6155 , 0.0000]
+
+                  edges          hairpins           tripins         triangles
+  src             26320            934258          47529131             30608
+  fit             25877            911360          48712164              1251
+  est             26320            943878          47529113              1426
+
+graph               = wikipedia-20051105
+src vertices        =          1.59697e+06
+objective value     =              1.59097
+fitted params a,b,c = [1.0000 , 0.6466 , 0.0000]
+
+                  edges          hairpins           tripins         triangles
+  src          18539720      3.720084e+10      3.716973e+14          44667088
+  fit          18450535      1.241297e+10      2.399826e+13           3995598
+  est          18539986      1.268700e+10      2.527853e+13           4311580
+
+
+
