@@ -16,7 +16,8 @@ kronExp = log(n) / log(n0);
 [e1, e2] = find(A ~= 0);
 E = [e1 e2];
 
-p = firstPermutation(A, theta);
+p = firstPermutation(A, theta); % p = 1:n; % For debugging purposes
+if debug; disp(p); end
 likelihoods = zeros(itrs, 1);
 gradients   = cell(itrs, 1);
 
@@ -31,7 +32,7 @@ for e=1:size(E,1)
     likelihood = likelihood - log(1 - exp(eLL)) + eLL;
 end
 % Calculate gradient
-gradUpdate = ge; % p = 1:n;
+gradUpdate = ge;
 for e=1:size(E,1)
     eGrad = edgeGradient(n, theta, p(E(e,1)), p(E(e,2)));
     gradUpdate = gradUpdate + eGrad;
@@ -92,5 +93,5 @@ for i=1:itrs
     gradient = gradient + gradients{i};
 end
 gradient = gradient ./ itrs;
-
+if debug; disp(p); end
 end

@@ -13,6 +13,7 @@ elseif nargin == 2
     debug = false;
 end
 
+eps = 1e-4;
 lr = 1e-5;
 
 n = size(A,1);
@@ -47,8 +48,10 @@ for itr=1:maxItrs
     % lr = 0.95 * lr;
     for i=1:n0
         for j=1:n0
-            if theta(i,j) > 0.9999; theta(i,j) = 0.9999; end
-            if theta(i,j) < 0.0; theta(i,j) = 0.0; end
+            if theta(i,j) > 1 - eps; theta(i,j) = 1 - eps; end
+            if theta(i,j) < eps
+                theta(i,j) = eps;
+            end
         end
     end
 
@@ -64,7 +67,7 @@ for itr=1:maxItrs
     end
 
     % Outputs
-    if mod(itr, 10) == 0
+    if mod(itr, 50) == 0
         disp(itr);
         figure; plot(real(likelihoods));
         pause(1);

@@ -12,6 +12,7 @@ kronExp = log(n) / log(n0);
 
 % edgeP = edgeProbability(n, theta, u, v);
 eLL = edgeLL(n, theta, u, v);
+noEdgeLL = log(1 - exp(eLL));
 
 % Count the number of times an entry of theta is used
 count = zeros(size(theta));
@@ -35,7 +36,9 @@ for i=1:size(theta,1)
         % Set gradient if edge is not present
         % negGrad = c * (edgeP / theta(i,j)) / (1 - edgeP);
         % negGrad = -c * exp(theta(i,j)) / (1 - exp(eLL));
-        negGrad = getNoEdgeDLL(i,j,theta,u,v,kronExp);
+        % negGrad = getNoEdgeDLL(i,j,theta,u,v,kronExp);
+        % negGrad = - c / (exp(theta(i,j)) * (1 - noEdgeLL));
+        negGrad = getNoEdgeDLL2(theta, count, i, j, eLL);
 
         gradient(i,j) = posGrad - negGrad;
         % gradient(i,j) = (c / theta(i,j)) - ((k - c) / (1 - theta(i,j)));

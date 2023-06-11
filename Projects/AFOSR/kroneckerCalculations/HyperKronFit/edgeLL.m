@@ -1,6 +1,9 @@
 function [LL] = edgeLL(n, theta, u, v)
 % Evaluates equation 5.2
 %
+%   u is row index
+%   v is column index
+%
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 6, 2023
