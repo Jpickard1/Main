@@ -226,6 +226,7 @@ disp(theta)
 %       - I can try rotations/flips of theta
 %       - I can try theta near the generating theta
 %       - I can try theta0 = ones or theta0 = zeros
+%       - I could work an example by hand
 %       
 
 clear; clc;
@@ -250,15 +251,100 @@ thetaLearned / sum(sum(thetaLearned))
 theta
 
 
+%% Example by hand
+clear; close all; clc
+eps = 1e-2;
+thetaG = [1-eps 1-eps; 1-eps eps];
+A = kron(thetaG,kron(thetaG,kron(thetaG, kron(thetaG, thetaG))));
+A = (A>0.5);
+figure; imagesc(A);
+theta0 = 0.5 * ones(2,2);
+theta0 = rand(2,2);
+[thetaLearned, likelihoods, thetas] = NaiveKronFit(A, true, true, 3, theta0, 300);
+% [thetaLearned2, likelihoods, thetas] = NaiveKronFit(A, true, true, 3, thetaLearned, 100);
+% theta0 = sym('t_%d%d',[2 2]);
+
+%% Check getEmptyGrapGrad and getNoEdgeDLL2 are equivalent
+theta = theta0;
+
+R1 = getEmptyGraphGrad(n,theta);
+R2 = zeros(size(R1));
+for u=1:n
+    for v=1:n
+        theta = theta / sum(sum(theta));
+        n0 = size(theta,1);
+        kronExp = log(n) / log(n0);
+        % edgeP = edgeProbability(n, theta, u, v);
+        eLL = edgeLL(n, theta, u, v);
+        noEdgeLL = log(1 - exp(eLL));
+        % Count the number of times an entry of theta is used
+        count = zeros(size(theta));
+        for i=1:kronExp
+            i1 = mod(floor((u - 1)/ n0^(i-1)), n0) + 1;
+            i2 = mod(floor((v - 1)/ n0^(i-1)), n0) + 1;
+            count(i1, i2) = count(i1, i2) + 1;
+        end
+        gradient = zeros(size(theta));
+        % Calculate gradient of log likelihood function
+        for i=1:size(theta,1)
+            for j=1:size(theta,2)
+                % Count the number of times (i,j) was used
+                c = count(i,j);
+                negGrad = getNoEdgeDLL2(theta, count, i, j, eLL);
+                gradient(i,j) = negGrad;
+                % gradient(i,j) = (c / theta(i,j)) - ((k - c) / (1 - theta(i,j)));
+            end
+        end
+        R2 = R2 + gradient;
+    end
+end
+
+%% Graph Alignment
+kronExp = 4;
+P = thetaG;
+for i=1:kronExp
+    P = kron(thetaG,P);
+end
+[p, pp] = firstPermutation(A, thetaG, 75000);
+
+% Check graph alignment of A into P using the perms
+n = size(A,1);
+Ap = zeros(n,n);
+for i=1:n
+    for j=1:n
+        Ap(i,j) = A(p(i), p(j));
+    end
+end
+
+figure; 
+subplot(1,3,1); imagesc(A); title('Kronecker Graph');
+subplot(1,3,2); imagesc(P); title('Kronecker Expansion');
+subplot(1,3,3); imagesc(Ap); title('Aligned Graph');
+
+h = figure;
+% h.Visible = 'off';
+M(size(pp,1)) = struct('cdata',[],'colormap',[]);
+for t = 1:size(pp,1)
+    Ap = zeros(n,n);
+    for i=1:n
+        for j=1:n
+            Ap(i,j) = A(pp(t,i), pp(t,j));
+        end
+    end
+    imagesc(Ap);
+    drawnow
+    M(t) = getframe;
+end
 
 
-
-
-
-
-
-
-
+%%
+clear all; clc; close all;
+% filePath = "C:\Joshua/Software/snap/examples/as20graph.txt"
+filePath = "C:\Users\picka\Documents/software/snap/examples/as20graph.txt";
+E = readAdjList(filePath, 4);
+A = sparse(E(:,1), E(:,2), 1);
+theta0 = [0.9 0.6; 0.6 0.1];
+[theta, likelihoods] = NaiveKronFit(A, true, true, 2, theta0, 10);
 
 
 

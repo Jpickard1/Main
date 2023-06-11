@@ -22,7 +22,9 @@ for i=1:kronExp
     P = kron(theta,P);
 end
 A = (P > 0.25);
-[p, pp] = firstPermutation(A, theta, 75000);
+tic;
+[p, pp] = firstPermutation(A, theta, 500000, false);
+t1 = toc;
 
 % Check graph alignment of A into P using the perms
 n = size(A,1);
