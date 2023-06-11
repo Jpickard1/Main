@@ -10,7 +10,7 @@
 function [p, P]=firstPermutation(A, theta, maxItrs, verbose)
 
 if nargin < 3
-    maxItrs = 5000;
+    maxItrs = 10000;
 end
 if nargin < 4
     verbose = false;
@@ -30,8 +30,12 @@ while i < maxItrs
     k = randi([1 n]);
 
     u = rand();
-    v = PPRtest(p, theta, A, j, k);
-    if u > v
+    % v1 = PPRtest(p, theta, A, j, k);
+    v2 = PPRtest2(p, theta, A, j, k);
+    % disp(log(v1));
+    % disp(v2);
+    % if u > v1
+    if log(u) > v2
         if verbose
             disp(swap); swap = swap + 1;
             disp(p);
