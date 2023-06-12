@@ -31,13 +31,15 @@ ge = getEmptyHypergraphGrad(n, theta);
 % Calculate log likelihood
 likelihood = le;
 for e=1:size(E,1)
-    eLL = hedgeLL(n, theta, p(E(e,1)), p(E(e,2)));
+    idxs = p(E(e,:));
+    eLL = hedgeLLapx(n, theta, idxs);
     likelihood = likelihood - log(1 - exp(eLL)) + eLL;
 end
 % Calculate gradient
 gradUpdate = ge;
 for e=1:size(E,1)
-    eGrad = hedgeGradient(n, theta, p(E(e,1)), p(E(e,2)));
+    idxs = p(E(e,:));
+    eGrad = hedgeGradient(n, theta, idxs);
     gradUpdate = gradUpdate + eGrad;
 end
 likelihoods(1) = likelihood;

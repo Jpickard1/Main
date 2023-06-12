@@ -64,8 +64,8 @@ hContainsUV = find(sum((E == v) + (E == u), 2) > 0);
 
 for i=1:length(hContainsUV)
     idx = E(hContainsUV(i), :);
-    p1idx = num2cell(p1(idx));
-    p2idx = num2cell(p2(idx));
+    p1idx = (p1(idx));
+    p2idx = (p2(idx));
 
     eLLp1 = hedgeLLapx(n, theta, p1idx);
     eLLp2 = hedgeLLapx(n, theta, p2idx);
