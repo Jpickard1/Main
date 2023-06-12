@@ -17,7 +17,7 @@ kronExp = log(n) / log(n0);
 
 LL = 0;
 for i=1:kronExp
-    idx = mod(floow((idxs - 1) / n0^(i - 1)), n0) + 1;
+    idx = mod(floor((idxs - 1) / n0^(i - 1)), n0) + 1;
     idx = cell2mat(idx);
     LL = LL + log(theta(idx{:}));
 end

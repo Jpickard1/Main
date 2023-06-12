@@ -17,12 +17,9 @@ k = length(size(theta));
 kronExp = log(n) / log(n0);
 
 % precompute edge set as a matrix
-idxs = cell(1, k);
-linIdx = find(A > 0);
-[idxs{:}] = ind2sub(size(A), linIdx);
-E = cell2mat(idxs);
+E = getHyperedges(A);
 
-p = firstPermutation(A, theta);                                            % This needs to be written 
+p = firstPermutationH(A, theta);                                            % This needs to be written 
 if debug; disp(p); end
 likelihoods = zeros(itrs, 1);
 gradients   = cell(itrs, 1);

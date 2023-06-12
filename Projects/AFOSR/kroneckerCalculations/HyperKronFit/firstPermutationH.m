@@ -1,5 +1,5 @@
-function [p, P]=firstPermutation(A, theta, maxItrs, verbose)
-%FIRSTPERMUTATION
+function [p, P]=firstPermutationH(A, theta, maxItrs, verbose)
+%FIRSTPERMUTATIONH
 %
 %   This sets the first permutation for the first iteration of the sample
 %   gradient algorithm. Subsequent updates of the permutation are handled
@@ -7,7 +7,7 @@ function [p, P]=firstPermutation(A, theta, maxItrs, verbose)
 %                   
 % Auth: Joshua Pickard
 %       jpic@umich.edu
-% Date: June 7, 2023
+% Date: June 12, 2023
 
 if nargin < 3
     maxItrs = 10000;
@@ -30,11 +30,7 @@ while i < maxItrs
     k = randi([1 n]);
 
     u = rand();
-    % v1 = PPRtest(p, theta, A, j, k);
-    v2 = PPRtest2(p, theta, A, j, k);
-    % disp(log(v1));
-    % disp(v2);
-    % if u > v1
+    v2 = hPPRtest2(p, theta, A, j, k);
     if log(u) > v2
         if verbose
             disp(swap); swap = swap + 1;

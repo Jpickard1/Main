@@ -351,7 +351,9 @@ theta0 = [0.9 0.6; 0.6 0.1];
 HG = HAT.uniformErdosRenyi(27, 10, 3);
 A = HG.adjTensor
 A = (A > 0)
+theta = rand(3,3,3);
 
+HyperKronFit(A, v, true, 3, theta, 10)
 
 inputs = repmat({[0,1]}, 1, k);
 
@@ -376,7 +378,8 @@ figure;
 scatter3(data(:,1),data(:,2),data(:,3),40,data(:,4),'filled')    % draw the scatter plot
 
 
-%% 
+%%
+
 pts = 100000;
 data = zeros(pts, 4);
 for i=1:pts
