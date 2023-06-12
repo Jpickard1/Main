@@ -1,5 +1,8 @@
-function [likelihood, gradient]=sampleGradient(A, theta, debug)
-% SAMPLEGRADIENT
+function [likelihood, gradient]=sampleGradientH(A, theta, debug)
+% SAMPLEGRADIENTH The hypergraph implementation of sample gradient.
+%
+%   This function aproximates the gradient of each parameter in the Kronecker
+%   initiator tensor.
 %                   
 % Auth: Joshua Pickard
 %       jpic@umich.edu
@@ -10,31 +13,34 @@ itrs = 5000;
 
 n0 = size(theta,1);
 n = size(A,1);
+k = length(size(theta));
 kronExp = log(n) / log(n0);
 
 % precompute edge set as a matrix
-[e1, e2] = find(A ~= 0);
-E = [e1 e2];
+idxs = cell(1, k);
+linIdx = find(A > 0);
+[idxs{:}] = ind2sub(size(A), linIdx);
+E = cell2mat(idxs);
 
-p = firstPermutation(A, theta); % p = 1:n; % For debugging purposes
+p = firstPermutation(A, theta);                                            % This needs to be written 
 if debug; disp(p); end
 likelihoods = zeros(itrs, 1);
 gradients   = cell(itrs, 1);
 
 % Calculations for first permutation
-le = getEmptyGraphLL(n, theta);
-ge = getEmptyGraphGrad(n, theta);
+le = getEmptyHypergraphLL(n, theta);
+ge = getEmptyHypergraphGrad(n, theta);
 
 % Calculate log likelihood
 likelihood = le;
 for e=1:size(E,1)
-    eLL = edgeLL(n, theta, p(E(e,1)), p(E(e,2)));
+    eLL = hedgeLL(n, theta, p(E(e,1)), p(E(e,2)));
     likelihood = likelihood - log(1 - exp(eLL)) + eLL;
 end
 % Calculate gradient
 gradUpdate = ge;
 for e=1:size(E,1)
-    eGrad = edgeGradient(n, theta, p(E(e,1)), p(E(e,2)));
+    eGrad = hedgeGradient(n, theta, p(E(e,1)), p(E(e,2)));
     gradUpdate = gradUpdate + eGrad;
 end
 likelihoods(1) = likelihood;
@@ -72,7 +78,7 @@ for t=2:itrs
             %   edges that have changed (i.e. edges with endpoints u and v)
             gradUpdate = ge;
             for e=1:size(E,1)
-                eGrad = edgeGradient(n, theta, p(E(e,1)), p(E(e,2)));
+                eGrad = hedgeGradient(n, theta, p(E(e,1)), p(E(e,2)));
                 gradUpdate = gradUpdate + eGrad;
             end
             gradients{t} = real(gradUpdate);

@@ -346,5 +346,54 @@ A = sparse(E(:,1), E(:,2), 1);
 theta0 = [0.9 0.6; 0.6 0.1];
 [theta, likelihoods] = NaiveKronFit(A, true, true, 2, theta0, 10);
 
+%% Kronecker Hypergraph
 
+HG = HAT.uniformErdosRenyi(27, 10, 3);
+A = HG.adjTensor
+A = (A > 0)
+
+
+inputs = repmat({[0,1]}, 1, k);
+
+outputs = cell(1, k)
+[outputs{:}] = ind2sub(size(A), linIdx)
+
+(inputs{:})
+
+[outputs{:}] = ndgrid(inputs{:})
+
+%% 
+
+eps = 1e-3;
+theta = ones(2,2,2);
+theta(2,2,2) = 0;
+theta = theta - eps; theta(theta < 0) = eps;
+A = superkron(theta, superkron(theta, theta))
+linIdxs = 1:size(A,1)^ndims(A);
+[x, y, z] = ind2sub(size(A), linIdxs');
+data = [x, y, z, reshape(A,[numel(A), 1])]
+figure;
+scatter3(data(:,1),data(:,2),data(:,3),40,data(:,4),'filled')    % draw the scatter plot
+
+
+%% 
+pts = 100000;
+data = zeros(pts, 4);
+for i=1:pts
+    x = rand(2,1);
+    y = rand(2,1);
+    data(i,:) = kron(x,y);
+end
+
+figure;
+labels = ["x_1","x_2","x_3","x_4"];
+[h,ax] = plotmatrix(data);                        % create a 4 x 4 matrix of plots
+for i = 1:4                                       % label the plots
+  xlabel(ax(4,i), labels{i});
+  ylabel(ax(i,1), labels{i});
+end
+
+figure;
+scatter3(data(:,1),data(:,2),data(:,3),40,data(:,4),'filled')    % draw the scatter plot
+xlabel("x_1"); ylabel("x_2"); zlabel("x_3"); title('Color is x_4')
 
