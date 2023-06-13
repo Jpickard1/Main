@@ -14,7 +14,7 @@ elseif nargin == 2
 end
 
 eps = 1e-4;
-lr = 1e-7;
+lr = 1e-5;
 
 n = size(A,1);
 k = length(size(A));
@@ -61,7 +61,7 @@ for itr=1:maxItrs
         fprintf("CurrentLL: %d\n", l);
         fprintf("Gradient Updates:\n");
         for i=1:numel(theta)
-            fprintf("    %d]  %f = %f + %f\n", i, theta(i), thetaOld(i), lr * gradients(i));
+            fprintf("    %d]  %f = %f + %f  \t Grad:  %f\n", i, theta(i), thetaOld(i), lr * gradients(i), gradients(i));
         end
         fprintf(' \n');
     end
