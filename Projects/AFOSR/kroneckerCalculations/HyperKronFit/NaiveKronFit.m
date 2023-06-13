@@ -1,4 +1,4 @@
-function [theta, likelihoods, thetas] = NaiveKronFit(NameValueArgs, v, debug, n0, theta0, maxItrs)
+function [theta, likelihoods, thetas] = NaiveKronFit(NameValueArgs)
 %NAIVEKRONFIT This function is slow but does a brute force evaluation of
 % the kron fit problem according to equation 5.5 in Jure Leskovec's thesis.
 %

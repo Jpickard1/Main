@@ -72,7 +72,7 @@ figure; plot(real(likelihoods));
 %% Unit test naive kron fit on a kronecker hypergraph
 kronExp = 4;
 theta = [0.9 0.7
-         0.6 0.8];
+         0.6 0.8]; theta = theta / sum(theta, 'all');
 E = kronGen(theta, kronExp, 4 * size(theta,1)^kronExp);
 A = sparse(size(theta,1)^(kronExp+1), size(theta,1)^(kronExp+1));
 A(E(:,1), E(:,2)) = 1;
@@ -402,4 +402,30 @@ end
 figure;
 scatter3(data(:,1),data(:,2),data(:,3),40,data(:,4),'filled')    % draw the scatter plot
 xlabel("x_1"); ylabel("x_2"); zlabel("x_3"); title('Color is x_4')
+
+%% Synthetic Test Graph 1
+theta0 = [0.9 0.6;
+          0.6 0.3];
+n0 = 2;
+kronExp = 14;
+numE = 10 * n0^kronExp;
+theta00 = theta0 / sum(theta0, 'all');
+
+% Generate kronecker graph
+E = kronGen(theta00, kronExp, numE);
+writematrix(E, 'syntheticTestGraph4.txt', 'Delimiter', '\t')
+% Graph 1 has kronExp = 8
+% Graph 2 has kronExp = 10
+% Graph 3 has kronExp = 12
+% Graph 4 has kronExp = 14
+
+n = n0^kronExp;
+A0 = sparse(n, n);
+for i=1:size(E,1)
+    A0(E(i,1), E(i,2)) = 1;
+end
+A0 = full(A0);
+
+figure; imagesc(A0)
+
 
