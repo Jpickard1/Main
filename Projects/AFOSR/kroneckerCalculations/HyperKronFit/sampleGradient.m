@@ -1,12 +1,9 @@
-function [likelihood, gradient]=sampleGradient(A, theta, debug)
+function [likelihood, gradient]=sampleGradient(A, theta, itrs, firstPermItrs, debug)
 % SAMPLEGRADIENT
 %                   
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 7, 2023
- 
-% TODO: rest
-itrs = 50000; debug = false;
 
 n0 = size(theta,1);
 n = size(A,1);
@@ -16,7 +13,7 @@ kronExp = log(n) / log(n0);
 [e1, e2] = find(A ~= 0);
 E = [e1 e2];
 
-p = firstPermutation(A, theta); % p = 1:n; % For debugging purposes
+p = firstPermutation(A, theta, firstPermItrs); % p = 1:n; % For debugging purposes
 if debug; disp(p); end
 likelihoods = zeros(itrs, 1);
 gradients   = cell(itrs, 1);

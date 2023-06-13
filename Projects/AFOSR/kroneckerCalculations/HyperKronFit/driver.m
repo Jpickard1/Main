@@ -345,6 +345,8 @@ filePath = "C:\Joshua/Software/snap/examples\as20graph.txt";
 E = readAdjList(filePath, 4);
 A = sparse(E(:,1), E(:,2), 1);
 theta0 = [0.9 0.6; 0.6 0.1];
+theta0 = [0.895411 0.596948;
+          0.596948 0.099491]
 [theta, likelihoods] = NaiveKronFit(A, true, true, 2, theta0, 10);
 
 %% Kronecker Hypergraph

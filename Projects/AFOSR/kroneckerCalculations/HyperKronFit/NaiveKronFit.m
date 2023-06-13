@@ -1,49 +1,110 @@
-function [theta, likelihoods, thetas] = NaiveKronFit(A, v, debug, n0, theta0, maxItrs)
+function [theta, likelihoods, thetas] = NaiveKronFit(NameValueArgs, v, debug, n0, theta0, maxItrs)
 %NAIVEKRONFIT This function is slow but does a brute force evaluation of
 % the kron fit problem according to equation 5.5 in Jure Leskovec's thesis.
+%
+%   Arguments:
+%       - A: adjacency matrix
+%       - theta0: initial guess for kronecker parameters
+%       - maxItrs: maximum number of iterations
+%       - gradSamples: number of samples per gradient approximation
+%       - firstPermItrs: number of permutations to try initially
+%       - learningRate (lr): learning rate for each gradient step
+%       - eps: minimum distance of values in theta from 0 and 1 (default
+%       1e-2)
+%       - verbose (v): flag to surpress or generate output (default is true)
+%       - debug: flag for debugging
+%       - plotting (p): flag to plot likelihood function every 50
+%       iterations
 %
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 5, 2023
 
-if nargin == 1
-    v = false;
+%% Parse parameters
+arguments
+    NameValueArgs.A;
+    NameValueArgs.theta0;
+    NameValueArgs.maxItrs;
+    NameValueArgs.gradSamples;
+    NameValueArgs.firstPermItrs;
+    NameValueArgs.learningRate;
+    NameValueArgs.eps;
+    NameValueArgs.debug;
+    NameValueArgs.v;
+    NameValueArgs.verbose;
+    NameValueArgs.p;
+end
+A = NameValueArgs.A;
+theta = NameValueArgs.theta0;
+if isfield(NameValueArgs, 'maxItrs')
+    maxItrs = NameValueArgs.maxItrs;
+else
+    maxItrs = 5;
+end
+if isfield(NameValueArgs, 'gradSamples')
+    gradSamples = NameValueArgs.gradSamples;
+else
+    gradSamples = 100000;
+end
+if isfield(NameValueArgs, 'firstPermItrs')
+    firstPermItrs = NameValueArgs.firstPermItrs;
+else
+    firstPermItrs = 10000;
+end
+if isfield(NameValueArgs, 'learningRate')
+    learningRate = NameValueArgs.learningRate;
+elseif isfield(NameValueArgs, 'lr')
+    learningRate = NameValueArgs.lr;
+else
+    learningRate = 1e-7;
+end
+if isfield(NameValueArgs, 'eps')
+    eps = NameValueArgs.eps;
+else
+    eps = 1e-2;
+end
+if isfield(NameValueArgs, 'debug')
+    debug = NameValueArgs.debug;
+else
     debug = false;
-elseif nargin == 2
-    debug = false;
+end
+if isfield(NameValueArgs, 'verbose')
+    verbose = NameValueArgs.verbose;
+elseif isfield(NameValueArgs, 'v')
+    verbose = NameValueArgs.v;
+else
+    verbose = false;
+end
+if isfield(NameValueArgs, 'p')
+    plotOn = NameValueArgs.p;
+else
+    plotOn = false;
 end
 
-eps = 1e-4;
-lr = 1e-5;
 
-n = size(A,1);
-k = length(size(A));
-
-% theta = rand(2 * ones(1, k));
-theta = [0.9 0.6;
-         0.6 0.1];
-
-if nargin == 4
-    theta = rand(n0, n0);
+% Output arguments
+if nargout == 3
+    thetas = cell(maxItrs + 1, 1);
+    thetas{1} = theta;
 end
-if nargin >= 5
-    theta = theta0;
-end
-n0 = size(theta,1);
-if nargin < 6; maxItrs = 5; end
-if nargout == 3; thetas = cell(maxItrs + 1, 1); thetas{1} = theta; end
+
+%% Execute code
+n0 = size(theta, 1);
+n  = size(A,1);
+k  = length(size(A));
+
 likelihoods = zeros(maxItrs, 1);
 for itr=1:maxItrs
-    if v
+    if verbose
         fprintf("Itr: %d ]\n", itr);
     end
     
     % Evaluate likelihood and gradient
     % [l, gradients] = evaluateGradient(A, theta, debug);
-    [l, gradients] = sampleGradient(A, theta, debug);
+    [l, gradients] = sampleGradient(A, theta, gradSamples, firstPermItrs, debug);
     % Update model parameters
     thetaOld = theta;
-    theta = theta + lr * gradients;
+    theta = theta + learningRate * gradients;
 
     % lr = 0.95 * lr;
     for i=1:n0
@@ -55,25 +116,25 @@ for itr=1:maxItrs
         end
     end
 
-    % theta = theta / sum(reshape(theta,[numel(theta), 1]));
-
-    if v
+    if verbose
         fprintf("CurrentLL: %d\n", l);
         fprintf("Gradient Updates:\n");
         for i=1:numel(theta)
-            fprintf("    %d]  %f = %f + %f  \t Grad:  %f\n", i, theta(i), thetaOld(i), lr * gradients(i), gradients(i));
+            fprintf("    %d]  %f = %f + %f  \t Grad:  %f\n", i, theta(i), thetaOld(i), learningRate * gradients(i), gradients(i));
         end
         fprintf(' \n');
     end
 
     % Outputs
-    if mod(itr, 50) == 0
+    if plotOn && mod(itr, 50) == 0
         disp(itr);
         figure; plot(real(likelihoods));
         pause(1);
     end
     likelihoods(itr) = l;
-    if nargout == 3; thetas{itr + 1} = theta; end
+    if nargout == 3
+        thetas{itr + 1} = theta;
+    end
 end
 
 end
