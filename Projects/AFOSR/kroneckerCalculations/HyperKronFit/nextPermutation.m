@@ -22,7 +22,7 @@ v = PPRtest2(p, theta, A, j, k);
 
 % Check if the updated permutation is accepted
 accept = false;
-if u > v
+if log(u) > v
     p([j k]) = p([k j]); % Swap elements j and k in the permutation
     accept = true;
 end
