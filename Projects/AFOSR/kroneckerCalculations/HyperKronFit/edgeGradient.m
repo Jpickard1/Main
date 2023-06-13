@@ -1,11 +1,11 @@
-function [gradient] = edgeGradientapx(n, theta, u, v)
+function [gradient] = edgeGradient(n, theta, u, v)
 % Evaluates the gradient of theta with respect to a single edge
 %
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 5, 2023
 
-theta = theta / sum(sum(theta));
+% theta = theta / sum(sum(theta));
 
 n0 = size(theta,1);
 kronExp = log(n) / log(n0);
@@ -31,7 +31,8 @@ for i=1:size(theta,1)
 
         % Set gradient if edge is present
         % posGrad = (c * theta(i,j)^(c - 1));
-        posGrad = c / exp(theta(i,j));
+        % posGrad = c / exp(theta(i,j));
+        posGrad = c / (theta(i,j));
 
         % Set gradient if edge is not present
         % negGrad = c * (edgeP / theta(i,j)) / (1 - edgeP);

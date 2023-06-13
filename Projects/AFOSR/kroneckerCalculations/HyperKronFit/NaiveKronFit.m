@@ -14,7 +14,7 @@ elseif nargin == 2
 end
 
 eps = 1e-4;
-lr = 1e-5;
+lr = 1e-7;
 
 n = size(A,1);
 k = length(size(A));

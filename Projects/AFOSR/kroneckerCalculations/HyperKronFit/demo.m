@@ -23,7 +23,7 @@ for i=1:kronExp
 end
 A = (P > 0.25);
 tic;
-[p, pp] = firstPermutation(A, theta, 50000, false);
+[p, pp] = firstPermutation(A, theta, 175000, false);
 t1 = toc;
 
 % Check graph alignment of A into P using the perms
@@ -99,16 +99,31 @@ A = full(A);
 figure; imagesc(A)
 
 %% Using A from above
-theta = rand(3,3);
-[thetaLearned, likelihoods] = NaiveKronFit(A, true, true, 3, theta, 25);
-[thetaLearned2, likelihoods2] = NaiveKronFit(A, true, true, 3, thetaLearned);
-[thetaLearned3, likelihoods3] = NaiveKronFit(A, true, true, 3, thetaLearned2);
+theta0 = rand(3,3);
+[thetaLearned, likelihoods] = NaiveKronFit(A, true, true, 3, theta0, 25);
+[thetaLearned2, likelihoods2] = NaiveKronFit(A, true, true, 3, thetaLearned, 25);
+[thetaLearned3, likelihoods3] = NaiveKronFit(A, true, true, 3, thetaLearned2, 25);
+[thetaLearned4, likelihoods4] = NaiveKronFit(A, true, true, 3, thetaLearned3, 25);
+[thetaLearned5, likelihoods5] = NaiveKronFit(A, true, true, 3, thetaLearned4, 100);
+[thetaLearned6, likelihoods6] = NaiveKronFit(A, true, true, 3, thetaLearned5, 200);
+[thetaLearned7, likelihoods7] = NaiveKronFit(A, true, true, 3, thetaLearned6, 50);
 
-ll = [likelihoods; likelihoods2; likelihoods3];
+ll = [likelihoods; likelihoods2; likelihoods3; likelihoods4; likelihoods5; likelihoods6; likelihoods7];
 figure; plot(ll);
 
-thetaLearned3 = thetaLearned3 / sum(sum(thetaLearned3));
-E = kronGen(thetaLearned3, kronExp, numE);
+thetaLearnedF = thetaLearned7 / sum(sum(thetaLearned7));
+E = kronGen(theta, kronExp, numE);
+n = n0^kronExp;
+A = sparse(n, n);
+for i=1:size(E,1)
+    A(E(i,1), E(i,2)) = 1;
+end
+A = full(A);
+figure; imagesc(A)
+
+
+thetaLearnedF = thetaLearned7 / sum(sum(thetaLearned7));
+E = kronGen(thetaLearnedF, kronExp, numE);
 n = n0^kronExp;
 A = sparse(n, n);
 for i=1:size(E,1)
