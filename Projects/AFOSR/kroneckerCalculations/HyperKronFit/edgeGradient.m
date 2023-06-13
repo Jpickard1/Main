@@ -1,4 +1,4 @@
-function [gradient] = edgeGradient(n, theta, u, v)
+function [gradient] = edgeGradientapx(n, theta, u, v)
 % Evaluates the gradient of theta with respect to a single edge
 %
 % Auth: Joshua Pickard
@@ -11,7 +11,7 @@ n0 = size(theta,1);
 kronExp = log(n) / log(n0);
 
 % edgeP = edgeProbability(n, theta, u, v);
-eLL = edgeLL(n, theta, u, v);
+eLL = edgeLLapx(n, theta, u, v);
 noEdgeLL = log(1 - exp(eLL));
 
 % Count the number of times an entry of theta is used

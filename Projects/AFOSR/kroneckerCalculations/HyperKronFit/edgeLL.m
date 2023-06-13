@@ -8,7 +8,7 @@ function [LL] = edgeLL(n, theta, u, v)
 %       jpic@umich.edu
 % Date: June 6, 2023
 
-theta = theta / sum(sum(theta));
+% theta = theta / sum(sum(theta));
 
 n0 = size(theta,1);
 kronExp = log(n) / log(n0);

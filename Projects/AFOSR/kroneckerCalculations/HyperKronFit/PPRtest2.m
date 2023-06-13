@@ -14,7 +14,7 @@ function [llDiff] = PPRtest2(p, theta, A, u, v)
 %       jpic@umich.edu
 % Date: June 5, 2023
 
-theta = theta / sum(sum(theta));
+% theta = theta / sum(sum(theta));
 
 l1 = 0;                         % Likelihood of permutation 1
 l2 = 0;                         % Likelihood of permutation 2

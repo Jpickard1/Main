@@ -340,7 +340,8 @@ end
 %%
 clear all; clc; close all;
 % filePath = "C:\Joshua/Software/snap/examples/as20graph.txt"
-filePath = "C:\Users\picka\Documents/software/snap/examples/as20graph.txt";
+% filePath = "C:\Users\picka\Documents/software/snap/examples/as20graph.txt";
+filePath = "C:\Joshua/Software/snap/examples\as20graph.txt";
 E = readAdjList(filePath, 4);
 A = sparse(E(:,1), E(:,2), 1);
 theta0 = [0.9 0.6; 0.6 0.1];

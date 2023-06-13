@@ -7,7 +7,7 @@ function emptyGradient = getEmptyGraphGrad(n, theta)
 %       jpic@umich.edu
 % Date: June 6, 2023
 
-theta = theta / sum(sum(theta));
+% theta = theta / sum(sum(theta));
 
 emptyGradient = zeros(size(theta));
 

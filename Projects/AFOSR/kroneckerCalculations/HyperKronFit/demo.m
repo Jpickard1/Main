@@ -23,7 +23,7 @@ for i=1:kronExp
 end
 A = (P > 0.25);
 tic;
-[p, pp] = firstPermutation(A, theta, 500000, false);
+[p, pp] = firstPermutation(A, theta, 50000, false);
 t1 = toc;
 
 % Check graph alignment of A into P using the perms
@@ -59,13 +59,13 @@ end
 
 %% Kronecker Graph Generation
 
-theta = [1 1 1
-         1 1 0
+theta = [1 0 1
+         0 1 0
          1 0 1];
 eps = 0.01;
 theta = theta - eps; theta(theta < 0) = eps;
 n0 = size(theta, 1);
-kronExp = 4;
+kronExp = 3;
 numE = 50 * n0^kronExp;
 
 theta = theta / sum(sum(theta));
@@ -99,7 +99,8 @@ A = full(A);
 figure; imagesc(A)
 
 %% Using A from above
-[thetaLearned, likelihoods] = NaiveKronFit(A, true, true, 3);
+theta = rand(3,3);
+[thetaLearned, likelihoods] = NaiveKronFit(A, true, true, 3, theta, 25);
 [thetaLearned2, likelihoods2] = NaiveKronFit(A, true, true, 3, thetaLearned);
 [thetaLearned3, likelihoods3] = NaiveKronFit(A, true, true, 3, thetaLearned2);
 
