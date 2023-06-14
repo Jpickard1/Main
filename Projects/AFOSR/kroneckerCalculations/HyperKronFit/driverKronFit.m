@@ -85,7 +85,8 @@ eps = 1e-3;
 %% Preamble
 
 if strcmp(sys, 'GL')
-    addpath(genpath(''));
+    addpath(genpath('/nfs/turbo/umms-indikar/Joshua/Main/Code/utils'));
+    addpath(genpath('/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/kroneckerCalculations'));
 elseif strcmp(sys, 'DBTM')
     addpath(genpath('C:\Joshua\MissingData\Projects\AFOSR\kroneckerCalculations'));
     addpath(genpath('C:\Joshua\MissingData\Code\utils'));
