@@ -428,4 +428,32 @@ A0 = full(A0);
 
 figure; imagesc(A0)
 
+%% Synthetic Test Hypergraph 1
+theta0 = zeros(2,2,2);
+theta0(1,1,1) = 0.8;
+theta0(1,1,2) = 0.6;
+theta0(1,2,1) = 0.6;
+theta0(2,1,1) = 0.6;
+theta0(1,2,2) = 0.4;
+theta0(2,2,1) = 0.4;
+theta0(2,1,2) = 0.4;
+theta0(2,2,2) = 0.2;
 
+n0 = 2;
+kronExp = 8;
+numE = 10 * n0^kronExp;
+theta00 = theta0 / sum(theta0, 'all');
+
+% Generate kronecker graph
+E = kHyperKronGen(theta00, kronExp, numE);
+writematrix(E, 'syntheticTestHypergraph1.txt', 'Delimiter', '\t')
+% Graph 1 has kronExp = 8
+% Graph 2 has kronExp = 10
+% Graph 3 has kronExp = 12
+% Graph 4 has kronExp = 14
+
+HAT.uniformEdgeSet(E)
+
+IM = HAT.hyperedge2IM(E);
+HG = Hypergraph('IM', IM)
+figure; HG.plot()

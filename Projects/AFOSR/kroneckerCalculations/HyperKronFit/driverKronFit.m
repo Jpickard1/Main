@@ -1,6 +1,10 @@
 function driverKronFit(NameValueArgs)
 %DRIVERKRONFIT Executes the KronFit algorithm on Great Lakes
 %
+%   PURPOSE: Execute the KronFit algorithm on graphs and hypergraphs
+%       - Graphs: directed
+%       - Hypergraphs: undirected
+%
 %   Arguments:
 %       - system: GreatLakes (GL), lab computer (DBTM), laptop (LT)
 %       - filePath: location of the file to read
@@ -44,7 +48,7 @@ elseif isfield(NameValueArgs, 'n0')
     theta0 = rand(n0, n0);
 else
     warning(['No defualt values or size is given for initial theta, ' ...
-        'so a random initiator is set with n0 = 2.']);
+        'so a random initiator will be set with n0 = 2.']);
     n0 = 2;
     theta0 = rand(n0, n0);
 end
@@ -99,13 +103,26 @@ end
 
 %% Execute Code
 E = readAdjList(filePath, 0);       % Read file of adjacency list
-A = sparse(E(:,1), E(:,2), 1);      % Convert adjacency list to adjacency
-                                    % matrix
+if size(E,2) > 2
+    E = undirectedHyperedges(E);
+    A = ndSparse.build(E, ones(size(E,1),1));
+else
+    A = sparse(E(:,1), E(:,2), 1);      % Convert adjacency list to
+                                        % adjacency matrix
+    A = ndSparse(A);
+end
 
-n = max(size(A));                                    
-AA = zeros(n,n);
-AA(1:size(A,1),1:size(A,2)) = A;
-A = AA;
+% reset theta0 if A is a hypergraph
+% TODO: this needs to be changed to make theta symmetric
+if ndims(A) ~= ndims(theta0)
+    k = ndims(theta0);
+    theta0 = rand(n0 * ones(k, 1));
+end
+
+% n = max(size(A));                                    
+% AA = zeros(n,n);
+% AA(1:size(A,1),1:size(A,2)) = A;
+% A = AA;
 
 NaiveKronFitArgs = struct;
 NaiveKronFitArgs.A = A;

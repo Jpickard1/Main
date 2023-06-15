@@ -16,6 +16,15 @@ function [theta, likelihoods, thetas] = NaiveKronFit(NameValueArgs)
 %       - plotting (p): flag to plot likelihood function every 50
 %       iterations
 %
+%   TODO: Improvements/bug fixes that need to be made
+%       - modify the code to work for hypergraphs (Joshua)
+%       - find error in gradient calculation which leads to the drift from
+%       the correct parameters to 1 (Joshua)
+%       - change how the learning rate is set (Vivan)
+%       - design a plan for when this algorithm/code should terminate
+%       (Vivan)
+%       - modify the code to periodically save the results (Vivan)
+%
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 5, 2023

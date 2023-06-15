@@ -1,10 +1,11 @@
 function [likelihood, gradient]=sampleGradient(A, theta, itrs, firstPermItrs, debug)
 % SAMPLEGRADIENT
-%                   
+% 
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 7, 2023
 
+k = ndims(A);
 n0 = size(theta,1);
 n = size(A,1);
 kronExp = log(n) / log(n0);
