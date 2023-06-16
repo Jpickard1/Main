@@ -10,8 +10,6 @@ function [LL] = hedgeLL(n, theta, idxs)
 %       jpic@umich.edu
 % Date: June 12, 2023
 
-theta = theta / sum(theta, 'all');
-
 n0 = size(theta,1);
 kronExp = log(n) / log(n0);
 

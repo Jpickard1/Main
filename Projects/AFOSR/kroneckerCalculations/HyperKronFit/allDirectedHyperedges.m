@@ -1,4 +1,4 @@
-function [EE] = undirectedHyperedges(E)
+function [EE] = allDirectedHyperedges(varargin)
 %UNDIRECTEDHYPEREDGES
 %
 %   E is a m x k matrix for a k-uniform hypergraph on m vertices. Each
@@ -8,6 +8,20 @@ function [EE] = undirectedHyperedges(E)
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 15, 2023
+
+if nargin == 1
+    E = varargin{1};    % Get parameter
+elseif nargin == 2
+    n = varargin{1};    % Get parameter
+    k = varargin{2};    % Get parameter
+    A = zeros(n * ones(1,k));
+    idxs = cell(1,k);
+    [idxs{:}] = find(A==0);
+    E = cell2mat(idxs);
+else
+    error(['Joshua, you wrote a bad function. Please fix this and stay' ...
+        'compatable with allUndirectedHyperedgs.m']);
+end
 
 E = unique(sort(E, 2), 'rows');
 k = size(E, 2);
@@ -20,5 +34,6 @@ for e=1:size(E,1)
 end
 
 EE = unique(EE, 'rows');
+
 
 end

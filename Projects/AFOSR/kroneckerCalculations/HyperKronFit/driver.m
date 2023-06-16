@@ -457,3 +457,7 @@ HAT.uniformEdgeSet(E)
 IM = HAT.hyperedge2IM(E);
 HG = Hypergraph('IM', IM)
 figure; HG.plot()
+
+%% Testing now that everything is refactored for hypergraphs
+
+driverKronFit('system','DBTM', 'n0', 2, 'filePath', 'C:\Joshua\MissingData\Projects\AFOSR\kroneckerCalculations\HyperKronFit/syntheticTestGraph1.txt', 'firstPermItrs', 1000, 'gradSamples', 2500, 'maxItrs', 5, 'learningRate', 1e-6')

@@ -1,4 +1,4 @@
-function [likelihood, gradient]=sampleGradient(A, theta, itrs, firstPermItrs, debug)
+function [likelihood, gradient]=hsampleGradient(A, theta, itrs, firstPermItrs, debug, directed)
 % SAMPLEGRADIENT
 % 
 % Auth: Joshua Pickard
@@ -11,28 +11,30 @@ n = size(A,1);
 kronExp = log(n) / log(n0);
 
 % precompute edge set as a matrix
-[e1, e2] = find(A ~= 0);
-E = [e1 e2];
+E = getEdgesFromAdj(A);
 
-p = firstPermutation(A, theta, firstPermItrs); % p = 1:n; % For debugging purposes
-if debug; disp(p); end
+p = firstPermutation(A, theta, firstPermItrs);
+
+% p = 1:n; % For debugging purposes
+if debug; disp(p); end % TODO: this should probably be remved at least once I verify the code can work
+
 likelihoods = zeros(itrs, 1);
 gradients   = cell(itrs, 1);
 
 % Calculations for first permutation
-le = getEmptyGraphLLapx(n, theta);
-ge = getEmptyGraphGrad(n, theta);
+le = getEmptyHypergraphLLapx(n, theta);
+ge = getEmptyHypergraphGrad(n, theta, directed); 
 
 % Calculate log likelihood
 likelihood = le;
 for e=1:size(E,1)
-    eLL = edgeLLapx(n, theta, p(E(e,1)), p(E(e,2)));
+    eLL = hedgeLLapx(n, theta, p(E(e,:)));
     likelihood = likelihood - log(1 - exp(eLL)) + eLL;
 end
 % Calculate gradient
 gradUpdate = ge;
 for e=1:size(E,1)
-    eGrad = edgeGradient(n, theta, p(E(e,1)), p(E(e,2)));
+    eGrad = hedgeGradient(n, theta, p(E(e,:)), directed);
     gradUpdate = gradUpdate + eGrad;
 end
 likelihoods(1) = likelihood;
@@ -58,21 +60,22 @@ for t=2:itrs
             % to improve the time performance.
 
             % Get updated edges
+            % This is not so fast, its actually probably a pretty slow line
             changedEdges = find(sum((E == u) + (E == v), 2) > 0);
 
             % Calculate log likelihood
             likelihood = likelihoods(t-1);
             for i=1:length(changedEdges)
-                eLLold = edgeLLapx(n, theta, p(E(changedEdges(i),1)), p(E(changedEdges(i),2)));
-                eLLnew = edgeLLapx(n, theta, pnew(E(changedEdges(i),1)), pnew(E(changedEdges(i),2)));
+                eLLold = hedgeLLapx(n, theta, p(E(changedEdges(i),:)));
+                eLLnew = hedgeLLapx(n, theta, pnew(E(changedEdges(i),:)));
                 likelihood = likelihood - ( -log(1 - exp(eLLold)) + ...
                     eLLold) + ( -log(1 - exp(eLLnew)) + eLLnew);
             end
             likelihoods(t) = likelihood;            
             gradUpdate = gradients{t-1};
             for i=1:length(changedEdges)
-                eGradold = edgeGradient(n, theta, p(E(changedEdges(i),1)), p(E(changedEdges(i),2)));
-                eGradnew = edgeGradient(n, theta, pnew(E(changedEdges(i),1)), pnew(E(changedEdges(i),2)));
+                eGradold = hedgeGradient(n, theta, p(E(changedEdges(i),:)), directed);
+                eGradnew = hedgeGradient(n, theta, pnew(E(changedEdges(i),:)), directed);
                 gradUpdate = gradUpdate - eGradold + eGradnew;
             end
             gradients{t} = real(gradUpdate);

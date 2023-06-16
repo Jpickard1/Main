@@ -102,6 +102,9 @@ n0 = size(theta, 1);
 n  = size(A,1);
 k  = length(size(A));
 
+directed = false; % This will remain hardcoded for now
+if k == 2; directed = true; end
+
 likelihoods = zeros(maxItrs, 1);
 for itr=1:maxItrs
     if verbose
@@ -110,7 +113,7 @@ for itr=1:maxItrs
     
     % Evaluate likelihood and gradient
     % [l, gradients] = evaluateGradient(A, theta, debug);
-    [l, gradients] = sampleGradient(A, theta, gradSamples, firstPermItrs, debug);
+    [l, gradients] = sampleGradient(A, theta, gradSamples, firstPermItrs, debug, directed);
     % Update model parameters
     thetaOld = theta;
     theta = theta + learningRate * gradients;

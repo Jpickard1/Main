@@ -1,6 +1,9 @@
 function [LL] = hedgeLLapx(n, theta, idxs)
 %HEDGELLAPX Approximates the log likelihood of a hyperedge
 %
+% NOTE: This function works for an arbitraty k-uniform hypergraph, so I
+% should always use this function for graphs as well.
+%
 % PARAMETERS
 %   n is number of vertices in a hypergraph
 %   theta is the kronecker initiator parameters
@@ -9,8 +12,6 @@ function [LL] = hedgeLLapx(n, theta, idxs)
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 12, 2023
-
-theta = theta / sum(theta, 'all');
 
 n0 = size(theta,1);
 kronExp = log(n) / log(n0);

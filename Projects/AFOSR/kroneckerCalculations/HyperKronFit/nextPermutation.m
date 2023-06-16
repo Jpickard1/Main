@@ -18,7 +18,7 @@ k = randi([1 n]);
 u = rand();
 
 % Calculate the likelihood ratio
-v = PPRtest2(p, theta, A, j, k);
+v = PPRtest3(p, theta, A, j, k);
 
 % Check if the updated permutation is accepted
 accept = false;

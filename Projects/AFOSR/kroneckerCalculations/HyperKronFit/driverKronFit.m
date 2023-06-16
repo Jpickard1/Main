@@ -104,7 +104,7 @@ end
 %% Execute Code
 E = readAdjList(filePath, 0);       % Read file of adjacency list
 if size(E,2) > 2
-    E = undirectedHyperedges(E);
+    E = allDirectedHyperedges(E);
     A = ndSparse.build(E, ones(size(E,1),1));
 else
     A = sparse(E(:,1), E(:,2), 1);      % Convert adjacency list to

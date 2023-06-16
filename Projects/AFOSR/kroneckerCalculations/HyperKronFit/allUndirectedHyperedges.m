@@ -1,4 +1,4 @@
-function [E] = getAllHyperedges(n, k)
+function [E] = allUndirectedHyperedges(n, k)
 %GETALLHYPEREDGES Returns the indices of all undirected hyperedges
 %
 % Auth: Joshua Pickard

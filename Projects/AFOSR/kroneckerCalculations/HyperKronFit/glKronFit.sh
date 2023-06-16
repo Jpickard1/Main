@@ -14,5 +14,5 @@
 
 
 module load matlab
-matlab -nodisplay -r "driverKronFit('system','GL', 'n0', 2, 'filePath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/kroneckerCalculations/HyperKronFit/syntheticTestGraph4.txt', 'firstPermItrs', 10000, 'gradSamples', 250000, 'maxItrs', 20000, 'learningRate', 1e-9', 'outputPath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/kroneckerCalculations/HyperKronFit/testResults/syntheticData4.m');"
+matlab -nodisplay -r "driverKronFit('system','DBTM', 'n0', 2, 'filePath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/kroneckerCalculations/HyperKronFit/syntheticTestGraph1.txt', 'firstPermItrs', 1000, 'gradSamples', 2500, 'maxItrs', 5, 'learningRate', 1e-6', 'outputPath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/kroneckerCalculations/HyperKronFit/testResults/syntheticData4.m');"
 
