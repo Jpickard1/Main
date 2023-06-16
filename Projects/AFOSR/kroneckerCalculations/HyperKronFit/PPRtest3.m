@@ -1,4 +1,4 @@
-function [llDiff] = PPRtest3(p, theta, A, u, v)
+function [llDiff] = PPRtest3(p, theta, A, u, v, E)
 % PPRTEST3
 %
 %   This function performes a permutation probability ratio test for either
@@ -18,6 +18,10 @@ function [llDiff] = PPRtest3(p, theta, A, u, v)
 % Auth: Joshua Pickard
 %       jpic@umich.edu
 % Date: June 15, 2023
+
+if nargin == 4
+    E = getEdgesFromAdj(A);
+end
 
 l1 = 0;                         % Likelihood of permutation 1
 l2 = 0;                         % Likelihood of permutation 2
@@ -90,17 +94,17 @@ end
 % this effect here
 if directed
     l1 = l1 + log(1 - exp(edgeLLapx(n, theta, p1(u), p1(u)))) + ...
-          log(1 - exp(edgeLLapx(n, theta, p1(u), p1(v)))) + ...
-          log(1 - exp(edgeLLapx(n, theta, p1(v), p1(u)))) + ...
-          log(1 - exp(edgeLLapx(n, theta, p1(v), p1(v))));
+              log(1 - exp(edgeLLapx(n, theta, p1(u), p1(v)))) + ...
+              log(1 - exp(edgeLLapx(n, theta, p1(v), p1(u)))) + ...
+              log(1 - exp(edgeLLapx(n, theta, p1(v), p1(v))));
     l2 = l2 + log(1 - exp(edgeLLapx(n, theta, p2(u), p2(u)))) + ...
-          log(1 - exp(edgeLLapx(n, theta, p2(u), p2(v)))) + ...
-          log(1 - exp(edgeLLapx(n, theta, p2(v), p2(u)))) + ...
-          log(1 - exp(edgeLLapx(n, theta, p2(v), p2(v))));
+              log(1 - exp(edgeLLapx(n, theta, p2(u), p2(v)))) + ...
+              log(1 - exp(edgeLLapx(n, theta, p2(v), p2(u)))) + ...
+              log(1 - exp(edgeLLapx(n, theta, p2(v), p2(v))));
 end
 
 %   3. Make updates for existing edges
-E = getEdgesFromAdj(A);
+% E = getEdgesFromAdj(A);
 idxs = find(sum((E == u) + (E == v), 2) > 0);
 for i=1:size(idxs)
     edge = E(idxs(i), :);

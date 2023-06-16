@@ -1,4 +1,4 @@
-function [p,accept, j, k]=nextPermutation(A,theta,p)
+function [p,accept, j, k]=nextPermutation(A,theta,p, E)
 %NEXTPERMUTATION
 %                   
 %   This generates the next permutation used by sampleGradient.m from a
@@ -8,6 +8,9 @@ function [p,accept, j, k]=nextPermutation(A,theta,p)
 %       jpic@umich.edu
 % Date: June 7, 2023
 
+if nargin == 3
+    E = getEdgesFromAdj(A);
+end
 n = size(A, 1);
 
 % Select 2 random indices to change
@@ -18,7 +21,7 @@ k = randi([1 n]);
 u = rand();
 
 % Calculate the likelihood ratio
-v = PPRtest3(p, theta, A, j, k);
+v = PPRtest3(p, theta, A, j, k, E);
 
 % Check if the updated permutation is accepted
 accept = false;

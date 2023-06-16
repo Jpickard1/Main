@@ -1,4 +1,4 @@
-function [gradient] = hedgeGradient(n, theta, idxs, directed)
+function [gradient] = hedgeGradient(n, theta, idxs, eLL, directed)
 %HEDGEGRADIENT Evaluates the gradient of theta with respect to a hyperedge
 %
 % Auth: Joshua Pickard
@@ -7,11 +7,16 @@ function [gradient] = hedgeGradient(n, theta, idxs, directed)
 
 % theta = theta / sum(theta, "all");
 
+if ismatrix(theta)
+    gradient = edgeGradient(n, theta, idxs(1), idxs(2));
+    return;
+end
+
 k = ndims(theta);
 n0 = size(theta,1);
 kronExp = log(n) / log(n0);
 
-eLL = hedgeLLapx(n, theta, idxs);
+% eLL = hedgeLLapx(n, theta, idxs);
 % noEdgeLL = log(1 - exp(eLL));
 
 % Count the number of times an entry of theta is used

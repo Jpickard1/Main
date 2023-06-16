@@ -80,7 +80,7 @@ end
 if isfield(NameValueArgs, 'outputPath')
     outputPath = NameValueArgs.outputPath;
 else
-    outputPath = filePath + "_kronFitOutput.m";
+    outputPath = filePath + "_kronFitOutput.mat";
 end
 
 % Variables still hardcodes
@@ -109,6 +109,9 @@ if size(E,2) > 2
 else
     A = sparse(E(:,1), E(:,2), 1);      % Convert adjacency list to
                                         % adjacency matrix
+    n = max(size(A));                   % Make is a n0^kronExp size structure
+    kronExp = ceil(log(n) / log(n0));
+    A(n0^kronExp, n0^kronExp) = 0;
     A = ndSparse(A);
 end
 

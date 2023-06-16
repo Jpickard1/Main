@@ -407,13 +407,13 @@ xlabel("x_1"); ylabel("x_2"); zlabel("x_3"); title('Color is x_4')
 theta0 = [0.9 0.6;
           0.6 0.3];
 n0 = 2;
-kronExp = 14;
-numE = 10 * n0^kronExp;
+kronExp = 8;
+numE = 2 * n0^kronExp;
 theta00 = theta0 / sum(theta0, 'all');
 
 % Generate kronecker graph
 E = kronGen(theta00, kronExp, numE);
-writematrix(E, 'syntheticTestGraph4.txt', 'Delimiter', '\t')
+writematrix(E, 'syntheticTestGraph8_2.txt', 'Delimiter', '\t')
 % Graph 1 has kronExp = 8
 % Graph 2 has kronExp = 10
 % Graph 3 has kronExp = 12

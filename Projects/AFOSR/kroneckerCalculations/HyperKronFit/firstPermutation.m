@@ -1,4 +1,4 @@
-function [p, P]=firstPermutation(A, theta, maxItrs, verbose)
+function [p, P]=firstPermutation(A, theta, maxItrs, verbose, E)
 %FIRSTPERMUTATION
 %
 %   This sets the first permutation for the first iteration of the sample
@@ -14,6 +14,9 @@ if nargin < 3
 end
 if nargin < 4
     verbose = false;
+end
+if nargin < 5
+    E = getEdgesFromAdj(A);
 end
 
 n = size(A,1);
@@ -32,7 +35,7 @@ while i < maxItrs
     u = rand();
     % v1 = PPRtest(p, theta, A, j, k);
     % v2 = PPRtest2(p, theta, A, j, k);
-    v3 = PPRtest3(p, theta, A, j, k);
+    v3 = PPRtest3(p, theta, A, j, k, E);
     % disp(log(v1));
     % disp(v2);
     % if u > v1

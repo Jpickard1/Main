@@ -8,7 +8,9 @@ function DLL = getNoEdgeDLL2(theta, count, i, j, eLL)
 %       jpic@umich.edu
 % Date: June 9, 2023
 
-DLL = -1 * count(i,j) * (exp(eLL) / (theta(i,j))) / (1 - exp(eLL));
+DLL = -1 * count(i,j) * theta(i,j) / (1 - theta(i,j));
+% DLL = -1 * count(i,j) * (theta(i,j) ^ (count(i,j) - 1)) / (1 - (theta(i,j) ^ count(i,j)));
+% DLL = -1 * count(i,j) * (exp(eLL) / (theta(i,j))) / (1 - exp(eLL));
 
 % DLL = sum(sum(theta .* count)) - theta(i,j);
 % DLL = - count(i,j) * exp(DLL) / (1-exp(eLL));
