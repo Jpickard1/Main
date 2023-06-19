@@ -109,7 +109,7 @@ if size(theta0, 1) ~= size(E,2)
 end
 
 % Execute KronFit code
-[theta, likelihoods, thetas] = NaiveKronFit('A', A, 'theta0', theta0, 'maxItrs', maxItrs, 'gradSamples', gradSamples, 'firstPermItrs', firstPermItrs, 'learningRate', learningRate, 'eps', eps, 'v', true, 'p', false, 'debug', false);
+[theta, likelihoods, thetas] = HyperKronFit('E', E, 'theta0', theta0, 'maxItrs', maxItrs, 'gradSamples', gradSamples, 'firstPermItrs', firstPermItrs, 'learningRate', learningRate, 'eps', eps, 'v', true, 'p', false, 'debug', false);
 
 %% Output
 save(outputPath, "theta", "thetas", "likelihoods");
