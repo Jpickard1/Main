@@ -14,7 +14,7 @@ function [LL] = hedgeLLapx(n, theta, idxs)
 % Date: June 12, 2023
 
 if ismatrix(theta)
-    LL = edgeLLapx(n, theta, idxs(1), idxs(2));
+    LL = edgeLL(n, theta, idxs(1), idxs(2));
     return;
 end
 
