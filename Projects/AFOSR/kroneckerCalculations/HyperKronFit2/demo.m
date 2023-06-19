@@ -51,7 +51,24 @@ figure;
 subplot(1,2,1); imagesc(A)
 subplot(1,2,2); imagesc(Ap)
 
+%% Hypergraph 
+clear; clc; close all;
+theta = ones(2,2,2); theta(2,2,2) = 0;
+n0 = size(theta, 1);
+kExp = 5; n = n0^kExp;
+numE = 100 * n;
+E = kHyperKronGen(theta / sum(theta, 'all'), kExp, numE);
+
+firstPermItrs = 10000;
+itrs = 10000;
+theta0 = rand(2,2,2);
+[thetaL, likelihoods] = HyperKronFit("E",E,"theta0",theta0,"maxItrs",100,"firstPermItrs",firstPermItrs,"learningRate",1e-5,"gradSamples",itrs,"v",true,"perm",1:n)
+
+% [E] = kHyperKronGen(theta, kronExp, numE)
+
+
 %%
 options = optimoptions('fmincon','SpecifyObjectiveGradient',true);
 x = fmincon(@(f, g) sampleGradient(theta0, itrs, firstPermItrs, E), theta0, [], [], [], [], [], [], [], options)
+
 

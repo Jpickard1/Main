@@ -6,8 +6,8 @@ n0 = size(theta,1);
 
 kronExp = log(n) / log(n0);
 
-s  = sum(sum(theta));
-sq = sum(sum(theta .^ 2));
+s  = sum(theta, 'all');
+sq = sum(theta .^ 2, 'all');
 
 DLL = -kronExp * (s ^ (kronExp - 1)) - kronExp * (sq ^ (kronExp - 1)) * theta;
 

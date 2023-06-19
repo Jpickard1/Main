@@ -117,14 +117,8 @@ for itr=1:maxItrs
     thetaOld = theta;
     theta = theta + learningRate * gradients;
 
-    for i=1:n0
-        for j=1:n0
-            if theta(i,j) > 1 - eps; theta(i,j) = 1 - eps; end
-            if theta(i,j) < eps
-                theta(i,j) = eps;
-            end
-        end
-    end
+    theta(theta > 1 - eps) = 1 - eps;
+    theta(theta < eps) = eps;
 
     if verbose
         fprintf("CurrentLL: %d\n", l);
