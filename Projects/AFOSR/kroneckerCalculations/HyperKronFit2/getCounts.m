@@ -3,7 +3,7 @@ function [count] = getCounts(n, theta, idxs)
 % expanded index.
 
 n0 = size(theta, 1);
-kronExp = log(n) / log(n0);
+kronExp = ceil(log(n) / log(n0));
 
 % Count the number of times an entry of theta is used
 count = zeros(size(theta));

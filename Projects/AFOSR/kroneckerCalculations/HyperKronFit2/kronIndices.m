@@ -5,7 +5,7 @@ function [idx0] = kronIndices(idx, n, n0)
 %       jpic@umich.edu
 % Date: June 11, 2023
 
-kronExp = round(log(n) / log(n0));
+kronExp = ceil(log(n) / log(n0));
 idx0 = zeros(1, kronExp);
 for i=1:kronExp
     idx0(i) = mod(floor((idx - 1)/ n0^(i-1)), n0) + 1;
