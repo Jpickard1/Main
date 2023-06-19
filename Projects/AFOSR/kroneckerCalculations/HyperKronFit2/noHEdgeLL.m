@@ -15,10 +15,13 @@ function [nLL] = noHEdgeLL(varargin)
 
 if nargin == 1
     LL = varargin{1};
-if nargin == 3
-    theta = varargin{1};
-    idxs = varargin{2};
-    LL = hedgeLL(theta, idxs);
+elseif nargin == 3
+    n = varargin{1};
+    theta = varargin{2};
+    idxs = varargin{3};
+    LL = hedgeLL(n, theta, idxs);
+else
+    error('noHEdgeLL.m: the passed arguments are not accepted.')
 end
 
 nLL = log(1 - exp(LL));
