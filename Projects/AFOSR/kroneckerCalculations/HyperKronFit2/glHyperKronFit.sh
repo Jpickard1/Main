@@ -14,5 +14,5 @@
 
 
 module load matlab
-matlab -nodisplay -r "driverHyperKronFit('system','DBTM', 'n0', 2, 'filePath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/kroneckerCalculations/HyperKronFit/as20graph.txt', 'firstPermItrs', 10000, 'gradSamples', 100000, 'maxItrs', 500, 'learningRate', 1e-6', 'outputPath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/kroneckerCalculations/HyperKronFit2/testResults/as20graph_out.m');"
+matlab -nodisplay -r "driverHyperKronFit('system','GL', 'n0', 2, 'filePath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/kroneckerCalculations/HyperKronFit/as20graph.txt', 'firstPermItrs', 10000, 'gradSamples', 100000, 'maxItrs', 500, 'learningRate', 1e-6', 'outputPath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/AFOSR/kroneckerCalculations/HyperKronFit2/testResults/as20graph_out.m');"
 
