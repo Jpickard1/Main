@@ -2,7 +2,7 @@ function [theta, likelihoods, thetas] = HyperKronFit(NameValueArgs)
 %HYPERKRONFIT Summary of this function goes here
 %   Detailed explanation goes here
 %{
-    filePath = "C:\Users\picka\Documents\my_projects\DBTM\Main\Projects\AFOSR\kroneckerCalculations\HyperKronFit\syntheticTestGraph1.txt";
+    filePath = "C:\Joshua\MissingData\Projects\AFOSR\kroneckerCalculations\HyperKronFit\syntheticTestGraph1.txt";
     E =  readAdjList(filePath, 0);       % Read file of adjacency list
     NameValueArgs = struct;
     NameValueArgs.E             =  readAdjList(filePath, 0);       % Read file of adjacency list
@@ -32,6 +32,7 @@ arguments
     NameValueArgs.v;
     NameValueArgs.verbose;
     NameValueArgs.p;
+    NameValueArgs.perm;
 end
 
 E = NameValueArgs.E;
@@ -62,7 +63,7 @@ end
 if isfield(NameValueArgs, 'eps')
     eps = NameValueArgs.eps;
 else
-    eps = 1e-2;
+    eps = 1e-4;
 end
 if isfield(NameValueArgs, 'debug')
     debug = NameValueArgs.debug;
@@ -81,6 +82,12 @@ if isfield(NameValueArgs, 'p')
 else
     plotOn = false;
 end
+if isfield(NameValueArgs, 'perm')
+    p = NameValueArgs.perm;
+    pFixed = true;
+else
+    pFixed = false;
+end
 
 
 % Output arguments
@@ -94,6 +101,10 @@ n0 = size(theta, 1);
 n  = max(max(E));
 k  = size(E,2);
 
+if ~pFixed
+    p = randperm(n);
+end
+
 likelihoods = zeros(maxItrs, 1);
 for itr=1:maxItrs
     if verbose
@@ -101,7 +112,7 @@ for itr=1:maxItrs
     end
 
     % Evaluate likelihood and gradient
-    [l, gradients] = sampleGradient(theta, gradSamples, firstPermItrs, E);
+    [l, gradients, p] = sampleGradient(theta, gradSamples, firstPermItrs, E, p, pFixed);
     % Update model parameters
     thetaOld = theta;
     theta = theta + learningRate * gradients;

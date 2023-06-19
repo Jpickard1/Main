@@ -1,4 +1,4 @@
-function [likelihood, gradient]=sampleGradient(theta, itrs, firstPermItrs, E)
+function [likelihood, gradient, p]=sampleGradient(theta, itrs, firstPermItrs, E, p, pFixed)
 % SAMPLEGRADIENT
 % 
 % Auth: Joshua Pickard
@@ -10,9 +10,16 @@ n0 = size(theta,1);
 n = max(max(E));
 kronExp = log(n) / log(n0);
 
-% precompute edge set as a matrix
-p = randperm(n);
-p = genPermutation(p, theta, firstPermItrs, E);
+if nargin == 4
+    p = randperm(n);
+end
+if nargin < 6
+    pFixed = false;
+end
+
+if ~pFixed
+    p = genPermutation(p, theta, firstPermItrs, E);
+end
 
 likelihoods = zeros(itrs, 1);
 gradients   = cell(itrs, 1);
@@ -38,6 +45,9 @@ gradients{1} = gradUpdate;
 
 accepted = 0;
 for t=2:itrs
+    if pFixed
+        break
+    end
     % Generate sample permutation
     [pnew, accept, idxs] = genPermutation(p, theta, 1, E);
 
@@ -74,19 +84,17 @@ for t=2:itrs
     p = pnew;
 end
 
-likelihood = mean(likelihoods);
-gradient = zeros(size(theta));
-for i=1:itrs
-    gradient = gradient + gradients{i};
+if pFixed
+    likelihood = likelihoods(1);
+    gradient = gradients{1};
+else
+    likelihood = mean(likelihoods);
+    gradient = zeros(size(theta));
+    for i=1:itrs
+        gradient = gradient + gradients{i};
+    end
+    gradient = gradient ./ itrs;
+    fprintf("Accepted: %d / %d \n", accepted, itrs);
 end
-gradient = gradient ./ itrs;
-
-fprintf("Accepted: %d / %d \n", accepted, itrs);
-% fprintf("CurrentLL: %d\n", l);
-% fprintf("Gradient Updates:\n");
-% for i=1:numel(theta)
-%     fprintf("    %d]  %f \t Grad:  %f\n", i, theta(i), gradient(i));
-% end
-% fprintf(' \n');
 
 end
