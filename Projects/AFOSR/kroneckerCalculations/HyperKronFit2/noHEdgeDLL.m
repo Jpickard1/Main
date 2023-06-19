@@ -23,7 +23,7 @@ n0 = size(theta,1);
 LL = hedgeLL(n, theta, idxs);
 counts = getCounts(n, theta, idxs);
 
-LL = LL * ones(size(theta));
-nDLL = (counts * LL ./ theta) ./ (1 - LL);
+L = exp(LL) * ones(size(theta));
+nDLL = (-1 * counts .* L ./ theta) ./ (1 - L);
 
 end
