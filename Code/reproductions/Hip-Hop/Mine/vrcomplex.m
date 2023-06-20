@@ -11,7 +11,8 @@ function [E, F] = vrcomplex(points, r)
 % - F: a p x 3 matrix representing the triangles (p is the number of triangles)
 %
 % References:
-% - [1] 
+% - [1] Computing Persistent Homology with Various Coefficient Fields in a 
+%       Single Pass
 %
 % Auth: Joshua Pickard
 %       jpic@umich.edu
