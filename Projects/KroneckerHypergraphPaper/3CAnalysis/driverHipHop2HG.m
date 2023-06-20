@@ -48,18 +48,18 @@ end
 %% Script
 % 1. Get File Path
 if worker <= 4
-    mid = 'OFF';
+    mid = "OFF";
 elseif worker <= 9
-    mid = 'ON';
+    mid = "ON";
 else
-    mid = 'HIGH';
+    mid = "HIGH";
 end
 path2data = path2data + mid + "/conf.";
 suffixDNA = ".DNA";
 suffixTXT = ".txt";
 
 % 2. Set file range
-fileRange = mod(0, 5) * 40 + [1:40];
+fileRange = mod(worker, 5) * 40 + [1:40];
 
 for f=1:length(fileRange)
     % Set specific file
