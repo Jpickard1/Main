@@ -48,18 +48,18 @@ end
 %% Script
 % 1. Get File Path
 if worker <= 4
-    path2data = path2data + "OFF/";
+    mid = "OFF";
 elseif worker <= 9
-    path2data = path2data + "ON/";
+    mid = "ON";
 else
-    path2data = path2data + "HIGH/";
+    mid = "HIGH";
 end
-path2data = path2data + "conf.";
+path2data = path2data + mid + "/conf.";
 suffixDNA = ".DNA";
 suffixTXT = ".txt";
 
 % 2. Set file range
-fileRange = mod(0, 5) * 40 + [1:40];
+fileRange = mod(worker, 5) * 40 + [1:40];
 
 for f=1:length(fileRange)
     % Set specific file
@@ -87,7 +87,7 @@ for f=1:length(fileRange)
     F = F(keep,:);
 
     % Set output file path
-    filePath = path2out + "adjList_" + string(fileRange(f)) + "_" + string(epsilon) + suffixTXT;
+    filePath = path2out + "adjList_" + mid + "_" + string(fileRange(f)) + "_" + string(epsilon) + suffixTXT;
 
     % Write output file
     writematrix(F, filePath);
