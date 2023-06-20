@@ -2,6 +2,41 @@
 %       jpic@umich.edu
 % Date: April 6, 2023
 
+%% June 20, 2023 vrcomplex and LAMMPS output
+clear; close all; clc
+filePath = "C:\Users\picka\Documents\my_projects\DBTM\Main\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\ON\conf.2.DNA";
+T = readLAMMPSoutput(filePath);
+cords = getCords(T);
+D = squareform(pdist(cords));
+
+% Compute the Vietoris-Rips complex with radius parameter 0.1
+[E, F] = vrcomplex(cords, 0.01);
+
+keep = [];
+for i=1:size(F,1)
+    if length(unique(F(i,:))) == 3
+        keep = [keep i];
+    end
+end
+F = F(keep,:);
+
+figure;
+plot3(cords(:,1), cords(:,2), cords(:,3), '.-'); hold on;
+for i = 1:size(F, 1)
+    plot3(cords(F(i,:), 1), cords(F(i,:), 2), cords(F(i,:), 3), 'r', 'LineWidth', 1);
+end
+xlabel('X'); ylabel('Y'); zlabel('Z'); title('Polymer');
+
+keep = find(std(F,0,2) > 3);
+FF = F(keep,:);
+
+figure;
+plot3(cords(:,1), cords(:,2), cords(:,3), '.-'); hold on;
+for i = 1:size(FF, 1)
+    plot3(cords(FF(i,:), 1), cords(FF(i,:), 2), cords(FF(i,:), 3), 'r', 'LineWidth', 1);
+end
+xlabel('X'); ylabel('Y'); zlabel('Z'); title('Polymer');
+
 %% April 12, 2023 vrcomplex and LAMMPS output
 clear; close all; clc
 filePath = "C:\Users\picka\Documents\my_projects\DBTM\Main\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\ON\conf.2.DNA";
