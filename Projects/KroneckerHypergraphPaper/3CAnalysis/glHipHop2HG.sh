@@ -7,9 +7,9 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem=50GB
-#SBATCH --time=1-00:00:00
+#SBATCH --time=0-12:00:00
 #SBATCH --account=indikar0
-#SBATCH --partition=array
+#SBATCH --partition=standard
 #SBATCH --array=0-29
 #SBATCH --output=/nfs/turbo/umms-indikar/Joshua/Main/Projects/KroneckerHypergraphPaper/3CAnalysis/HipHop2HG/%x-%j.log
 
