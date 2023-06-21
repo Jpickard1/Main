@@ -33,8 +33,8 @@ else
         theta2S(vx) = eval("sum(theta2(" + string(vx) + str + "),'all')");
     end
 
-    thetaSC = {thetaS};
-    theta2SC = {theta2S};
+    thetaSC = thetaS';
+    theta2SC = theta2S';
 end
 
 %   1. Make permutations p1 and p2
