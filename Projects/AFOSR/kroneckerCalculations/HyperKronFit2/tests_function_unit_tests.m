@@ -162,3 +162,5 @@ assert(noHEdgeLL(n, theta, [4 1]) == log(1 - exp(log(theta(2,1)) + log(theta(2,1
 assert(noHEdgeLL(n, theta, [4 2]) == log(1 - exp(log(theta(2,1)) + log(theta(2,2)))));
 assert(noHEdgeLL(n, theta, [4 3]) == log(1 - exp(log(theta(2,2)) + log(theta(2,1)))));
 assert(noHEdgeLL(n, theta, [4 4]) == log(1 - exp(log(theta(2,2)) + log(theta(2,2)))));
+
+disp('If you see this...you passed');

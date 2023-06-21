@@ -35,7 +35,7 @@
 %% GRAPH ALIGNMENT 1
 clear all; close all; clc;
 
-randSeed = 1; rng(randSeed);                    % Set random seed
+randSeed = 0; rng(randSeed);                    % Set random seed
 
 kronExp = 3;                                    % Generate kronecker hypergraph
 eps = 0.1;
