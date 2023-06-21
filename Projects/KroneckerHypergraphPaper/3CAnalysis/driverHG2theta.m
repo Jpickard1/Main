@@ -30,6 +30,8 @@ function driverHG2theta(NameValueArgs)
 
 arguments
     NameValueArgs.system;
+    NameValueArgs.worker;
+    NameValueArgs.epsilon;
     NameValueArgs.filePath;
     NameValueArgs.theta0;
     NameValueArgs.n0;
@@ -48,19 +50,21 @@ disp(NameValueArgs);
 
 % Required Inputs
 sys           = NameValueArgs.system;
-path2data      = NameValueArgs.filePath;
+path2data     = NameValueArgs.filePath;
+worker        = NameValueArgs.worker;
+epsilon       = NameValueArgs.epsilon;
 
 if isfield(NameValueArgs, 'theta0')
     theta0        = NameValueArgs.theta0;
     n0 = size(theta0,1);
 elseif isfield(NameValueArgs, 'n0')
     n0            = NameValueArgs.n0;
-    theta0 = rand(n0, n0);
+    theta0 = rand(n0, n0, n0);
 else
     warning(['No defualt values or size is given for initial theta, ' ...
         'so a random initiator will be set with n0 = 2.']);
     n0 = 2;
-    theta0 = rand(n0, n0);
+    theta0 = rand(n0, n0, n0);
 end
 
 if isfield(NameValueArgs, 'firstPermItrs')
@@ -146,6 +150,9 @@ for f=1:length(fileRange)
     keep = find(range(E,2) >= minDistanceOfInterest);
     E = E(keep, :);
     
+    % Set initial theta0
+    theta0 = rand(n0, n0, n0);
+
     % Execute KronFit code
     [theta, likelihoods, thetas] = HyperKronFit('E', E, 'theta0', theta0, 'maxItrs', maxItrs, 'gradSamples', gradSamples, 'firstPermItrs', firstPermItrs, 'learningRate', learningRate, 'eps', eps, 'v', true, 'p', false, 'debug', false);
     
