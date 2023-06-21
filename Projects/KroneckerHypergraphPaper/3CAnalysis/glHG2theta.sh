@@ -3,7 +3,7 @@
 #SBATCH --job-name=HG2THETA
 #SBATCH --mail-user=jpic@umich.edu
 #SBATCH --mail-type=BEGIN,END
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=16
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem=50GB
@@ -15,5 +15,5 @@
 
 
 module load matlab
-matlab -nodisplay -r "driverHG2theta('worker',$SLURM_ARRAY_TASK_ID,'epsilon',0.01,'system','GL', 'n0', 2, 'filePath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/KroneckerHypergraphPaper/3CAnalysis/HipHop2HG/', 'firstPermItrs', 10000, 'gradSamples', 100000, 'maxItrs', 75, 'learningRate', 1e-9', 'outputPath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/KroneckerHypergraphPaper/3CAnalysis/HG2theta/');"
+matlab -nodisplay -r "driverHG2theta('worker',$SLURM_ARRAY_TASK_ID,'epsilon',0.01,'system','GL', 'n0', 5, 'filePath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/KroneckerHypergraphPaper/3CAnalysis/HipHop2HG/', 'firstPermItrs', 10000, 'gradSamples', 100000, 'maxItrs', 100, 'learningRate', 1e-11', 'outputPath', '/nfs/turbo/umms-indikar/Joshua/Main/Projects/KroneckerHypergraphPaper/3CAnalysis/HG2theta/');"
 

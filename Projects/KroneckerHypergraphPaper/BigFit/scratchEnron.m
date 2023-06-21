@@ -28,7 +28,7 @@ end
 figure; plot(sort(D));
 
 theta0 = rand(3,3,3);
-[theta, likelihoods, thetas] = HyperKronFit('E',E,'firstPermItrs',10000,'gradSamples',100000,'maxItrs',100,'theta0',theta0,'learningRate',1e-7);
+[theta, likelihoods, thetas] = HyperKronFit('E',E,'firstPermItrs',10000,'gradSamples',100000,'maxItrs',100,'theta0',theta0,'learningRate',1e-7,'v',true);
 
 path2out = "enron-scratch-3-3.mat";
 save(path2out, "theta", "likelihoods", "thetas")
