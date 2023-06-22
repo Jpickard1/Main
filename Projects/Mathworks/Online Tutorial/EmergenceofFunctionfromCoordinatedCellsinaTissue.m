@@ -19,10 +19,10 @@ r2 = addreaction(m1, 'y -> y');
 r3 = addreaction(m1, 'x -> y');
 r4 = addreaction(m1, 'y -> x');
 
-klaw1 = addkineticlaw(r1, 'EQ1A', 'ParameterVariableNames', {'a','x0'}, 'SpeciesVariableNames', {'x'})
-klaw2 = addkineticlaw(r2, 'EQ1A', 'ParameterVariableNames', {'a','y0'}, 'SpeciesVariableNames', {'y'})
-klaw3 = addkineticlaw(r3, 'EQ1B', 'ParameterVariableNames', {'beta'}, 'SpeciesVariableNames', {'x','y'})
-klaw4 = addkineticlaw(r4, 'EQ1B', 'ParameterVariableNames', {'beta'}, 'SpeciesVariableNames', {'y','x'})
+klaw1 = addkineticlaw(r1, 'EQ1A', 'ParameterVariableNames', {'a','x0'}, 'SpeciesVariableNames', {'x'});
+klaw2 = addkineticlaw(r2, 'EQ1A', 'ParameterVariableNames', {'a','y0'}, 'SpeciesVariableNames', {'y'});
+klaw3 = addkineticlaw(r3, 'EQ1B', 'ParameterVariableNames', {'beta'}, 'SpeciesVariableNames', {'x','y'});
+klaw4 = addkineticlaw(r4, 'EQ1B', 'ParameterVariableNames', {'beta'}, 'SpeciesVariableNames', {'y','x'});
 
 a = 0.5;
 b = 0.5;
