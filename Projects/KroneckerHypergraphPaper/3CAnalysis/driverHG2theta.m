@@ -117,9 +117,9 @@ end
 
 % 1. Get File Path
 path2data = path2data + "adjList_";
-if worker <= 4
+if worker <= 9
     mid = "OFF";
-elseif worker <= 9
+elseif worker <= 19
     mid = "ON";
 else
     mid = "HIGH";
@@ -130,10 +130,10 @@ suffixTXT = ".txt";
 suffixMAT = ".mat";
 
 % 2. Set file range
-fileRange = mod(worker, 5) * 40 + [1:40];
+fileRange = mod(worker, 10) * 20 + [1:20];
 
 % 3. Iterate over all files
-for f=1:length(fileRange)
+parfor f=1:length(fileRange)
     % Set file path
     filePath = path2data + string(fileRange(f)) + "_" + string(epsilon) + suffixTXT;
     outPath = path2out + string(fileRange(f)) + "_" + string(epsilon) + suffixMAT;
