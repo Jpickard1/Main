@@ -3,11 +3,13 @@
 % Auth: Joshua Pickard and Vivan
 %       jpic@umich.edu
 % Date: June 27, 2023
+clear all; close all; clc
+path2data = 'C:\Users\picka\Documents\my_projects\DBTM\Main\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\';
+path2data = 'C:\Joshua\MissingData\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\';
 
 %% Load Data
 SIMPARMS = ["OFF","ON","HIGH"];
 nsamps = 3;
-path2data = 'C:\Users\picka\Documents\my_projects\DBTM\Main\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\';
 s=1; j=1;
 path2sims = path2data + SIMPARMS(s) + "\conf.";
 filePath = path2sims + string(j) + ".DNA";
@@ -15,9 +17,9 @@ T = readLAMMPSoutput(filePath);
 cords = getCords(T);
 D = squareform(pdist(cords));
 
-clearvars -except D
-
 D = D(1:4900,1:4900);
+
+clearvars -except D path2data
 
 %% Compute SVD
 tic;
@@ -109,13 +111,13 @@ norm(D(1:4970,1:4970) - R3)
 R3 = max(max(D)) / (max(max(R3))) * R3;
 
 %% Plots for paper with randomized data
-itrs = 15;
+itrs = 5;
 maxN = 40;
-vals = 2:1:maxN;
-timeKSVD = zeros(length(vals), j);
-timeBins = zeros(length(vals), j);
-errorKSVD = zeros(length(vals),j);
-errorBins = zeros(length(vals),j);
+vals = 2:5:maxN;
+timeKSVD = zeros(length(vals), itrs);
+timeBins = zeros(length(vals), itrs);
+errorKSVD = zeros(length(vals),itrs);
+errorBins = zeros(length(vals),itrs);
 for i=1:length(vals)
     n = vals(i);
     for j=1:itrs
@@ -136,7 +138,7 @@ for i=1:length(vals)
     end
 end
 
-vals2 = vals .^2; itrs=15;
+vals2 = vals .^2;
 vals2p = repmat(vals2, [1 itrs]);
 figure;
 subplot(1,2,1); hold on;
@@ -153,15 +155,17 @@ sgtitle("Run Time and Error Analysis of Rank 1 Kronecker Approximation");
 %% Rank 1 examples
 SIMPARMS = ["OFF","ON","HIGH"];
 nsamps = 3;
-path2data = 'C:\Users\picka\Documents\my_projects\DBTM\Main\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\';
+% path2data = 'C:\Users\picka\Documents\my_projects\DBTM\Main\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\';
 s=1; j=1;
 path2sims = path2data + SIMPARMS(s) + "\conf.";
 filePath = path2sims + string(j) + ".DNA";
-T = readLAMMPSoutput(filePath);
-cords = getCords(T);
-D = squareform(pdist(cords));
+if ~exist('D')
+    T = readLAMMPSoutput(filePath);
+    cords = getCords(T);
+    D = squareform(pdist(cords));
+end
 
-clearvars -except D
+clearvars -except D path2data
 
 D = D(1:4900,1:4900);
 
@@ -188,16 +192,16 @@ imagesc(Rnkp); title('Nearest Kronecker Product');
 nexttile;
 imagesc(Rna); title('New Algorithm');
 
-figure;
-tiledlayout(1,4);
-nexttile;
-scree(D);
-nexttile;
-scree(Rsvd);
-nexttile;
-scree(Rnkp);
-nexttile;
-scree(Rna);
+% figure;
+% tiledlayout(1,4);
+% nexttile;
+% scree(D);
+% nexttile;
+% scree(Rsvd);
+% nexttile;
+% scree(Rnkp);
+% nexttile;
+% scree(Rna);
 
 D = D / sum(D, 'all');
 Rsvd = Rsvd / sum(Rsvd, 'all');
@@ -236,10 +240,50 @@ imagesc(Rnkp); title('Nearest Kronecker Product');
 nexttile;
 imagesc(Rna); title('New Algorithm');
 
+%% Failure Modes of this Algorithm
+
+n = 70;
+U = rand(n^2, 3); Sigma = diag(sort(rand(3,1),'descend')); V = rand(n^2, 3);
+D = U * Sigma * V';
+
+% SVD approximation
+tic; [U, Sigma, V] = svds(D,1); toc
+Rsvd = Sigma(1,1) * U(:,1) * V(:,1)'; % + Sigma(2,2) * U(:,2) * V(:,2)';
+
+% NKP
+tic; [B1, C1, ~] = nearestKroneckerProduct(D, [n n], [n n]); toc
+Rnkp = kron(B1, C1);
+
+% New Alg.
+tic; [Dp, Fp] = KronFilter(D, n); toc
+Rna = kron(Dp{1}, Fp{1});
+
+figure;
+tiledlayout(1,4);
+nexttile;
+imagesc(D); title('Original Data');
+nexttile;
+imagesc(Rsvd); title('SVD Estimation Rank 1');
+nexttile;
+imagesc(Rnkp); title('Nearest Kronecker Product');
+nexttile;
+imagesc(Rna); title('New Algorithm');
+
+D = D / sum(D, 'all');
+Rsvd = Rsvd / sum(Rsvd, 'all');
+Rnkp = Rnkp / sum(Rnkp, 'all');
+Rna = Rna / sum(Rna, 'all');
+
+norm(D)
+norm(D - Rsvd)
+norm(D - Rnkp)
+norm(D - Rna)
+
+
 %% Higher Rank examples
 SIMPARMS = ["OFF","ON","HIGH"];
 nsamps = 3;
-path2data = 'C:\Users\picka\Documents\my_projects\DBTM\Main\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\';
+% path2data = 'C:\Users\picka\Documents\my_projects\DBTM\Main\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\';
 s=1; j=1;
 path2sims = path2data + SIMPARMS(s) + "\conf.";
 filePath = path2sims + string(j) + ".DNA";
@@ -396,3 +440,271 @@ diff1 = abs(D - E); Rna = kron(Dp{1}, Fp{1});
 subplot(1,3,1); imagesc(D); title('Data');
 subplot(1,3,2); imagesc(E); title('Estimation');
 subplot(1,3,3); imagesc(diff1); title('Error');
+
+
+%% Higher rank approximation with KronFilter
+
+% Make data
+n = 16;
+M = zeros(n^2);
+M(n^2/2,n^2/2) = 1;
+R = bwdist(M);
+A = R >= 45;
+A = double(A); A = A * 10;
+% A = A(1:289,1:289); n = 17;
+itrs = 5;
+figure; tiledlayout(itrs, 4);
+% nexttile; imagesc(A); title('Data'); disp(norm(A));
+Ac = cell(1,itrs);
+Bc = cell(1,itrs);
+Cc = cell(1,itrs);
+Rc = cell(1,itrs);
+for i=1:itrs
+    [B, C] = KronFilter2(A, n); R = kron(B, C);
+    nexttile; imagesc(A); title('Remaining Data');
+    nexttile; imagesc(R); title('Approximation');
+    nexttile; imagesc(B); title('B');
+    nexttile; imagesc(C); title('C');
+    fprintf("Data Norm: %f \t Approximation Norm: %f \t B Norm: %f \t C Norm: %f\n", norm(A), norm(R), norm(B), norm(C));
+    Ac{i} = A;
+    Bc{i} = B;
+    Cc{i} = C;
+    Rc{i} = R;
+    A = A - R;
+end
+
+Rt = zeros(size(A));
+for i=1:length(Rc)
+    Rt = Rt + Rc{i};
+end
+figure; imagesc(Rt)
+
+fs = 10;
+figure; imagesc(conv2(Rt, ones(fs, fs)))
+figure; imagesc(conv2(Rt, Bc{1}))
+
+
+
+%%
+B1 = rand(3,3);
+C1 = rand(3,3);
+B2 = rand(3,3);
+C2 = rand(3,3);
+A = kron(B1, C1) + kron(B2, C2);
+figure;
+tiledlayout(1,5);
+nexttile; imagesc(A); title('Data')
+nexttile; imagesc(B1); title('B1')
+nexttile; imagesc(C1); title('C1')
+nexttile; imagesc(B2); title('B2')
+nexttile; imagesc(C2); title('C2')
+
+figure; tiledlayout(itrs, 4);
+% nexttile; imagesc(A); title('Data'); disp(norm(A));
+for i=1:itrs
+    [B, C] = KronFilter2(A, 3); R = kron(B, C);
+    nexttile; imagesc(A); title('Remaining Data');
+    nexttile; imagesc(R); title('Approximation');
+    nexttile; imagesc(B); title('B');
+    nexttile; imagesc(C); title('C');
+    fprintf("Data Norm: %f \t Approximation Norm: %f \t B Norm: %f \t C Norm: %f\n", norm(A), norm(R), norm(B), norm(C));
+    A = A - R;
+end
+
+
+%% Plot of number of parameters used
+n = 10080;
+x = [];
+p = [];
+for i=1:n
+    if mod(n,i) == 0
+        x = [x i];
+        p = [p (i^2+(n/i)^2)/(n^2)];
+    end
+end
+
+figure; scatter(x,p,'.');
+title('Resolution v. Parameters');
+xlabel("Factor Matrix Size");
+ylabel("Parameters");
+set(gca, 'YScale', 'log', 'XScale', 'log');
+
+%% Higher Rank examples
+SIMPARMS = ["OFF","ON","HIGH"];
+nsamps = 3;
+s=1; j=1;
+path2sims = path2data + SIMPARMS(s) + "\conf.";
+filePath = path2sims + string(j) + ".DNA";
+T = readLAMMPSoutput(filePath);
+cords = getCords(T);
+D = squareform(pdist(cords));
+
+clearvars -except D path2data
+
+D = D(1:4900,1:4900);
+D = D / sum(D, 'all');
+
+% SVD approximation
+[U, Sigma, V] = svds(D,6);
+Rsvd = U(:,1:6) * Sigma(1:6,1:6) * V(:,1:6)';
+
+% NKP
+[ B1, C1, diff1 ] = nearestKroneckerProduct(D, [70 70], [70 70]);
+[ B2, C2, diff2 ] = nearestKroneckerProduct(diff1, [70 70], [70 70]);
+[ B3, C3, diff3 ] = nearestKroneckerProduct(diff2, [70 70], [70 70]);
+[ B4, C4, diff4 ] = nearestKroneckerProduct(diff3, [70 70], [70 70]);
+[ B5, C5, diff5 ] = nearestKroneckerProduct(diff4, [70 70], [70 70]);
+[ B6, C6, ~ ] = nearestKroneckerProduct(diff5, [70 70], [70 70]);
+Rnkp = kron(B1,C1) + kron(B2,C2) + kron(B3,C3); % + kron(B4,C4) + kron(B5,C5) + kron(B6,C6);
+
+%% New Alg.
+Ac = cell(1,itrs);
+Bc = cell(1,itrs);
+Cc = cell(1,itrs);
+Rc = cell(1,itrs);
+A = D; itrs = 2; n = 70;
+Rc = cell(1,itrs);
+figure; tiledlayout(itrs, 4);
+An = zeros(itrs,1);
+for i=1:itrs
+    % A = A / norm(A);
+    [B, C] = KronFilter2(A, n); R = kron(B, C);
+    nexttile([1 2]); imagesc([A R]); title('Remaining Data + Estimate');
+    % nexttile; imagesc(R); title('Approximation');
+    nexttile; imagesc(B); title('B');
+    nexttile; imagesc(C); title('C');
+    An(i) = norm(A, 1);
+    fprintf("Data Norm: %f \t Approximation Norm: %f \t B Norm: %f \t C Norm: %f\n", An(i), norm(R, 1), norm(B, 1), norm(C, 1));
+    Ac{i} = A;
+    Bc{i} = B;
+    Cc{i} = C;
+    Rc{i} = R;
+    A = A - R; A(A<0) = 0;
+end
+
+Rna = zeros(size(A));
+for i=1:length(Rc)
+    Rna = Rna + (1/i) * Rc{i};
+end
+
+figure; imagesc(Rna)
+figure; imagesc(Rnkp)
+
+
+%%
+figure;
+tiledlayout(1,4);
+nexttile;
+imagesc(D); title('Original Data');
+nexttile;
+imagesc(Rsvd); title('SVD Estimation (Rank 6)');
+nexttile;
+imagesc(Rnkp); title('Nearest Kronecker Product (Rank 6)');
+nexttile;
+imagesc(Rna); title('New Algorithm');
+
+%% lsqnonneg for kronecker approximation
+%   A = B kron C
+clear
+A = sym('A_%d', [4 4])
+B = sym('B_%d', [2 2])
+B_vec = B(:)
+% S2 = shuffleMatrix(2,2)
+% S2 * A
+
+% Compute the permutation matrix
+permutation = reshape(1:16, [4 4]).';
+permutation = [1 2 5 6;
+               3 4 7 8;
+               9 10 13 14;
+               11 12 15 16];
+
+Ap = kron2vecPerm(A)
+
+% Rearrange the elements of A using the permutation matrix
+% A_reordered = A(permutation);
+
+lsqnonneg(rand(4,1), rand(4,1))
+
+
+%%
+clear
+n = 3;
+B = rand(n,n)
+C = rand(n,n)
+A = kron(B,C)
+
+% B = sym("B_%d", [2 2]);
+% C = sym("C_%d", [2 2]);
+% A = kron(B,C)
+
+Bvec = B(:);
+
+% Create the kronecker product matrix for B
+kronB = kron(eye(n*n), Bvec);
+
+Ap = kron2vecPerm(A);
+Avec = Ap(:);
+
+% Solve for C using lsqnonneg
+C_vec = lsqnonneg(kronB, Avec);
+
+% Reshape C to the appropriate size
+Cnew = reshape(C_vec, [n n])'
+C
+
+
+
+
+%% Reshape A and B to vectors
+S = shuffleMatrix(2,2);
+Ap = A * S;
+
+Ap(:)
+
+C
+
+%% Tensor based Kronecker binning
+clear
+itrs = 3;
+maxN = 10;
+vals = 2:2:maxN;
+timeTKPSVD = zeros(length(vals), itrs);
+timeBins = zeros(length(vals), itrs);
+errorTKPSVD = zeros(length(vals),itrs);
+errorBins = zeros(length(vals),itrs);
+for i=1:length(vals)
+    n = vals(i);
+    for j=1:itrs
+        A = rand(n^2, n^2, n^2);
+        % tic; [Bk,Ck, ~] = nearestKroneckerProduct(A, [n n], [n n]);
+        tic; [Bk, sigmas] = tkpsvd(A, n*ones(1,6));
+        timeTKPSVD(i,j) = toc;
+        tic; [Bb, Cb] = HyperKronFilter(A, n);
+        timeBins(i,j) = toc;
+    
+        disp("===========");
+        nA = norm(A, 'fro');
+        disp(nA);
+        disp(norm(sigmas(1) * superkron(Bk{1,1},Bk{2,1}), 'fro'));
+        disp(norm(2 * superkron(Bb,Cb), 'fro'));
+    
+        errorTKPSVD(i,j) = norm(A - sigmas(1) * superkron(Bk{1,1},Bk{2,1}), 'fro') / nA;
+        errorBins(i,j) = norm(A - 2 * superkron(Bb,Cb), 'fro') / nA;
+    end
+end
+
+vals2 = vals .^2;
+vals2p = repmat(vals2, [1 itrs]);
+figure;
+subplot(1,2,1); hold on;
+scatter(vals2p, reshape(timeTKPSVD, [1 numel(timeTKPSVD)]), 'x', 'r');
+scatter(vals2p, reshape(timeBins, [1 numel(timeBins)]), '.', 'b');
+title('Run Time'); xlabel('Tensor Dimension'); ylabel('Seconds');
+subplot(1,2,2); hold on;
+scatter(vals2p, reshape(errorTKPSVD, [1 numel(errorTKPSVD)]), 'x', 'r');
+scatter(vals2p, reshape(errorBins, [1 numel(errorBins)]), '.', 'b');
+title('Reconstruction Error'); xlabel('Tensor Dimension'); ylabel('2 Norm');
+legend(["KSVD", "New Alg."]);
+sgtitle("Run Time and Error Analysis of Rank 1 Kronecker Approximation (3-way Tensor)");
+
