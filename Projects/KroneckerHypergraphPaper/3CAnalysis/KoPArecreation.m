@@ -111,9 +111,9 @@ norm(D(1:4970,1:4970) - R3)
 R3 = max(max(D)) / (max(max(R3))) * R3;
 
 %% Plots for paper with randomized data
-itrs = 5;
-maxN = 40;
-vals = 2:5:maxN;
+itrs = 3;
+maxN = 100;
+vals = 2:10:maxN;
 timeKSVD = zeros(length(vals), itrs);
 timeBins = zeros(length(vals), itrs);
 errorKSVD = zeros(length(vals),itrs);
@@ -734,8 +734,9 @@ scatter(errors(1:i-1,1), errors(1:i-1,2), '.');
 
 %% Write all Hip-Hop distance matrices to file
 SIMPARMS = ["OFF","ON","HIGH"];
-nsamps = 45;
+nsamps = 15;
 path2data = 'C:\Users\picka\Documents\my_projects\DBTM\Main\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\';
+path2data = 'C:\Joshua\MissingData\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\';
 D = cell(nsamps,3);
 for s=1:3
     path2sims = path2data + SIMPARMS(s) + "\conf.";
@@ -747,6 +748,9 @@ for s=1:3
         disp(j);
     end
 end
+
+save("HipHopD3_45.mat",D)
+save("HipHopD3_45.mat",'D','-v7.3')
 
 %% KSVD vs New Alg
 
@@ -770,3 +774,309 @@ end
 figure; 
 scatter(errors(1:i-1,1), errors(1:i-1,2), '.');
 
+
+%% KSVD vs New Alg. on Permuted Matrix
+clear; clc; close all;
+maxItrs = 1000;
+n = 8;
+n2 = n^2;
+A = rand(n2,n2);
+A = triu(A) - diag(diag(A)); A = A + A';
+Ac = cell(maxItrs,1);
+errors = zeros(maxItrs,2);
+
+for i=1:maxItrs
+    disp(i);
+    Ac{i} = A;
+    [Bb, Cb] = KronFilter(A, n);
+    [Bk,Ck, ~] = nearestKroneckerProduct(A, [n n], [n n]);
+
+    R1 = kron(Bb{1}, Cb{1});
+    R2 = kron(Bk, Ck);
+    
+    errors(i,1) = norm(A - R1) / norm(A);
+    errors(i,2) = norm(A - R2) / norm(A);
+
+    % Swap a row and a column of A
+    if rand() > 0.5
+        r1 = randi([1 n2]);
+        r2 = randi([1 n2]);
+        A([r1 r2],:) = A([r2 r1], :);
+    else
+        c1 = randi([1 n2]);
+        c2 = randi([1 n2]);
+        A([c1 c2],:) = A([c2 c1], :);
+    end
+end
+
+figure; 
+plot(errors(:,1), errors(:,2));
+xlabel("KronFilter Error");
+ylabel("NKP Error");
+
+% scatter(errors(1:i-1,1), errors(1:i-1,2), '.');
+
+%% KSVD vs SVD Rank 1 on Permuted Matrix
+clear; clc; close all;
+maxItrs = 1000;
+n = 5;
+n2 = n^2;
+A = rand(n2,1) * rand(1, n2);
+A = kron(rand(n), rand(n))
+% A = rand(n2,n2);
+% A = triu(A) - diag(diag(A)); A = A + A';
+Ac = cell(maxItrs,1);
+errors = zeros(maxItrs,2);
+
+for i=1:maxItrs
+    disp(i);
+    Ac{i} = A;
+    % [Bb, Cb] = KronFilter(A, n);
+    [U, Sigmas, V] = svds(A,1);
+    [Bk,Ck, ~] = nearestKroneckerProduct(A, [n n], [n n]);
+
+    R1 = U * Sigmas * V';
+    R2 = kron(Bk, Ck);
+    
+    errors(i,1) = norm(A - R1) / norm(A);
+    errors(i,2) = norm(A - R2) / norm(A);
+
+    % Swap a row and a column of A
+    if rand() > 0.5
+        r1 = randi([1 n2]);
+        r2 = randi([1 n2]);
+        A([r1 r2],:) = A([r2 r1], :);
+    else
+        c1 = randi([1 n2]);
+        c2 = randi([1 n2]);
+        A([c1 c2],:) = A([c2 c1], :);
+    end
+end
+
+figure; 
+plot(errors(:,1), errors(:,2));
+xlabel("SVD Error");
+ylabel("NKP Error");
+
+figure;
+subplot(2,3,1); imagesc(Ac{1}); title("Data");
+subplot(2,3,2); imagesc(R1); title("SVD");
+subplot(2,3,3); imagesc(R2); title("KNP");
+subplot(2,3,5); imagesc(A-R1); title("SVD Error");
+subplot(2,3,6); imagesc(A-R2); title("KNP Error");
+
+norm(A)
+norm(R1)
+norm(R2)
+
+norm(A - R1) / norm(A)
+norm(A - R2) / norm(A)
+
+
+
+% scatter(errors(1:i-1,1), errors(1:i-1,2), '.');
+%% Verifying nearestKroneckerProduct.m
+%   result: It seems good at what it does
+clear
+
+m = 4;
+n = 6;
+A = sym('A_%d%d',[n m])
+% n1 = round(sqrt(n)); n2 = n1;
+n1 = 3; n2 = 2;
+m1 = round(sqrt(m)); m2 = m1;
+
+R = reshape( permute( reshape( A, [ m2, m1, n2, n1 ] ), [ 2 4 1 3 ] ), m1 * n1, m2 * n2 );
+
+reverse_perm = reshape(permute(reshape(R, [n2, m2, n1, m1]), [3, 1, 4, 2]), m1, n1, m2, n2);
+
+% Reconstruct the original matrix A
+Ar = reshape(reverse_perm, m1 * n1, m2 * n2);
+
+
+B = rand(n);
+C = rand(n);
+A = kron(B,C);
+[Bg, Cg] = nearestKroneckerProduct(A, [n n], [n n])
+
+B - Bg
+
+C - Cg
+
+Ag = kron(Bg, Cg)
+A - Ag % Don't forget to loop to see that the scaling factor of this matrix is very small 1e-15 when n = 6 for like 5 tries in a row (thats basically correct)
+
+
+%% KSVD vs SVD a few comparisons
+%   rank 1 matrix
+%   kronecker rank 1 matrix
+%   random symmetric matrix
+%   rank 1 + kronecker rank 1
+%   random matrix
+% clear; clc; close all;
+maxItrs = 10000;
+n = 10;
+n2 = n^2;
+matrixTypes = ["Rank 1", "Kronecker Rank 1", "Rank 1 + Kronecker Rank 1", "Random Symmetric", "Random Matrix"];
+figure;
+tiledlayout(2,3);
+for type=1:5
+    if type == 1
+        A = rand(n2,1) * rand(1, n2);
+    elseif type == 2
+        A = kron(rand(n), rand(n));
+    elseif type == 3
+        A = rand(n2, 1) * rand(1,n2) + kron(rand(n), rand(n));
+    elseif type == 4
+        A = rand(n2,n2);
+        A = triu(A); A = A + A' - diag(diag(A));
+    elseif type == 5
+        A = rand(n2, n2);
+    else
+        error('Whats going on here?');
+    end
+    errors = zeros(maxItrs,2);    
+    for i=1:maxItrs
+        if mod(i, 100) == 0; disp(i); end
+        [U, Sigmas, V] = svds(A,1);
+        [Bk,Ck, ~] = nearestKroneckerProduct(A, [n n], [n n]);
+    
+        R1 = U * Sigmas * V';
+        R2 = kron(Bk, Ck);
+        
+        errors(i,1) = norm(A - R1) / norm(A);
+        errors(i,2) = norm(A - R2) / norm(A);
+    
+        % Swap a row and a column of A
+        r1 = randi([1 n2]);
+        r2 = randi([1 n2]);
+        if rand() > 0.5
+            A([r1 r2],:) = A([r2 r1], :);
+        else
+            A(:,[r1 r2]) = A(:,[r2 r1]);
+        end
+    end
+    nexttile;
+    scatter(errors(:,1), errors(:,2), '.');
+    xlabel("SVD Error");
+    ylabel("NKP Error");
+    title(matrixTypes(type));
+end
+
+%% SVD vs KSVD for Hi-C
+% clear all; close all; clc
+% load("HipHopD3_45.mat")
+
+n = 70;
+for s=1:3
+    for i=1:15
+        disp(i);
+        A = D{i,s};
+        A = A(1:4900,1:4900);
+        
+        [U, Sigmas, V] = svds(A,1);
+        [Bk,Ck, ~] = nearestKroneckerProduct(A, [n n], [n n]);
+        
+        R1 = U * Sigmas * V';
+        R2 = kron(Bk, Ck);
+        
+        errors((s-1)*15+i,1) = norm(A - R1) / norm(A);
+        errors((s-1)*15+i,2) = norm(A - R2) / norm(A);
+        
+    end
+end
+
+x = 0.2:0.01:0.45;
+
+figure;
+scatter(errors(:,1), errors(:,2), '.'); hold on;
+plot(x,x);
+xlabel("SVD Error");
+ylabel("NKP Error");
+title("Simulated Hi-C (HipHop LAMMPS)")
+% title(matrixTypes(type));
+
+figure;
+imagesc(D{6,1})
+
+
+%  11, 3
+%  13, 1
+%   6, 1
+
+%% KSVD vs Kronecker 
+clear
+itrs = 100;
+n = 5; n2 = n^2;
+errors = zeros(itrs,2);
+for i=1:itrs
+    disp(i);
+    % Make tensor and unfolding
+    A = rand(n2,n2,n2);
+    Am = block3unfold(A, n);
+    % Kronecker approximate
+    [Bg, Cg] = KronFilter5(Am, n, n2);
+    [Bk,Ck, ~] = nearestKroneckerProduct(Am, [n n2], [n n2]);
+    R1 = kron(Bg, Cg);
+    R2 = kron(Bk, Ck);
+    % Calculate errors
+    E1 = Am - R1;
+    E2 = Am - R2;
+
+    errors(i,1) = sum(abs(E1), 'all');
+    errors(i,2) = sum(abs(E2), 'all');
+end
+
+figure;
+plot(errors(:,1)); hold on;
+plot(errors(:,2)); hold on;
+
+%%
+clear
+itrs = 3;
+maxN = 5;
+vals = 2:1:12;
+timeKSVD = zeros(length(vals), itrs);
+timeBins = zeros(length(vals), itrs);
+errorKSVD = zeros(length(vals),itrs);
+errorBins = zeros(length(vals),itrs);
+for i=1:length(vals)
+    n = vals(i); n2 = n^2;
+    for j=1:itrs
+        disp(j);
+        % Make tensor and unfolding
+        A = rand(n2,n2,n2);
+        Am = block3unfold(A, n);
+
+        % Kronecker approximate
+        tic;
+        [Bg, Cg] = KronFilter5(Am, n, n2);
+        timeBins(i,j) = toc;
+        tic;
+        [Bk,Ck, ~] = nearestKroneckerProduct(Am, [n n2], [n n2]);
+        timeKSVD(i,j) = toc;
+        
+        R1 = kron(Bg, Cg);
+        R2 = kron(Bk, Ck);
+    
+        E1 = Am - R1;
+        E2 = Am - R2;
+    
+        errorBins(i,j) = sum(abs(E1), 'all');
+        errorKSVD(i,j) = sum(abs(E2), 'all');
+    end
+end
+
+vals2 = vals .^3;
+vals2p = repmat(vals2, [1 itrs]);
+figure;
+subplot(1,2,1); hold on;
+scatter(vals2p, reshape(timeKSVD, [1 numel(timeKSVD)]), 'x', 'r');
+scatter(vals2p, reshape(timeBins, [1 numel(timeBins)]), '.', 'b');
+title('Run Time'); xlabel('Tensor Size'); ylabel('Seconds');
+subplot(1,2,2); hold on;
+scatter(vals2p, reshape(errorKSVD, [1 numel(errorKSVD)]), 'x', 'r');
+scatter(vals2p, reshape(errorBins, [1 numel(errorBins)]), '.', 'b');
+title('Reconstruction Error'); xlabel('Matrix Dimension'); ylabel('2 Norm');
+legend(["KSVD", "New Alg."]);
+sgtitle("Run Time and Error Analysis of Rank 1 Kronecker Approximation");
