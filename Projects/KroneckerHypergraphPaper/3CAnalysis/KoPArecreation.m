@@ -708,3 +708,65 @@ title('Reconstruction Error'); xlabel('Tensor Dimension'); ylabel('2 Norm');
 legend(["KSVD", "New Alg."]);
 sgtitle("Run Time and Error Analysis of Rank 1 Kronecker Approximation (3-way Tensor)");
 
+%% Rank 1 KSVD vs SVD Approximations
+
+maxItrs = 300;
+n2 = 144; n = round(sqrt(n2));
+Ac = cell(maxItrs,1);
+errors = zeros(maxItrs,2);
+
+for i=1:45
+    disp(i);
+    % A = rand(n2,n2);
+    A = D{i,s}; A = A(1:4900,1:4900); n = 70;
+    [U, Sigma, V] = svds(A, 1);
+    R1 = U * Sigma * V';
+    [Bk,Ck, ~] = nearestKroneckerProduct(A, [n n], [n n]);
+    R2 = kron(Bk, Ck);
+    errors(i,1) = norm(A - R1) / norm(A);
+    errors(i,2) = norm(A - R2) / norm(A);
+    % Ac{i} = A;
+end
+
+% hold on;
+figure; 
+scatter(errors(1:i-1,1), errors(1:i-1,2), '.');
+
+%% Write all Hip-Hop distance matrices to file
+SIMPARMS = ["OFF","ON","HIGH"];
+nsamps = 45;
+path2data = 'C:\Users\picka\Documents\my_projects\DBTM\Main\Code\reproductions\Hip-Hop\HiP-HoP_Pax6_FullConformations\';
+D = cell(nsamps,3);
+for s=1:3
+    path2sims = path2data + SIMPARMS(s) + "\conf.";
+    for j=1:nsamps
+        filePath = path2sims + string(j) + ".DNA";
+        T = readLAMMPSoutput(filePath);
+        cords = getCords(T);
+        D{j,s} = squareform(pdist(cords));
+        disp(j);
+    end
+end
+
+%% KSVD vs New Alg
+
+maxItrs = 100;
+n = 20;
+n2 = n^2;
+Ac = cell(maxItrs,1);
+errors = zeros(maxItrs,2);
+
+for i=1:maxItrs
+    disp(i);
+    A = rand(n2,n2);
+    [Bb, Cb] = KronFilter(A, n);
+    [Bk,Ck, ~] = nearestKroneckerProduct(A, [n n], [n n]);
+    R1 = kron(Bb{1}, Cb{1});
+    R2 = kron(Bk, Ck);
+    errors(i,1) = norm(A - R1) / norm(A);
+    errors(i,2) = norm(A - R2) / norm(A);
+end
+
+figure; 
+scatter(errors(1:i-1,1), errors(1:i-1,2), '.');
+
