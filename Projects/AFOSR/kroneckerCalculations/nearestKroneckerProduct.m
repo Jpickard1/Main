@@ -1,6 +1,8 @@
 function [ B, C, D ] = nearestKroneckerProduct( A, SizeB, SizeC, Hermitian ) %#codegen
 % REFERENCE: https://doi.org/10.1007/978-94-015-8196-7_17
 %
+%   This code was added by Joshua from a github jist referenced below
+%
 % Auth: Tom Holden
 %       thomas.holden@gmail.com
 % Date: June 22, 2018
