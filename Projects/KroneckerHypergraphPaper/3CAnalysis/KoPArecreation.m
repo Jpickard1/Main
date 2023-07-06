@@ -1035,7 +1035,7 @@ plot(errors(:,2)); hold on;
 clear
 itrs = 3;
 maxN = 5;
-vals = 2:1:12;
+vals = 2:1:20;
 timeKSVD = zeros(length(vals), itrs);
 timeBins = zeros(length(vals), itrs);
 errorKSVD = zeros(length(vals),itrs);
@@ -1062,8 +1062,11 @@ for i=1:length(vals)
         E1 = Am - R1;
         E2 = Am - R2;
     
-        errorBins(i,j) = sum(abs(E1), 'all');
-        errorKSVD(i,j) = sum(abs(E2), 'all');
+        errorBins(i,j) = sum(E1 .^ 2, 'all') / sum(A .^ 2, 'all');
+        errorKSVD(i,j) = sum(E2 .^ 2, 'all') / sum(A .^ 2, 'all');
+
+        % errorBins(i,j) = sum(abs(E1), 'all') / sum(A, 'all');
+        % errorKSVD(i,j) = sum(abs(E2), 'all') / sum(A, 'all');
     end
 end
 
@@ -1077,6 +1080,6 @@ title('Run Time'); xlabel('Tensor Size'); ylabel('Seconds');
 subplot(1,2,2); hold on;
 scatter(vals2p, reshape(errorKSVD, [1 numel(errorKSVD)]), 'x', 'r');
 scatter(vals2p, reshape(errorBins, [1 numel(errorBins)]), '.', 'b');
-title('Reconstruction Error'); xlabel('Matrix Dimension'); ylabel('2 Norm');
+title('Reconstruction Error'); xlabel('Tensor Size'); ylabel('2 Norm');
 legend(["KSVD", "New Alg."]);
 sgtitle("Run Time and Error Analysis of Rank 1 Kronecker Approximation");
