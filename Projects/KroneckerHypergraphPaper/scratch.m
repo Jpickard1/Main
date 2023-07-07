@@ -1,7 +1,8 @@
+%% tensor eigenvalues
 clear all; close all; clc
 
 n = 2;
-itrs = 100;
+itrs = 1000;
 tB = zeros(itrs,1);
 tC = zeros(itrs,1);
 tA = zeros(itrs,1);
@@ -35,6 +36,63 @@ title('Calculation Error');
 figure;
 histogram(tA); hold on;
 histogram(tB + tC);
-xlabel("Time");
+xlabel("Time (sec.)");
 ylabel("Frequency");
 title("Run Time");
+legend(["Base Calculation", "Calculation with Kronecker"])
+
+% save("eigencalculationRunTimes.mat")
+
+max(max(BCAerrors))
+
+%% tensor contractions
+clear all; close all; clc
+
+n = 20;
+itrs = 1000;
+tB = zeros(itrs,1);
+tC = zeros(itrs,1);
+tA = zeros(itrs,1);
+BCAerror = zeros(itrs,1);
+for i=1:itrs
+    disp(i)
+    B = rand(n,n,n);
+    C = rand(n,n,n);
+    A = superkron(B,C);
+
+    x = rand(n,1);
+    y = rand(n,1);
+    xy = kron(x,y);
+    
+    tic;
+    vb = tensorprod(B, x, 1, 1);
+    tB(i) = toc;
+    tic;
+    vc = tensorprod(C, y, 1, 1);
+    vbc = kron(vb, vc);
+    tC(i) = toc;
+    tic;
+    va = tensorprod(A, xy, 1, 1);
+    tA(i) = toc;
+
+    BCAerrors(i) = norm(va - vbc);
+
+end
+
+figure;
+histogram(abs(BCAerrors));
+xlabel('Error');
+ylabel('Frequency');
+title('Calculation Error');
+
+figure;
+histogram(tA, 10); hold on;
+histogram(tB + tC, 10);
+xlabel("Time (sec.)");
+ylabel("Frequency");
+title("Run Time");
+legend(["Base Calculation", "Calculation with Kronecker"])
+
+% save("contractionCalculationRunTimes.mat")
+
+max(max(BCAerrors))
