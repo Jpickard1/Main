@@ -1,3 +1,26 @@
+%% tensor eigenvalue figure
+
+clear; close all; clc;
+figure; tiledlayout(1,2);
+
+nexttile; load("eigencalculationRunTimes.mat");
+histogram(tA); hold on;
+histogram(tB + tC);
+xlabel("Time (sec.)");
+ylabel("Frequency");
+title("H-Eigenvalues of $A\in\mathbf{R}^{4\times 4\times 4}$",'interpreter','latex');
+legend(["Standard", "Kronecker"])
+
+nexttile; load("eigencalculationRunTimes6.mat");
+histogram(tA); hold on;
+histogram(tB + tC);
+xlabel("Time (sec.)");
+ylabel("Frequency");
+title("H-Eigenvalues of $A\in\mathbf{R}^{6\times 6\times 6}$",'interpreter','latex');
+legend(["Standard", "Kronecker"])
+
+
+
 %% tensor eigenvalues
 clear all; close all; clc
 
@@ -36,10 +59,11 @@ title('Calculation Error');
 figure;
 histogram(tA); hold on;
 histogram(tB + tC);
-xlabel("Time (sec.)");
-ylabel("Frequency");
-title("Run Time");
-legend(["Standard", "Kronecker"])
+xlabel("Time (sec.)",'Interpreter','latex');
+ylabel("Frequency",'Interpreter','latex');
+title("Time to Calculate Largest H-Eigenvalue of $$\textsf{A}\in\mathbf{R}^{4\times4\times4}$$",'Interpreter','latex');
+legend(["Direct", "Kronecker"])
+xlim([1.25, 1.8])
 
 % save("eigencalculationRunTimes.mat")
 
