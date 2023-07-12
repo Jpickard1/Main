@@ -4,6 +4,52 @@
 %       jpic@umich.edu
 % Date: March 28, 2023
 
+%% Mondy July 10, 2023
+clear all; close all; clc;
+
+D = readtable("Data/C1.tracks.raw.csv");
+f = figure;
+f.Visible = false;
+T = D.t;
+XY = [D.x D.y];
+S = D.area;
+ids = [11 50 100 150 200];
+tracks = zeros(2*size(ids,2), max(T));
+for i=0:size(ids,2)-1
+    locs = find(D.ID == ids(i+1));
+    tracks(2*i+1:2*i+2,1:length(locs)) = XY(locs,:)'; % D.x(locs);
+    % tracks(2*i+2,1:length(locs)) = D.y(locs);
+end
+for t=1:max(T)
+    locs = find(T == t);
+    XYt = XY(locs,:);
+    % figure;
+    scatter(XY(locs,1), XY(locs,2), S(locs), '.'); hold on;
+    for i=0:size(ids,2)-1
+        locs = find(D.ID == ids(i+1));
+        x = tracks(2*i+1,1:t);
+        y = tracks(2*i+2,1:t);
+        plot(x,y);
+    end
+    drawnow(); hold off;
+    F(t) = getframe(f);
+end
+
+
+% create the video writer with 1 fps
+writerObj = VideoWriter('myVideo.avi');
+writerObj.FrameRate = 2;
+  % set the seconds per image
+% open the video writer
+open(writerObj);
+% write the frames to the video
+for i=1:length(F)
+    % convert the image to a frame
+    frame = F(i) ;    
+    writeVideo(writerObj, frame);
+end
+% close the writer object
+close(writerObj);
 
 %% Satureday 04/01/2023
 clear; close all; clc;

@@ -39,11 +39,44 @@ histogram(tB + tC);
 xlabel("Time (sec.)");
 ylabel("Frequency");
 title("Run Time");
-legend(["Base Calculation", "Calculation with Kronecker"])
+legend(["Standard", "Kronecker"])
 
 % save("eigencalculationRunTimes.mat")
 
 max(max(BCAerrors))
+
+%% 
+%% tensor eigenvalues
+% clear all; close all; clc
+
+n1 = 2;
+n2 = 3;
+itrs = 100;
+tB = zeros(itrs,1);
+tC = zeros(itrs,1);
+tA = zeros(itrs,1);
+BCAerror = zeros(itrs,1);
+for i=1:itrs
+    disp(i)
+    B = rand(n1,n1,n1);
+    C = rand(n2,n2,n2);
+    A = superkron(B,C);
+    
+    tic;
+    eb = heig(B);
+    tB(i) = toc;
+    tic;
+    ec = heig(C);
+    tC(i) = toc;
+    tic;
+    ea = heig(A);
+    tA(i) = toc;
+
+    BCAerrors(i) = max(ea) - max(eb)*max(ec);
+
+end
+
+% save("eigencalculationRunTimes6.mat")
 
 %% tensor contractions
 clear all; close all; clc
