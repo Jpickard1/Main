@@ -45,7 +45,7 @@ end
 % Kronecker system + noise
 X3 = zeros(T, n1^2);  X2(1,:) = kron(X1(1,:),X1(1,:)); %s * rand(n1^2,1) - (s/2);
 for t=2:T
-    X3(t,:) = X3(t-1,:)' + s2 * ttvk(tensor(AAN), X3(t-1,:)');
+    X3(t,:) = X3(t-1,:)' + s2 * ttvk(tensor(AA), X3(t-1,:)');
 end
 
 % picking of adequate values for the labels
