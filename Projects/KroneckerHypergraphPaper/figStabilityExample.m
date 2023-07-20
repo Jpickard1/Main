@@ -114,11 +114,18 @@ set(gca,'TickLabelInterpreter','latex')
 set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
 
 nexttile;
-plot(t1, X1); ylabel('State'); xlabel('Time'); title('Example Trajecytory of $\dot{\mathbf{x}}=\textsf{B}\mathbf{x}^3$','interpreter','latex');
+plot(t1, X1); ylabel('State'); xlabel('Time'); title('Example Trajectory of $\dot{\mathbf{x}}=\textsf{B}\mathbf{x}^3$','interpreter','latex');
 set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
 
 nexttile;
 plot(t2, X2); ylabel('State'); xlabel('Time'); title('Example Trajectory of $\dot{\mathbf{x}}=\textsf{A}\mathbf{x}^3$','interpreter','latex'); 
 set(gca, 'YScale', 'log');
 set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
-saveas(gcf, 'stableUnstableExample_07192023.png')
+saveas(gcf, 'stableUnstableExample_07202023.png')
+
+%% Does it restabilize with a third Kronecker product
+
+e1 = heig(A)
+e2 = heig(superkron(A,A))
+e3 = heig(superkron(A,superkron(A,A)))
+
