@@ -21,10 +21,10 @@ clearvars -except A
 
 %% continuous trajectories
 rng(1)
-T = 10000; n1=2;
+T = 100000; n1=2;
 s = 1;
-s1 = 0.075;
-s2 = 0.075;
+s1 = 1;
+s2 = 0.20;
 AA = superkron(A,A); % + 0.01 * rand(4,4,4);
 
 t1 = [0:(T-1)] * s1;
@@ -36,18 +36,20 @@ for t=2:T
     X1(t,:) = X1(t-1,:)' + s1 * ttvk(tensor(A), X1(t-1,:)');
 end
 % Kronecker system
-X2 = zeros(T, n1^2);  X2(1,:) = kron(X1(1,:),X1(1,:)); %s * rand(n1^2,1) - (s/2);
-for t=2:T
-    X2(t,:) = X2(t-1,:)' + s2 * ttvk(tensor(AA), X2(t-1,:)');
-end
+% X2 = zeros(T, n1^2);  X2(1,:) = kron(X1(1,:),X1(1,:)); %s * rand(n1^2,1) - (s/2);
+% for t=2:T
+%     X2(t,:) = X2(t-1,:)' + s2 * ttvk(tensor(AA), X2(t-1,:)');
+% end
 
 figure;
-tiledlayout(1,2);
-nexttile;
+% tiledlayout(1,2);
+% nexttile;
 plot(t1, X1); ylabel('State'); xlabel('Time'); title('Base System');
+set(gca, 'XScale', 'log');
+%%
 nexttile;
 plot(t2, X2); ylabel('State'); xlabel('Time'); title('Kronecker System'); 
-set(gca, 'YScale', 'log');
+set(gca, 'XScale', 'log');
 
 % % Kronecker system + noise
 % X3 = zeros(T, n1^2);  X2(1,:) = kron(X1(1,:),X1(1,:)); %s * rand(n1^2,1) - (s/2);
@@ -65,9 +67,14 @@ set(gca, 'YScale', 'log');
 % set(gca,'YTick',YTick,'YTickLabels',YTickLabels)
 %% 
 set(groot, 'DefaultFigureRenderer', 'painters');
-figure('Renderer', 'painters', 'Position', [0 0 900 900]);
-tiledlayout(2,2);
+figure('Renderer', 'painters', 'Position', [0 0 1350 400]);
+tiledlayout(1,3);
+
 fs = 18;
+
+nexttile;
+plot(t1, X1); ylabel('State'); xlabel('Time'); title('Example Trajectory of $\dot{\mathbf{x}}=\textsf{B}\mathbf{x}^3$','interpreter','latex');
+set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
 
 llim = -10;
 ulim = 10;
@@ -113,15 +120,11 @@ xlabel('$x_1$','interpreter','latex'); ylabel('$x_2$','interpreter','latex'); zl
 set(gca,'TickLabelInterpreter','latex')
 set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
 
-nexttile;
-plot(t1, X1); ylabel('State'); xlabel('Time'); title('Example Trajectory of $\dot{\mathbf{x}}=\textsf{B}\mathbf{x}^3$','interpreter','latex');
-set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
-
-nexttile;
-plot(t2, X2); ylabel('State'); xlabel('Time'); title('Example Trajectory of $\dot{\mathbf{x}}=\textsf{A}\mathbf{x}^3$','interpreter','latex'); 
-set(gca, 'YScale', 'log');
-set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
-saveas(gcf, 'stableUnstableExample_07202023.png')
+% nexttile;
+% plot(t2, X2); ylabel('State'); xlabel('Time'); title('Example Trajectory of $\dot{\mathbf{x}}=\textsf{A}\mathbf{x}^3$','interpreter','latex'); 
+% set(gca, 'YScale', 'log');
+% set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
+% saveas(gcf, 'stableUnstableExample_07202023.png')
 
 %% Does it restabilize with a third Kronecker product
 
