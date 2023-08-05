@@ -21,7 +21,7 @@ clearvars -except A
 
 %% continuous trajectories
 rng(1)
-T = 100000; n1=2;
+T = 10000; n1=2;
 s = 1;
 s1 = 1;
 s2 = 0.20;
@@ -75,6 +75,7 @@ fs = 18;
 nexttile;
 plot(t1, X1); ylabel('State'); xlabel('Time'); title('Example Trajectory of $\dot{\mathbf{x}}=\textsf{B}\mathbf{x}^3$','interpreter','latex');
 set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
+set(gca, 'XScale', 'log');
 
 llim = -10;
 ulim = 10;
@@ -124,7 +125,7 @@ set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
 % plot(t2, X2); ylabel('State'); xlabel('Time'); title('Example Trajectory of $\dot{\mathbf{x}}=\textsf{A}\mathbf{x}^3$','interpreter','latex'); 
 % set(gca, 'YScale', 'log');
 % set(gca, 'FontSize', fs, 'TickLabelInterpreter', 'latex');
-% saveas(gcf, 'stableUnstableExample_07202023.png')
+saveas(gcf, 'stableUnstableExample_08032023v1.png')
 
 %% Does it restabilize with a third Kronecker product
 
