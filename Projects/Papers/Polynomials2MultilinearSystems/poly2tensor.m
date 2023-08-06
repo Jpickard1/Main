@@ -18,7 +18,6 @@ function A = poly2tensor(p)
             ct = k+1;
             for i=1:d+1; cmd = cmd + ":,"; ct = ct - 1; end
             while ct > 0; cmd = cmd + "n+1,"; ct = ct - 1; end
-            % for i=1:n-d-1; cmd = cmd + "n+1,"; end
             cmd = char(cmd);
             cmd = cmd(1:length(cmd)-1);
             cmd = string(cmd);
@@ -44,6 +43,7 @@ function Ad = polyD2tensor(AmD)
     d = round(log(size(AmD,2)) / log(n));
     idxs = n * ones(1,d+1);
     if numel(idxs) > 1
+        AmD = sptensor(AmD);
         AdN = reshape(AmD, idxs);
     else
         AdN = AmD;
