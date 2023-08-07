@@ -39,7 +39,7 @@ clear; close all; clc;
 n = randi([2 5], 1);
 d = randi([2 5], 1);
 npt = numPolyTerms(n,d);
-Am = rand(n, npt, 0.1);
+Am = rand(n, npt);
 p = mvpoly("Am",Am,"maxD",d);
 m = multilinearSystem("poly",p);
 
@@ -49,6 +49,92 @@ yp = p.eval(x);
 ym = m.eval(x);
 
 assert(sum(abs(yp - ym)) < 1e-10)
+
+%% Test Evaluation of multlinear system vs a polynomial with sparse storage of polynomial
+clear; close all; clc;
+
+n = randi([2 10], 1);
+d = randi([2 10], 1);
+n = 5;
+d = 10;
+npt = numPolyTerms(n,d);
+Am = sprand(n, npt, 0.01);
+p = mvpoly("Am",Am,"maxD",d);
+m = multilinearSystem("poly",p);
+
+x = rand(n,1);
+
+tic;
+yp = p.eval(x);
+tp = toc
+tic;
+ym = m.eval(x);
+tm = toc
+
+assert(sum(abs(yp - ym)) < 1e-10)
+
+%% Lorenz System
+n = 3; % x=1, y=2, z=3
+d = 2;
+esv = numPolyTerms(n, d);
+
+sigma = 10;
+beta = 8/3;
+rho = 28;
+
+Am = lorenz(sigma, rho, beta);
+
+XX = sym('x',[3,1]);
+disp(Am * [kron(XX,XX); XX; 1]);
+
+p = mvpoly('type','lorenz','sigma',sigma,'rho',rho,'beta',beta);
+
+[~,a] = ode45(@(t, x) p.eval(x),[0 100],[1 1 1]);
+figure; plot3(a(:,1),a(:,2),a(:,3))
+
+m = multilinearSystem('poly',p);
+
+[~,a] = ode45(@(t, x) m.eval(x),[0 100],[1 1 1]);
+figure; plot3(a(:,1),a(:,2),a(:,3))
+
+
+%%
+
+sigma = 10;
+beta = 8/3;
+rho = 28;
+f = @(t,a) [-sigma*a(1) + sigma*a(2); rho*a(1) - a(2) - a(1)*a(3); -beta*a(3) + a(1)*a(2)];
+[t,a] = ode45(f,[0 100],[1 1 1]);     % Runge-Kutta 4th/5th order ODE solver
+figure; plot3(a(:,1),a(:,2),a(:,3))
+
+
+%%
+
+for i=1:10000
+    yr = rand(3,1);
+    assert(sum(abs(f(0, yr) - p.eval(yr))) < 1e-5)
+end
+
+%%
+
+delta = 1;
+T = 1000;
+X = zeros(n,T);
+X(:,1) = rand(n,1);
+for t=2:T
+    X(:,t) = X(:,t-1) + delta * p.eval(X(:,t-1));
+end
+
+figure;
+plot3(X(:,1), X(:,2), X(:,3))
+
+
+%%
+X = sptenrand([10 100],0.01)
+
+reshape(X, [10 10 10])
+
+
 
 %% Kronecker indices
 
