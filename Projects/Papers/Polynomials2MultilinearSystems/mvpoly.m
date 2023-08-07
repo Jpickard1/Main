@@ -10,24 +10,43 @@ classdef mvpoly
         Am
         maxD
         nvars
+        type
+        args
     end
 
     methods
         function obj = mvpoly(NVA)
             %mvpoly Construct an instance of this class
             arguments
-                NVA.Am
-                NVA.maxD
-                NVA.nvars
+                NVA.Am      % matrix structure
+                NVA.maxD    % maximum degree
+                NVA.nvars   % number of variables
+                NVA.type    % type of system: lorenz
+                NVA.sigma   % lorenz
+                NVA.rho     % lorenz
+                NVA.beta    % lorenz
             end
-
-            if ~isfield(NVA, 'Am');      NVA.Am      = []; end
-            if ~isfield(NVA, 'maxD');    NVA.maxD    = []; end
-            if ~isfield(NVA, 'nvars'); NVA.nvars     = []; end
+            if isfield(NVA, 'type')
+                if strcmp(NVA.type, 'lorenz')
+                    NVA.Am    = lorenz(NVA.sigma, NVA.rho, NVA.beta);
+                    NVA.maxD  = 2;
+                    NVA.nvars = 3;
+                    NVA.args  = {NVA.sigma, NVA.rho, NVA.beta};
+                else
+                    error('invalid type');
+                end
+            end
+            if ~isfield(NVA, 'Am');    NVA.Am      = [];    end
+            if ~isfield(NVA, 'maxD');  NVA.maxD    = [];    end
+            if ~isfield(NVA, 'nvars'); NVA.nvars   = [];    end
+            if ~isfield(NVA, 'type');  NVA.type    = 'N/A'; end
+            if ~isfield(NVA, 'args');  NVA.args    = {};    end
 
             obj.Am      = NVA.Am;
             obj.maxD    = NVA.maxD;
-            obj.nvars = NVA.nvars;
+            obj.nvars   = NVA.nvars;
+            obj.type    = NVA.type;
+            obj.args    = NVA.args;
         end
 
         function Y = eval(obj, x)
@@ -40,6 +59,14 @@ classdef mvpoly
                 nsv = nsv - n^i;
             end
             Y = obj.Am * sv;
+        end
+
+        function str = title(obj)
+            if strcmp(obj.type, 'lorenz')
+                str = "Lorenz ($\sigma=" + string(obj.args{1}) + ",\rho=" + string(obj.args{2}) + ",\beta=" + string(obj.args{3}) + "$)";
+            else
+                str = "";
+            end
         end
 
     end
