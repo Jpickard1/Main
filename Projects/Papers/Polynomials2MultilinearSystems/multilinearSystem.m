@@ -9,6 +9,8 @@ classdef multilinearSystem
     properties
         A
         nvars
+        type
+        args
     end
     
     methods
@@ -21,6 +23,8 @@ classdef multilinearSystem
 
             if isfield(NVA, 'poly')
                 obj.A = poly2tensor(NVA.poly);
+                obj.type = NVA.poly.type;
+                obj.args = NVA.poly.args;
             elseif isfield(NVA, 'A')
                 obj.A = NVA.A;
             else
@@ -36,6 +40,14 @@ classdef multilinearSystem
             end
             Y = double(Y);
             Y = Y(1:numel(Y)-1);
+        end
+
+        function str = title(obj)
+            if strcmp(obj.type, 'lorenz')
+                str = "Lorenz ($\sigma=" + string(obj.args{1}) + ",\rho=" + string(obj.args{2}) + ",\beta=" + string(obj.args{3}) + "$)";
+            else
+                str = "";
+            end
         end
     end
 end
