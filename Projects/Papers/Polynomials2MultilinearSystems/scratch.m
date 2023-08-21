@@ -97,6 +97,13 @@ m = multilinearSystem('poly',p);
 [~,a] = ode45(@(t, x) m.eval(x),[0 100],[1 1 1]);
 figure; plot3(a(:,1),a(:,2),a(:,3))
 
+%% Van Der Pol System
+
+p = mvpoly('type','van der pol','mu',0.9);
+[~,a] = ode45(@(t, x) p.eval(x),[0 1000],rand(2,1));
+figure; plot(a(:,1),a(:,2)); title(p.title(), 'Interpreter','latex');
+
+
 
 %%
 

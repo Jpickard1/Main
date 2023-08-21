@@ -6,17 +6,13 @@
 
 clear; close all; clc
 
-T = csvread("chr14_100kb_sparse_bin.csv");
-T = T + 1;
-S = spconvert(T);
-A = full(S);
+% Read file
+T = csvread("chr14_100kb_sparse_bin.csv"); T = T + 1; S = spconvert(T);
+% Form adjacency matrix
+A = full(S); n = 9; A = A(1:n^2,1:n^2);
+% A approx = B kron C
+[B,C] = nearestKroneckerProduct(A,[9 9], [9 9]); clear S T
 
-n = 9;
-A = A(1:n^2,1:n^2);
-
-[B,C] = nearestKroneckerProduct(A,[9 9], [9 9]);
-
-clear S T
 
 %% Plot factorization
 figure;

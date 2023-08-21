@@ -1,6 +1,5 @@
 function [Am] = lorenz(sigma, rho, beta)
-%LORENZ Constructs a matrix representation of the Lorenz system as a
-% polynomial
+%LORENZ Constructs a matrix representation of the Lorenz system
 %
 % LORENZ SYSTEM
 %     dx/dt = sigma*y - sigma * x

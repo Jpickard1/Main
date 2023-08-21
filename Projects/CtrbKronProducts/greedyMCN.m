@@ -14,11 +14,12 @@ C = [];
 ctrls = [];
 D = 1:n;
 while rank(C) < n
+    maxi = 0;
+    argi = 0;
     for i=1:n
         if D(i) == 0
             continue;
         end
-        maxi = 0;
         ri = rank([C ctrbs{i}]);
         if ri > maxi
             maxi = ri;
@@ -28,6 +29,7 @@ while rank(C) < n
     D(argi) = 0;
     C = [C ctrbs{argi}];
     ctrls = [ctrls argi];
+    disp(ctrls);
 end
 
 end

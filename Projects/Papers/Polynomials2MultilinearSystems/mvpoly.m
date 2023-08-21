@@ -21,10 +21,13 @@ classdef mvpoly
                 NVA.Am      % matrix structure
                 NVA.maxD    % maximum degree
                 NVA.nvars   % number of variables
-                NVA.type    % type of system: lorenz
+                NVA.type    % types of systems: lorenz, van der pol
                 NVA.sigma   % lorenz
                 NVA.rho     % lorenz
-                NVA.beta    % lorenz
+                NVA.beta    % lorenz, SIS
+                NVA.mu      % van der pol
+                NVA.gamma   % SIS
+                NVA.stoch   % SIS
             end
             if isfield(NVA, 'type')
                 if strcmp(NVA.type, 'lorenz')
@@ -32,6 +35,16 @@ classdef mvpoly
                     NVA.maxD  = 2;
                     NVA.nvars = 3;
                     NVA.args  = {NVA.sigma, NVA.rho, NVA.beta};
+                elseif strcmp(NVA.type, 'van der pol')
+                    NVA.Am    = vanderpol(NVA.mu);
+                    NVA.maxD  = 3;
+                    NVA.nvars = 2;
+                    NVA.args  = {NVA.mu};
+                elseif strcmp(NVA.type, 'SIS')
+                    NVA.Am    = SIS(NVA.beta, NVA.gamma, NVA.stoch);
+                    NVA.maxD  = 2;
+                    NVA.nvars = 2;
+                    NVA.args  = {NVA.beta, NVA.gamma, NVA.stoch};
                 else
                     error('invalid type');
                 end
@@ -64,6 +77,8 @@ classdef mvpoly
         function str = title(obj)
             if strcmp(obj.type, 'lorenz')
                 str = "Lorenz ($\sigma=" + string(obj.args{1}) + ",\rho=" + string(obj.args{2}) + ",\beta=" + string(obj.args{3}) + "$)";
+            elseif strcmp(obj.type, 'van der pol')
+                str = "Van Der Pol ($\mu=" + string(obj.args{1}) + "$)";
             else
                 str = "";
             end
