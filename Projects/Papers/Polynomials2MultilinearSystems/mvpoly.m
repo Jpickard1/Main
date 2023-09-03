@@ -45,6 +45,16 @@ classdef mvpoly
                     NVA.maxD  = 2;
                     NVA.nvars = 2;
                     NVA.args  = {NVA.beta, NVA.gamma, NVA.stoch};
+                elseif strcmp(NVA.type, 'JC2')
+                    NVA.Am    = JCex2();
+                    NVA.maxD  = 3;
+                    NVA.nvars = 2;
+                    NVA.args  = {};
+                elseif strcmp(NVA.type, 'JB22')
+                    NVA.Am    = JBex22();
+                    NVA.maxD  = 2;
+                    NVA.nvars = 2;
+                    NVA.args  = {};
                 else
                     error('invalid type');
                 end
