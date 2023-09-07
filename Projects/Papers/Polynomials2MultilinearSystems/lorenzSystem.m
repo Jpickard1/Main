@@ -8,10 +8,10 @@
 
 %% Classic Lorenz System (mvpoly)
 sigma = 10;
-rho = 28;
+rho = 2;
 beta = 8/3;
 p = mvpoly('type','lorenz','sigma',sigma,'rho',rho,'beta',beta);
-[~,X] = ode45(@(t, x) p.eval(x),[0 100],[1 1 1]);
+[~,X] = ode45(@(t, x) p.eval(x),[0 1000],[1 1 1]);
 figure; plot3(X(:,1),X(:,2),X(:,3)); title(p.title(),'Interpreter','latex');
 
 %% Classic Lorenz System (multilinearSystem)
@@ -22,6 +22,121 @@ p = mvpoly('type','lorenz','sigma',sigma,'rho',rho,'beta',beta);
 m = multilinearSystem('poly',p);
 [~,X] = ode45(@(t, x) m.eval(x),[0 100],[1 1 1]);
 figure; plot3(X(:,1),X(:,2),X(:,3)); title(m.title(),'Interpreter','latex');
+
+%% August 21, 2023
+
+sigma = 10;
+rho = 28;
+beta = 8/3;
+D = [];
+for rho=20:0.1:28
+    p = mvpoly('type','lorenz','sigma',sigma,'rho',rho,'beta',beta);
+    m = multilinearSystem('poly',p);
+    A = double(m.A);
+    A = tensor(A);
+    C = cp_als(A, 1);
+    D = [D; C.lambda * [C.U{1}; C.U{2}; C.U{3}]'];
+end
+
+Y = tsne(D)
+
+species = [ones(41,1); zeros(40,1)];
+figure;
+gscatter(Y(:,1),Y(:,2), species,eye(3))
+title('2-D Embedding')
+
+%% Lorenze System Hopf and Pitchfork Bifurcations
+
+S = [];
+D = [];
+for rho=0.7:0.1:1.5
+    disp("rho: " + string(rho))
+    for sigma=8:0.2:12
+        disp("sigma: " + string(sigma))
+        for beta=8/3:0.5:15
+            % disp(beta)
+            p = mvpoly('type','lorenz','sigma',sigma,'rho',rho,'beta',beta);
+            m = multilinearSystem('poly',p);
+            A = double(m.A);
+            A = tensor(A);
+            C = cp_als(A, 1,'printitn',0);
+            D = [D; C.lambda * [C.U{1}; C.U{2}; C.U{3}]'];
+
+            if rho < 1
+                S = [S; 0];
+            elseif sigma > beta + 1
+                S = [S; 1];
+            else
+                S = [S; 2];
+            end
+        end
+    end
+end
+
+Y = tsne(D);
+species = S;
+% species = [ones(41,1); zeros(40,1)];
+% species = [3 * ones(1721,1); S];
+figure;
+gscatter(Y(:,1),Y(:,2), species,eye(3))
+title('2-D Embedding')
+
+C = corr(D');
+C(isnan(C)) = 0;
+
+[V, ~] = eigs(C, 2);
+
+figure;
+gscatter(V(:,1),V(:,2), species,eye(3))
+title('Spectral Embedding')
+
+figure; imagesc(C)
+
+%% Chaotic bifurcations
+%   this bifurcates near rho=23.5
+
+sigma = 10;
+beta = 8/3;
+S = [];
+D = [];
+
+for rho = 22.0:0.005:25
+    disp(rho);
+    p = mvpoly('type','lorenz','sigma',sigma,'rho',rho,'beta',beta);
+    % [~,X] = ode45(@(t, x) p.eval(x),[0 100],[1 1 1]);
+    % figure; plot3(X(:,1),X(:,2),X(:,3)); title(m.title(),'Interpreter','latex');
+    m = multilinearSystem('poly',p);
+    A = double(m.A);
+    A = tensor(A);
+    C = cp_als(A, 1,'printitn',0,'tol',1e-8);
+    D = [D; [C.U{1}; C.U{2}; C.U{3}]'];
+    if rho < 23.5
+        S = [S; 0];
+    else
+        S = [S; 1];
+    end
+end
+
+% spectral embeddings
+C = corr(D');
+C(isnan(C)) = 0;
+
+[V, ~] = eigs(C, 2);
+
+figure;
+plot(V(:,1),V(:,2)); %, species,eye(2))
+title('Spectral Embedding')
+
+figure; imagesc(C)
+
+% tSNE visualization
+Y = tsne(D);
+species = S;
+% species = [ones(41,1); zeros(40,1)];
+% species = [3 * ones(1721,1); S];
+figure;
+gscatter(Y(:,1),Y(:,2), species,eye(3))
+title('tSNE Embedding')
 
 %% What to show in case studies?
 %   - how do eigenvalues change at bifurcation points

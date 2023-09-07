@@ -22,7 +22,7 @@ function A = poly2tensor(p)
             cmd = cmd(1:length(cmd)-1);
             cmd = string(cmd);
             cmd = cmd + ") = Ad;";
-            disp(cmd);
+            % disp(cmd);
             % Copy values of Ad into the subtensor structure of A
             eval(cmd);
         else
@@ -31,7 +31,7 @@ function A = poly2tensor(p)
             while ct > 0; cmd = cmd + ",n+1"; ct = ct - 1; end
             cmd = cmd + ")=Ad(i);";
             for i=1:n; eval(cmd); end
-            disp(cmd);
+            % disp(cmd);
         end
         % disp(tensor(A));
     end
