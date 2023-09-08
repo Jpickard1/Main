@@ -24,12 +24,12 @@ d = 2;
 esv = numPolyTerms(n, d);
 Am = sparse(n, esv);
 
-Am(1,2) = - 0.5 * beta;   % ds/dt contains - beta S I
-Am(1,3) = - 0.5 * beta;   % ds/dt contains - beta S I
+Am(1,2) = - beta;   % ds/dt contains - beta S I
+% Am(1,3) = - 0.5 * beta;   % ds/dt contains - beta S I
 Am(1,6) =  gamma;         % ds/dt contains gamma I
 Am(1,7) =  -stoch;        % ds/dt contains stoch
-Am(2,2) =  0.5 * beta;    % di/dt contains beta S I
-Am(2,3) =  0.5 * beta;    % di/dt contains beta S I
+Am(2,2) =   beta;    % di/dt contains beta S I
+% Am(2,3) =  0.5 * beta;    % di/dt contains beta S I
 Am(2,6) =  -gamma;        % di/dt contains - gamma I
 Am(2,7) =  stoch;         % di/dt contains - stoch
 

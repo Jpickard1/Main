@@ -79,6 +79,8 @@ classdef mvpoly
                 str = "Lorenz ($\sigma=" + string(obj.args{1}) + ",\rho=" + string(obj.args{2}) + ",\beta=" + string(obj.args{3}) + "$)";
             elseif strcmp(obj.type, 'van der pol')
                 str = "Van Der Pol ($\mu=" + string(obj.args{1}) + "$)";
+            elseif strcmp(obj.type, 'SIS')
+                str = "SIS ($\beta=" + string(obj.args{1}) + ",\gamma=" + string(obj.args{2}) + "$)";
             else
                 str = "";
             end
