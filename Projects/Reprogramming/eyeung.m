@@ -30,6 +30,8 @@ A1 = exactDMD(D1);
 A2 = exactDMD(D2);
 A3 = exactDMD(D3);
 
+%% Observability Grammarian
+
 %% Kalman Filter
 
 C1 = zeros(1,size(A1,1)); C1(1) = 1;
