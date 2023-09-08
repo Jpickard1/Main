@@ -42,6 +42,17 @@ classdef multilinearSystem
             Y = Y(1:numel(Y)-1);
         end
 
+        function Y = evalLambda(obj, x, lambda)
+            x = [x; 1];
+            x = lambda * x;
+            Y = obj.A;
+            while numel(double(Y)) > numel(x)
+                Y = ttv(Y, x, ndims(Y));
+            end
+            Y = double(Y);
+            Y = Y(1:numel(Y)-1);
+        end
+
         function str = title(obj)
             if strcmp(obj.type, 'lorenz')
                 str = "Lorenz ($\sigma=" + string(obj.args{1}) + ",\rho=" + string(obj.args{2}) + ",\beta=" + string(obj.args{3}) + "$)";
