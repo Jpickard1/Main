@@ -24,7 +24,7 @@ A = sprand(n,n,d);
 A = full(A);
 %       2. simulate time series data
 f = @(t,x) A * x;
-[t, X] = ode45(f, [0, 100], rand(n,1));
+[t, X] = ode45(f, [0 100], rand(n,1));
 
 figure;
 plot(X)
@@ -72,3 +72,39 @@ C = quadprog(H, f, [], [], Aeq, beq, [], [], [], options);
 
 % Reshape the solution vector back to a matrix form
 C = reshape(C,[n,n]);
+
+%% UM-GTP-4.0 
+% Finally, use MATLAB's fmincon() function to find the matrix C that minimizes your objective function.
+
+dxdt = X(1:size(X,1)-1,:) - X(2:size(X,1),:);
+X0 = X(1:size(X,1)-1,:);
+D = double(A~=0);
+lambda = 1000;
+
+% Initialize C. This is important as different starting positions can lead to different solutions. Some guessing/testing might be needed.
+C0 = ones(size(D)); % Replace with an appropriate initial guess
+
+% Create a function handle for your objective function
+fun = @(C)objective(C, dxdt, X0) + lambda * custom_regularization(C, D);
+
+% Create options for fmincon
+options = optimoptions('fmincon','Algorithm','interior-point', 'Display', 'iter', 'MaxIterations', 100000, 'OptimalityTolerance', 1e-10, 'StepTolerance', 1e-6, 'ConstraintTolerance', 1e-6);
+
+%% Now call fmincon function to solve
+C_optimized = fmincon(fun, C0, [], [], [], [], [], [], [], options)
+
+% C_optimized(abs(C_optimized)<1e-5) = 0
+
+% First, define the objective function. This is |A-B*C|. You can define this as a MATLAB function.
+function f = objective(C, dxdt, X0)
+    % disp('objective')
+    f = norm(dxdt - X0*C, 'fro');
+end
+
+% Next, design your regularization term to incorporate D's sparsity structure. Using your definition of sparsity, this should be an indicator function.
+function penalty = custom_regularization(C, D)
+    % Your custom-built function checking non-zero components of C and D 
+    penalty = sum((abs(C) > 1e-4) & (D == 0), 'all');
+    disp(penalty);
+    % penalty = sum(C(D==0), 'all');
+end

@@ -25,12 +25,64 @@ end
 
 D1 = D1'; D2 = D2'; D3 = D3';
 
+D = [D1 D2 D3];
+
+clearvars -except D
+
 %% Exact DMD
 A1 = exactDMD(D1);
 A2 = exactDMD(D2);
 A3 = exactDMD(D3);
 
+A = A1;
+X = D1(:,1);
+
+%% Plot time scale interaction distributions
+% figure; hold on; plot(sort(A1(:))); plot(sort(A2(:))); plot(sort(A3(:)));
+
+%% Sensor Selection Problem:
+%
+%   dx/dt=Ax
+%   y    =Cx
+%
+%   Maximize the output energy subject to the constraint that the output
+%   matrix observes individual vertices i.e. C is spare with at most one
+%   nonzero of 1 entry per row. This is expressed as:
+%
+%       max_C sum_{i=0}^T x0'(A^i)'C'CA^ix0 subject to CC'=I
+%
+%   This problem has an analytical solution from the Lagrange Dual problem.
+%   In particular, the columns of C are selected to be the leading
+%   eigenvectors of the observability Grammarian.
+%
+
+t = 15;
+% Define the objective function
+objective = @(C) -sum(arrayfun(@(i) X'*(A^i)'*C'*C*A^i*X, 1:t));
+
+% Define the constraint function for C*C^T = I
+constraint = @(C) norm(C*C' - eye(size(C,1)));
+
+% Initial guess for C (you can provide a different initial guess)
+initialC = randn(size(X,1), size(X,1));
+
+% Set up optimization options
+options = optimoptions('fmincon', 'Algorithm', 'interior-point', 'MaxIterations', 1000);
+
+% Solve the optimization problem
+[C_opt, fval] = fmincon(objective, initialC, [], [], [], [], [], [], constraint, options);
+
+% Display the optimized C
+disp('Optimized C:');
+disp(C_opt);
+
+% Display the maximum value of the objective function
+disp(['Maximum value of the objective function: ', num2str(-fval)]);
+
+
 %% Observability Grammarian
+
+
 
 %% Kalman Filter
 
