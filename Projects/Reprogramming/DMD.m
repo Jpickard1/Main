@@ -43,7 +43,7 @@ Output.DMD.r = r;
 Output.DMD.UX = UX;
 Output.DMD.VX = VX;         
 
-if size(DataMatrix,1) <= 1000
+%if size(DataMatrix,1) <= 1000
 % Compute A_bar SCOTT ADD
     A_bar = Xp*VX*pinv(SigX)*UX';
     [V_bar,D_bar] = eig(A_bar);
@@ -51,5 +51,5 @@ if size(DataMatrix,1) <= 1000
     Output.DMD.A_bar = A_bar;           %SCOTT ADD
     Output.DMD.D_bar = diag(D_bar);     %SCOTT ADD
     Output.DMD.V_bar = V_bar;           %SCOTT ADD
-end
+%end
 end
